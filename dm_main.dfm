@@ -9,7 +9,7 @@ object dmMain: TdmMain
     Server = 'localhost'
     ConnectDialog = MainConnectDialog
     Left = 44
-    Top = 64
+    Top = 72
   end
   object MainConnectDialog: TUniConnectDialog
     DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
@@ -23,10 +23,10 @@ object dmMain: TdmMain
     CancelButton = #1054#1090#1084#1077#1085#1072
     LabelSet = lsRussian
     Left = 44
-    Top = 112
+    Top = 120
   end
   object MainProvider: TSQLServerUniProvider
     Left = 44
-    Top = 12
+    Top = 16
   end
 end
