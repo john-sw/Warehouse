@@ -1,15 +1,15 @@
 object dmMain: TdmMain
   OldCreateOrder = False
-  Height = 189
-  Width = 143
+  Height = 300
+  Width = 456
   object MainConnection: TUniConnection
     ProviderName = 'SQL Server'
     Database = 'RasprCenter2017'
     Username = 'eugene'
     Server = 'localhost'
     ConnectDialog = MainConnectDialog
-    Left = 44
-    Top = 72
+    Left = 128
+    Top = 16
   end
   object MainConnectDialog: TUniConnectDialog
     DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
@@ -22,11 +22,83 @@ object dmMain: TdmMain
     ConnectButton = #1057#1086#1077#1076#1080#1085#1080#1090#1100
     CancelButton = #1054#1090#1084#1077#1085#1072
     LabelSet = lsRussian
-    Left = 44
-    Top = 120
+    Left = 224
+    Top = 16
   end
   object MainProvider: TSQLServerUniProvider
     Left = 44
     Top = 16
+  end
+  object AdvPanelStyler1: TAdvPanelStyler
+    Tag = 0
+    Settings.AnchorHint = False
+    Settings.BevelInner = bvNone
+    Settings.BevelOuter = bvNone
+    Settings.BevelWidth = 1
+    Settings.BorderColor = 13087391
+    Settings.BorderShadow = False
+    Settings.BorderStyle = bsNone
+    Settings.BorderWidth = 0
+    Settings.CanMove = False
+    Settings.CanSize = False
+    Settings.Caption.Color = 16643823
+    Settings.Caption.ColorTo = 15784647
+    Settings.Caption.Font.Charset = DEFAULT_CHARSET
+    Settings.Caption.Font.Color = 5978398
+    Settings.Caption.Font.Height = -11
+    Settings.Caption.Font.Name = 'Tahoma'
+    Settings.Caption.Font.Style = []
+    Settings.Caption.GradientDirection = gdVertical
+    Settings.Caption.Indent = 2
+    Settings.Caption.ShadeLight = 255
+    Settings.Collaps = False
+    Settings.CollapsColor = clNone
+    Settings.CollapsDelay = 0
+    Settings.CollapsSteps = 0
+    Settings.Color = 16643823
+    Settings.ColorTo = 15784647
+    Settings.ColorMirror = clNone
+    Settings.ColorMirrorTo = clNone
+    Settings.Cursor = crDefault
+    Settings.Font.Charset = DEFAULT_CHARSET
+    Settings.Font.Color = clBlack
+    Settings.Font.Height = -11
+    Settings.Font.Name = 'Tahoma'
+    Settings.Font.Style = []
+    Settings.FixedTop = False
+    Settings.FixedLeft = False
+    Settings.FixedHeight = False
+    Settings.FixedWidth = False
+    Settings.Height = 120
+    Settings.Hover = False
+    Settings.HoverColor = clNone
+    Settings.HoverFontColor = clNone
+    Settings.Indent = 0
+    Settings.ShadowColor = clBlack
+    Settings.ShadowOffset = 0
+    Settings.ShowHint = False
+    Settings.ShowMoveCursor = False
+    Settings.StatusBar.BorderColor = 16643823
+    Settings.StatusBar.BorderStyle = bsSingle
+    Settings.StatusBar.Font.Charset = DEFAULT_CHARSET
+    Settings.StatusBar.Font.Color = 5978398
+    Settings.StatusBar.Font.Height = -11
+    Settings.StatusBar.Font.Name = 'Tahoma'
+    Settings.StatusBar.Font.Style = []
+    Settings.StatusBar.Color = 16643823
+    Settings.StatusBar.ColorTo = 15784647
+    Settings.StatusBar.GradientDirection = gdVertical
+    Settings.TextVAlign = tvaTop
+    Settings.TopIndent = 0
+    Settings.URLColor = clBlue
+    Settings.Width = 0
+    Style = psOffice2010Blue
+    Left = 44
+    Top = 92
+  end
+  object cxLookAndFeelController1: TcxLookAndFeelController
+    Kind = lfOffice11
+    Left = 176
+    Top = 92
   end
 end

@@ -2,9 +2,10 @@ program Warehouse;
 
 uses
   Vcl.Forms,
-  main in 'main.pas' {MainForm},
+  fm_MainForm in 'fm_MainForm.pas' {MainForm},
   dm_main in 'dm_main.pas' {dmMain: TDataModule},
-  dm_RefBooks in 'dm_RefBooks.pas' {dmRefBooks: TDataModule};
+  dm_RefBooks in 'dm_RefBooks.pas' {dmRefBooks: TDataModule},
+  fm_ShowRefBooks in 'fm_ShowRefBooks.pas' {fmShowRefBook};
 
 {$R *.res}
 
