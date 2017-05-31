@@ -6,10 +6,12 @@ object dmMain: TdmMain
     ProviderName = 'SQL Server'
     Database = 'RasprCenter2017'
     Username = 'eugene'
-    Server = 'localhost'
+    Server = '92.53.104.153'
+    Connected = True
     ConnectDialog = MainConnectDialog
     Left = 128
     Top = 16
+    EncryptedPassword = '9CFF9AFF91FF9AFF94FF8CFF8EFF9CFF9AFF9CFF94FF9DFF8DFF'
   end
   object MainConnectDialog: TUniConnectDialog
     DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
@@ -100,5 +102,154 @@ object dmMain: TdmMain
     Kind = lfOffice11
     Left = 176
     Top = 92
+  end
+  object AdvMenuOfficeStyler1: TAdvMenuOfficeStyler
+    AntiAlias = aaNone
+    AutoThemeAdapt = False
+    Style = osOffice2003Blue
+    Background.Position = bpCenter
+    Background.Color = 16185078
+    Background.ColorTo = 16185078
+    ButtonAppearance.DownColor = 5149182
+    ButtonAppearance.DownColorTo = 9556991
+    ButtonAppearance.HoverColor = 13432063
+    ButtonAppearance.HoverColorTo = 9556223
+    ButtonAppearance.DownBorderColor = clNavy
+    ButtonAppearance.HoverBorderColor = clNavy
+    ButtonAppearance.CaptionFont.Charset = DEFAULT_CHARSET
+    ButtonAppearance.CaptionFont.Color = clWindowText
+    ButtonAppearance.CaptionFont.Height = -11
+    ButtonAppearance.CaptionFont.Name = 'Tahoma'
+    ButtonAppearance.CaptionFont.Style = []
+    IconBar.Color = 16773091
+    IconBar.ColorTo = 14986631
+    IconBar.CheckBorder = clNavy
+    IconBar.RadioBorder = clNavy
+    SelectedItem.BorderColor = clNavy
+    SelectedItem.Font.Charset = DEFAULT_CHARSET
+    SelectedItem.Font.Color = clWindowText
+    SelectedItem.Font.Height = -11
+    SelectedItem.Font.Name = 'Tahoma'
+    SelectedItem.Font.Style = []
+    SelectedItem.NotesFont.Charset = DEFAULT_CHARSET
+    SelectedItem.NotesFont.Color = clWindowText
+    SelectedItem.NotesFont.Height = -8
+    SelectedItem.NotesFont.Name = 'Tahoma'
+    SelectedItem.NotesFont.Style = []
+    SelectedItem.CheckBorder = clNavy
+    SelectedItem.RadioBorder = clNavy
+    RootItem.Color = 16105118
+    RootItem.ColorTo = 16240050
+    RootItem.Font.Charset = DEFAULT_CHARSET
+    RootItem.Font.Color = clBlack
+    RootItem.Font.Height = -11
+    RootItem.Font.Name = 'Tahoma'
+    RootItem.Font.Style = []
+    RootItem.SelectedColor = 16773091
+    RootItem.SelectedColorTo = 15185299
+    RootItem.SelectedBorderColor = 9841920
+    RootItem.HoverColor = 13432063
+    RootItem.HoverColorTo = 10147583
+    Glyphs.SubMenu.Data = {
+      5A000000424D5A000000000000003E0000002800000004000000070000000100
+      0100000000001C0000000000000000000000020000000200000000000000FFFF
+      FF0070000000300000001000000000000000100000003000000070000000}
+    Glyphs.Check.Data = {
+      7E000000424D7E000000000000003E0000002800000010000000100000000100
+      010000000000400000000000000000000000020000000200000000000000FFFF
+      FF00FFFF0000FFFF0000FFFF0000FFFF0000FDFF0000F8FF0000F07F0000F23F
+      0000F71F0000FF8F0000FFCF0000FFEF0000FFFF0000FFFF0000FFFF0000FFFF
+      0000}
+    Glyphs.Radio.Data = {
+      7E000000424D7E000000000000003E0000002800000010000000100000000100
+      010000000000400000000000000000000000020000000200000000000000FFFF
+      FF00FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FC3F0000F81F0000F81F
+      0000F81F0000F81F0000FC3F0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF
+      0000}
+    SideBar.Font.Charset = DEFAULT_CHARSET
+    SideBar.Font.Color = clWhite
+    SideBar.Font.Height = -19
+    SideBar.Font.Name = 'Tahoma'
+    SideBar.Font.Style = [fsBold, fsItalic]
+    SideBar.Image.Position = bpCenter
+    SideBar.Background.Position = bpCenter
+    SideBar.SplitterColorTo = clBlack
+    Separator.Color = 13339754
+    Separator.GradientType = gtBoth
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMenuText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    NotesFont.Charset = DEFAULT_CHARSET
+    NotesFont.Color = clGray
+    NotesFont.Height = -8
+    NotesFont.Name = 'Tahoma'
+    NotesFont.Style = []
+    MenuBorderColor = 9841920
+    Left = 340
+    Top = 176
+  end
+  object AdvMenuFantasyStyler1: TAdvMenuFantasyStyler
+    AntiAlias = aaNone
+    Style = fsCustom
+    Background.Position = bpCenter
+    ButtonAppearance.CaptionFont.Charset = DEFAULT_CHARSET
+    ButtonAppearance.CaptionFont.Color = clWindowText
+    ButtonAppearance.CaptionFont.Height = -11
+    ButtonAppearance.CaptionFont.Name = 'Tahoma'
+    ButtonAppearance.CaptionFont.Style = []
+    SelectedItem.Font.Charset = DEFAULT_CHARSET
+    SelectedItem.Font.Color = clWindowText
+    SelectedItem.Font.Height = -11
+    SelectedItem.Font.Name = 'Tahoma'
+    SelectedItem.Font.Style = []
+    SelectedItem.NotesFont.Charset = DEFAULT_CHARSET
+    SelectedItem.NotesFont.Color = clWindowText
+    SelectedItem.NotesFont.Height = -8
+    SelectedItem.NotesFont.Name = 'Tahoma'
+    SelectedItem.NotesFont.Style = []
+    RootItem.Font.Charset = DEFAULT_CHARSET
+    RootItem.Font.Color = clMenuText
+    RootItem.Font.Height = -11
+    RootItem.Font.Name = 'Tahoma'
+    RootItem.Font.Style = []
+    Glyphs.SubMenu.Data = {
+      5A000000424D5A000000000000003E0000002800000004000000070000000100
+      0100000000001C0000000000000000000000020000000200000000000000FFFF
+      FF0070000000300000001000000000000000100000003000000070000000}
+    Glyphs.Check.Data = {
+      7E000000424D7E000000000000003E0000002800000010000000100000000100
+      010000000000400000000000000000000000020000000200000000000000FFFF
+      FF00FFFF0000FFFF0000FFFF0000FFFF0000FDFF0000F8FF0000F07F0000F23F
+      0000F71F0000FF8F0000FFCF0000FFEF0000FFFF0000FFFF0000FFFF0000FFFF
+      0000}
+    Glyphs.Radio.Data = {
+      7E000000424D7E000000000000003E0000002800000010000000100000000100
+      010000000000400000000000000000000000020000000200000000000000FFFF
+      FF00FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FC3F0000F81F0000F81F
+      0000F81F0000F81F0000FC3F0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF
+      0000}
+    SideBar.Font.Charset = DEFAULT_CHARSET
+    SideBar.Font.Color = clWhite
+    SideBar.Font.Height = -19
+    SideBar.Font.Name = 'Tahoma'
+    SideBar.Font.Style = [fsBold, fsItalic]
+    SideBar.Image.Position = bpCenter
+    SideBar.Background.Position = bpCenter
+    SideBar.SplitterColorTo = clBlack
+    Separator.GradientType = gtBoth
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMenuText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    NotesFont.Charset = DEFAULT_CHARSET
+    NotesFont.Color = clGray
+    NotesFont.Height = -8
+    NotesFont.Name = 'Tahoma'
+    NotesFont.Style = []
+    Left = 216
+    Top = 200
   end
 end

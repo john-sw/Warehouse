@@ -34,21 +34,6 @@ type
     dxBarGroup1: TdxBarGroup;
     dxRibbon1Tab2: TdxRibbonTab;
     dxRibbon1Tab3: TdxRibbonTab;
-    dxBarApplicationMenu1: TdxBarApplicationMenu;
-    dxBarSubItem1: TdxBarSubItem;
-    dxBarSubItem2: TdxBarSubItem;
-    dxBarSubItem3: TdxBarSubItem;
-    dxBarSubItem4: TdxBarSubItem;
-    dxBarSubItem5: TdxBarSubItem;
-    N1: TdxBarButton;
-    N2: TdxBarButton;
-    N5: TdxBarButton;
-    N7: TdxBarButton;
-    dxRibbonPopupMenu2: TdxRibbonPopupMenu;
-    dxBarButton1: TdxBarButton;
-    pmRefBooks: TdxBarPopupMenu;
-    dxBarButton2: TdxBarButton;
-    dxBarButton3: TdxBarButton;
     AdvMainMenu1: TAdvMainMenu;
     N3: TMenuItem;
     N6: TMenuItem;
@@ -64,9 +49,8 @@ type
     { Private declarations }
     procedure CreateMainMenu;
     procedure WMCloseForm(var msg: TMessage); message WM_CloseForm;
-    procedure ActiveFormChange(Sender: TObject);
     procedure AddFormToMainMenu(AForm: TCustomForm);
-    function FindFormInMainMenu(AForm: TCustomForm): TMenuItem;
+    function FindFormInMainMenu(ACaption: String): TMenuItem;
     procedure miRefBookClick(Sender: TObject);
     procedure miWindowClick(Sender: TObject);
   public
@@ -83,13 +67,13 @@ uses
 
 {$R *.dfm}
 
-function TMainForm.FindFormInMainMenu(AForm: TCustomForm): TMenuItem;
+function TMainForm.FindFormInMainMenu(ACaption: String): TMenuItem;
 var
   i: Integer;
 begin
   Result := nil;
   for i := 2 to miWindow.Count - 1 do
-    if TMenuItem(miWindow.Items[i]).Caption = AForm.Caption then
+    if TMenuItem(miWindow.Items[i]).Caption = ACaption then
     begin
       Result := miWindow.Items[i];
       Break;
@@ -101,7 +85,7 @@ var
   i: Integer;
   mi: TMenuItem;
 begin
-  mi := FindFormInMainMenu(AForm);
+  mi := FindFormInMainMenu(AForm.Caption);
 
   if mi <> nil then
     Exit;
@@ -111,14 +95,6 @@ begin
   mi.Tag := UIntPtr(AForm);
   mi.OnClick := miWindowClick;
   miWindow.Add(mi);
-end;
-
-procedure TMainForm.ActiveFormChange(Sender: TObject);
-begin
-  if Screen = nil then
-    Exit;
-
-  AddFormToMainMenu(Screen.ActiveForm);
 end;
 
 procedure TMainForm.CreateMainMenu;
@@ -143,7 +119,6 @@ procedure TMainForm.FormShow(Sender: TObject);
 begin
   dmMain.MainConnection.Connect;
   CreateMainMenu;
-  Screen.OnActiveFormChange := ActiveFormChange;
 end;
 
 procedure TMainForm.miRefBookClick(Sender: TObject);
@@ -151,15 +126,14 @@ var
   mi: TMenuItem;
 begin
   dmRefBooks.qSprRef.RecNo := (Sender as TMenuItem).Tag;
-  Application.CreateForm(TfmShowRefBook, fmShowRefBook);
-//  mi := FindFormInMainMenu(fmShowRefBook);
-{  if mi <> nil then
+  mi := FindFormInMainMenu('Справочник - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString);
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
   begin
-    fmShowRefBook.Free;
-    TCustomForm((Sender as TMenuItem).Tag).BringToFront;
-  end
-  else  }
-    fmShowRefBook.Show;
+    Application.CreateForm(TfmShowRefBook, fmShowRefBook);
+    AddFormToMainMenu(fmShowRefBook);
+  end;
 end;
 
 procedure TMainForm.miWindowClick(Sender: TObject);
@@ -168,9 +142,16 @@ begin
 end;
 
 procedure TMainForm.WMCloseForm(var msg: TMessage);
+var
+  mi: TMenuItem;
 begin
   if msg.WParam <> 0 then
+  begin
+    mi := FindFormInMainMenu(TCustomForm(msg.WParam).Caption);
+    if mi <> nil then
+      mi.Free;
     TCustomForm(msg.WParam).Free;
+  end;
 end;
 
 end.

@@ -9,6 +9,9 @@ type
   TdmRefBooks = class(TDataModule)
     qSprRef: TUniQuery;
     spRefBookFields: TUniStoredProc;
+    spForeignRefBook: TUniStoredProc;
+    dsForeignRefBook: TUniDataSource;
+    spInsertRefBook: TUniStoredProc;
   private
     { Private declarations }
   public

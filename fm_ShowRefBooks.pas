@@ -24,27 +24,43 @@ uses
   dxSkinscxPCPainter, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.Menus, cxContainer,
-  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons;
+  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons, AdvMenus;
 
 type
   TfmShowRefBook = class(TForm)
-    AdvPanel1: TAdvPanel;
-    AdvPanel2: TAdvPanel;
+    pnlTop: TAdvPanel;
+    pnlBottom: TAdvPanel;
     spShowRefBook: TUniStoredProc;
     dsShowRefBook: TUniDataSource;
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
-    cxButton1: TcxButton;
-    cxButton2: TcxButton;
-    cxButton3: TcxButton;
-    cxButton4: TcxButton;
-    cxButton5: TcxButton;
-    cxButton6: TcxButton;
+    btnAdd: TcxButton;
+    btnEdit: TcxButton;
+    btnView: TcxButton;
+    btnDel: TcxButton;
+    btnClose: TcxButton;
+    btnRefresh: TcxButton;
+    pmDefaultPopupMenu: TAdvPopupMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    Excel1: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure cxButton5Click(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnRefreshClick(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
+    procedure btnViewClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -58,11 +74,49 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm;
+uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook;
 
-procedure TfmShowRefBook.cxButton5Click(Sender: TObject);
+procedure TfmShowRefBook.btnAddClick(Sender: TObject);
+begin
+  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  try
+    fmAddEditRefBook.ShowModal;
+  finally
+    FreeAndNil(fmAddEditRefBook);
+  end;
+end;
+
+procedure TfmShowRefBook.btnCloseClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfmShowRefBook.btnEditClick(Sender: TObject);
+begin
+  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  try
+    fmAddEditRefBook.FormMode := fmEdit;
+    fmAddEditRefBook.ShowModal;
+  finally
+    FreeAndNil(fmAddEditRefBook);
+  end;
+end;
+
+procedure TfmShowRefBook.btnRefreshClick(Sender: TObject);
+begin
+  spShowRefBook.Close;
+  spShowRefBook.Open;
+end;
+
+procedure TfmShowRefBook.btnViewClick(Sender: TObject);
+begin
+  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  fmAddEditRefBook.FormMode := fmView;
+  try
+    fmAddEditRefBook.ShowModal;
+  finally
+    FreeAndNil(fmAddEditRefBook);
+  end;
 end;
 
 procedure TfmShowRefBook.FormClose(Sender: TObject; var Action: TCloseAction);

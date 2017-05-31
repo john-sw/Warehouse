@@ -17,7 +17,7 @@ uses
   dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
-  cxClasses, cxLookAndFeels, AdvPanel, MemDS;
+  cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus;
 
 type
   TdmMain = class(TDataModule)
@@ -26,6 +26,8 @@ type
     MainProvider: TSQLServerUniProvider;
     AdvPanelStyler1: TAdvPanelStyler;
     cxLookAndFeelController1: TcxLookAndFeelController;
+    AdvMenuOfficeStyler1: TAdvMenuOfficeStyler;
+    AdvMenuFantasyStyler1: TAdvMenuFantasyStyler;
   private
     { Private declarations }
   public
