@@ -60,7 +60,6 @@ object fmAddEditRefBook: TfmAddEditRefBook
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitTop = 564
     DesignSize = (
       773
       64)
@@ -131,10 +130,6 @@ object fmAddEditRefBook: TfmAddEditRefBook
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitLeft = 2
-    ExplicitTop = 2
-    ExplicitWidth = 767
-    ExplicitHeight = 532
     FullHeight = 200
   end
 end

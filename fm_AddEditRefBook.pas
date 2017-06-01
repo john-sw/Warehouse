@@ -21,7 +21,7 @@ uses
   cxTextEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, AdvPanel,
   Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, dm_RefBooks, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  cxDBExtLookupComboBox, cxDBEdit, AdvCombo, AdvDBComboBox, Vcl.DBGrids,
+  cxDBExtLookupComboBox, cxDBEdit, AdvCombo, AdvDBComboBox, Vcl.DBGrids, Uni,
   AdvDBLookupComboBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxCheckBox;
 
 type
@@ -46,12 +46,16 @@ type
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
     function IsControlsModified(AControl: TWinControl): Boolean;
-    procedure Insert;
-    procedure Update;
+    procedure InsertRecord;
+    procedure UpdateRecord;
+    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    function GetControlValue(AControl: TControl): Variant;
     { Private declarations }
   public
     { Public declarations }
     FormMode: TRefBookFormMode;
+    spRefBook: TUniStoredProc;
+    CurrentID: Integer;
   end;
 
 var
@@ -67,6 +71,7 @@ uses
 procedure TfmAddEditRefBook.FormCreate(Sender: TObject);
 begin
   FormMode := fmAdd;
+  CurrentID := 0;
 end;
 
 function TfmAddEditRefBook.InsertFieldControlPanel: TAdvPanel;
@@ -79,8 +84,6 @@ begin
   Result.Width := pnlClient.Width;
   Result.Left := 0;
   Result.Anchors := [akLeft, akTop, akRight];
-//  Result.Align := alTop;
-//  Result.TabOrder := 0;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldLabel(APanel: TAdvPanel);
@@ -114,9 +117,12 @@ begin
     c.Style.BorderColor := clRed
   else
     c.Style.BorderColor := clNavy;
-  c.Tag := dmRefBooks.spRefBookFields.RecNo;
+  c.Tag := 1;
   c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
-  c.Text := '';
+  if (FormMode = fmAdd) then
+    c.Text := ''
+  else
+    c.Text := spRefBook.FieldByName(c.Name).AsString;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldDate(APanel: TAdvPanel);
@@ -136,6 +142,10 @@ begin
     c.Style.BorderColor := clNavy;
   c.Tag := dmRefBooks.spRefBookFields.RecNo;
   c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  if (FormMode = fmAdd) then
+    c.Date := 0
+  else
+    c.Date := spRefBook.FieldByName(c.Name).AsDateTime;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldCheck(APanel: TAdvPanel);
@@ -158,6 +168,10 @@ begin
   c.Properties.FullFocusRect := True;
   c.Tag := dmRefBooks.spRefBookFields.RecNo;
   c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  if (FormMode = fmAdd) then
+    c.Checked := False
+  else
+    c.Checked := Boolean(spRefBook.FieldByName(c.Name).AsInteger);
 end;
 
 procedure TfmAddEditRefBook.InsertFieldLookup(APanel: TAdvPanel);
@@ -186,6 +200,10 @@ begin
   c.Properties.ListOptions.ShowHeader := False;
   c.Tag := dmRefBooks.spRefBookFields.RecNo;
   c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  if (FormMode = fmAdd) then
+    c.EditValue := -1
+  else
+    c.EditValue := spRefBook.FieldByName(c.Name).AsInteger;
 end;
 
 function TfmAddEditRefBook.IsControlsModified(AControl: TWinControl): Boolean;
@@ -195,30 +213,68 @@ end;
 
 procedure TfmAddEditRefBook.btnCancelClick(Sender: TObject);
 begin
-  if IsControlsModified(pnlClient) then
-    case MessageBox(0,'Сохранить изменения?', 'Подтверждение', MB_YESNOCANCEL + MB_ICONQUESTION) of
-      id_yes: btnSaveClick(Nil);
-      id_no: ModalResult := mrCancel;
-    end;
+  if (FormMode = fmView) then
+    ModalResult := mrCancel
+  else
+    if IsControlsModified(pnlClient) then
+      case MessageBox(0,'Сохранить изменения?', 'Подтверждение', MB_YESNOCANCEL + MB_ICONQUESTION) of
+        id_yes: btnSaveClick(Nil);
+        id_no: ModalResult := mrCancel;
+      end;
 end;
 
-procedure TfmAddEditRefBook.Insert;
+function TfmAddEditRefBook.GetControlValue(AControl: TControl): Variant;
 begin
-  dmRefBooks.spInsertRefBook.StoredProcName := dmRefBooks.qSprRef.FieldByName('InsertProcName').AsString;
-ShowMessage(IntToStr(  dmRefBooks.spInsertRefBook.ParamCount));
+  case AControl.Tag of
+    1: Result := (AControl as TcxTextEdit).Text; // DBTextEdit
+    2: Result := (AControl as TcxDateEdit).Date; // DBDateEdit
+//          3	DBCalcEdit
+//          4	DBMaskEdit
+    5: Result := Integer((AControl as TcxCheckBox).Checked); // DBCheckBox
+    6: Result := (AControl as TcxLookupComboBox).EditingValue; // DBLookupEdit
+//          7	DBImageEdit
+  end;
 end;
 
-procedure TfmAddEditRefBook.Update;
+procedure TfmAddEditRefBook.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+var
+   i: Integer;
+   c: TControl;
 begin
+  for i := 0 to pnlClient.ControlCount - 1 do
+  begin
+    c := TAdvPanel(pnlClient.Controls[i]).Controls[1];
+    sp.ParamByName(c.Name).Value := GetControlValue(c);
+  end;
+  if (FormMode = fmAdd) then
+  begin
+    sp.Open;
+    if not sp.Eof then
+      CurrentID := sp.FieldByName('ID').AsInteger;
+  end
+  else
+    sp.Execute;
+end;
 
+procedure TfmAddEditRefBook.InsertRecord;
+begin
+//  dmRefBooks.spInsertRefBook.StoredProcName := dmRefBooks.qSprRef.FieldByName('InsertProcName').AsString;
+  dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(dmRefBooks.qSprRef.FieldByName('InsertProcName').AsString);
+  SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+end;
+
+procedure TfmAddEditRefBook.UpdateRecord;
+begin
+  dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(dmRefBooks.qSprRef.FieldByName('UpdateProcName').AsString);
+  dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := CurrentID;
+  SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
 end;
 
 procedure TfmAddEditRefBook.btnSaveClick(Sender: TObject);
 begin
-  //q
   case FormMode of
-    fmAdd: Insert;
-    fmEdit: Update;
+    fmAdd: InsertRecord;
+    fmEdit: UpdateRecord;
   end;
   ModalResult := mrOk;
 end;
@@ -249,8 +305,12 @@ begin
           6: InsertFieldLookup(FieldPanel); // DBLookupEdit
 //          7	DBImageEdit
         end;
-        if (FirstControl = nil) and (FieldPanel.ControlCount = 2) then
-          FirstControl := TWinControl(FieldPanel.Controls[1]);
+        if (FieldPanel.ControlCount = 2) then
+        begin
+          FieldPanel.Controls[1].Tag := FieldByName('ControlTypeID').AsInteger;
+          if (FirstControl = nil) then
+            FirstControl := TWinControl(FieldPanel.Controls[1]);
+        end;
         Next;
       end;
   end;

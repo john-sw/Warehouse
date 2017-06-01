@@ -32,9 +32,9 @@ type
     pnlBottom: TAdvPanel;
     spShowRefBook: TUniStoredProc;
     dsShowRefBook: TUniDataSource;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
-    cxGrid1: TcxGrid;
+    tvRefBook: TcxGridDBTableView;
+    GridRefBookLevel1: TcxGridLevel;
+    GridRefBook: TcxGrid;
     btnAdd: TcxButton;
     btnEdit: TcxButton;
     btnView: TcxButton;
@@ -61,6 +61,7 @@ type
     procedure btnAddClick(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
     procedure btnViewClick(Sender: TObject);
+    procedure btnDelClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -80,7 +81,12 @@ procedure TfmShowRefBook.btnAddClick(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
-    fmAddEditRefBook.ShowModal;
+    fmAddEditRefBook.spRefBook := spShowRefBook;
+    if fmAddEditRefBook.ShowModal = mrOk then
+    begin
+      spShowRefBook.Refresh;
+      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+    end;
   finally
     FreeAndNil(fmAddEditRefBook);
   end;
@@ -91,12 +97,31 @@ begin
   Close;
 end;
 
+procedure TfmShowRefBook.btnDelClick(Sender: TObject);
+begin
+  if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
+    Exit;
+  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  try
+//    DisableControls;
+    CreateProcCall(dmRefBooks.qSprRef.FieldByName('DeleteProcName').AsString);
+    ParamByName('ID').Value := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    Execute;
+    spShowRefBook.Refresh;
+  finally
+    EnableControls;
+  end;
+end;
+
 procedure TfmShowRefBook.btnEditClick(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
     fmAddEditRefBook.FormMode := fmEdit;
-    fmAddEditRefBook.ShowModal;
+    fmAddEditRefBook.spRefBook := spShowRefBook;
+    fmAddEditRefBook.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    if fmAddEditRefBook.ShowModal = mrOk then
+      spShowRefBook.RefreshRecord;
   finally
     FreeAndNil(fmAddEditRefBook);
   end;
@@ -113,6 +138,7 @@ begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   fmAddEditRefBook.FormMode := fmView;
   try
+    fmAddEditRefBook.spRefBook := spShowRefBook;
     fmAddEditRefBook.ShowModal;
   finally
     FreeAndNil(fmAddEditRefBook);
@@ -138,16 +164,16 @@ begin
   Caption := 'Справочник - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
   spShowRefBook.StoredProcName := dmRefBooks.qSprRef.FieldByName('BrowserProcName').AsString;
   spShowRefBook.Open;
-  cxGrid1DBTableView1.DataController.CreateAllItems;
+  tvRefBook.DataController.CreateAllItems;
   dmRefBooks.spRefBookFields.Close;
   dmRefBooks.spRefBookFields.ParamByName('ReferenceID').AsInteger := dmRefBooks.qSprRef.FieldByName('ReferenceID').AsInteger;
   dmRefBooks.spRefBookFields.Open;
-  for i:= 0 to cxGrid1DBTableView1.ColumnCount - 1 do
-    if dmRefBooks.spRefBookFields.Locate('RefFieldName', cxGrid1DBTableView1.Columns[i].Caption, [loCaseInsensitive]) then
+  for i:= 0 to tvRefBook.ColumnCount - 1 do
+    if dmRefBooks.spRefBookFields.Locate('RefFieldName', tvRefBook.Columns[i].Caption, [loCaseInsensitive]) then
     begin
-      cxGrid1DBTableView1.Columns[i].Caption := dmRefBooks.spRefBookFields.FieldByName('RefFieldRUSName').AsString;
+      tvRefBook.Columns[i].Caption := dmRefBooks.spRefBookFields.FieldByName('RefFieldRUSName').AsString;
       if dmRefBooks.spRefBookFields.FieldByName('IsKeyField').AsInteger = 1 then
-        cxGrid1DBTableView1.DataController.KeyFieldNames := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+        tvRefBook.DataController.KeyFieldNames := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
     end;
 end;
 

@@ -4,14 +4,10 @@ object dmMain: TdmMain
   Width = 456
   object MainConnection: TUniConnection
     ProviderName = 'SQL Server'
-    Database = 'RasprCenter2017'
     Username = 'eugene'
-    Server = '92.53.104.153'
-    Connected = True
     ConnectDialog = MainConnectDialog
     Left = 128
     Top = 16
-    EncryptedPassword = '9CFF9AFF91FF9AFF94FF8CFF8EFF9CFF9AFF9CFF94FF9DFF8DFF'
   end
   object MainConnectDialog: TUniConnectDialog
     DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093

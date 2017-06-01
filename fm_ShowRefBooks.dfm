@@ -58,7 +58,6 @@ object fmShowRefBook: TfmShowRefBook
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitWidth = 1044
     FullHeight = 200
     object btnRefresh: TcxButton
       Left = 16
@@ -115,8 +114,6 @@ object fmShowRefBook: TfmShowRefBook
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitTop = 528
-    ExplicitWidth = 1044
     DesignSize = (
       886
       64)
@@ -155,6 +152,7 @@ object fmShowRefBook: TfmShowRefBook
       Height = 25
       Caption = #1059#1076#1072#1083#1080#1090#1100
       TabOrder = 3
+      OnClick = btnDelClick
     end
     object btnClose: TcxButton
       Left = 782
@@ -165,10 +163,9 @@ object fmShowRefBook: TfmShowRefBook
       Caption = #1047#1072#1082#1088#1099#1090#1100
       TabOrder = 4
       OnClick = btnCloseClick
-      ExplicitLeft = 940
     end
   end
-  object cxGrid1: TcxGrid
+  object GridRefBook: TcxGrid
     Left = 0
     Top = 41
     Width = 886
@@ -176,17 +173,19 @@ object fmShowRefBook: TfmShowRefBook
     Align = alClient
     PopupMenu = pmDefaultPopupMenu
     TabOrder = 2
-    ExplicitWidth = 1044
-    ExplicitHeight = 487
-    object cxGrid1DBTableView1: TcxGridDBTableView
+    object tvRefBook: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsShowRefBook
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsSelection.CellSelect = False
     end
-    object cxGrid1Level1: TcxGridLevel
-      GridView = cxGrid1DBTableView1
+    object GridRefBookLevel1: TcxGridLevel
+      GridView = tvRefBook
     end
   end
   object spShowRefBook: TUniStoredProc

@@ -11,7 +11,7 @@ type
     spRefBookFields: TUniStoredProc;
     spForeignRefBook: TUniStoredProc;
     dsForeignRefBook: TUniDataSource;
-    spInsertRefBook: TUniStoredProc;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
   private
     { Private declarations }
   public

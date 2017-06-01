@@ -53,13 +53,13 @@ object dmRefBooks: TdmRefBooks
     Left = 124
     Top = 92
   end
-  object spInsertRefBook: TUniStoredProc
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
     StoredProcName = 'spThermoType;1'
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spThermoType;1}')
     Connection = dmMain.MainConnection
     Active = True
-    Left = 28
+    Left = 84
     Top = 160
     ParamData = <
       item
