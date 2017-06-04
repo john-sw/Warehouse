@@ -7,11 +7,8 @@ uses
 
 type
   TdmRefBooks = class(TDataModule)
-    qSprRef: TUniQuery;
-    spRefBookFields: TUniStoredProc;
-    spForeignRefBook: TUniStoredProc;
-    dsForeignRefBook: TUniDataSource;
     spInsertUpdateDeleteRefBook: TUniStoredProc;
+    qSprRefForMainMenu: TUniQuery;
   private
     { Private declarations }
   public

@@ -24,7 +24,7 @@ uses
   dxSkinscxPCPainter, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.Menus, cxContainer,
-  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons, AdvMenus;
+  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons, AdvMenus, cxCheckBox;
 
 type
   TfmShowRefBook = class(TForm)
@@ -52,7 +52,8 @@ type
     N7: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
-    N10: TMenuItem;
+    spRefBookFieldsBrowse: TUniStoredProc;
+    qSprRef: TUniQuery;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -62,10 +63,13 @@ type
     procedure btnEditClick(Sender: TObject);
     procedure btnViewClick(Sender: TObject);
     procedure btnDelClick(Sender: TObject);
+    procedure N9Click(Sender: TObject);
   private
     { Private declarations }
+    OriginalSettings: TMemoryStream;
   public
     { Public declarations }
+    RefBookID: Integer;
   end;
 
 var
@@ -81,7 +85,10 @@ procedure TfmShowRefBook.btnAddClick(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
-    fmAddEditRefBook.spRefBook := spShowRefBook;
+    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditRefBook.spParentRefBook := spShowRefBook;
+    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditRefBook.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -104,7 +111,7 @@ begin
   with dmRefBooks.spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
-    CreateProcCall(dmRefBooks.qSprRef.FieldByName('DeleteProcName').AsString);
+    CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
     ParamByName('ID').Value := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     Execute;
     spShowRefBook.Refresh;
@@ -118,10 +125,17 @@ begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
     fmAddEditRefBook.FormMode := fmEdit;
-    fmAddEditRefBook.spRefBook := spShowRefBook;
+    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditRefBook.spParentRefBook := spShowRefBook;
+    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBook.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
     if fmAddEditRefBook.ShowModal = mrOk then
-      spShowRefBook.RefreshRecord;
+    begin
+      spShowRefBook.Refresh;
+      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+    end;
   finally
     FreeAndNil(fmAddEditRefBook);
   end;
@@ -136,9 +150,11 @@ end;
 procedure TfmShowRefBook.btnViewClick(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
-  fmAddEditRefBook.FormMode := fmView;
   try
-    fmAddEditRefBook.spRefBook := spShowRefBook;
+    fmAddEditRefBook.FormMode := fmView;
+    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditRefBook.spParentRefBook := spShowRefBook;
+    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBook.ShowModal;
   finally
     FreeAndNil(fmAddEditRefBook);
@@ -147,6 +163,8 @@ end;
 
 procedure TfmShowRefBook.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  tvRefBook.StoreToRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
+  FreeAndNil(OriginalSettings);
   PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0);
 end;
 
@@ -155,26 +173,53 @@ begin
 {  Localizer.Active=true;
   Localizer
 	Localizer.LanguageIndex=1049;}
+  OriginalSettings := TMemoryStream.Create;
 end;
 
 procedure TfmShowRefBook.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  Caption := 'Справочник - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
-  spShowRefBook.StoredProcName := dmRefBooks.qSprRef.FieldByName('BrowserProcName').AsString;
+  qSprRef.ParamByName('ID').AsInteger := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
+  qSprRef.Open;
+  Caption := 'Справочник - ' + qSprRef.FieldByName('ReferenceRUSName').AsString;
+  spShowRefBook.StoredProcName := qSprRef.FieldByName('BrowserProcName').AsString;
   spShowRefBook.Open;
   tvRefBook.DataController.CreateAllItems;
-  dmRefBooks.spRefBookFields.Close;
-  dmRefBooks.spRefBookFields.ParamByName('ReferenceID').AsInteger := dmRefBooks.qSprRef.FieldByName('ReferenceID').AsInteger;
-  dmRefBooks.spRefBookFields.Open;
+  spRefBookFieldsBrowse.Close;
+  spRefBookFieldsBrowse.ParamByName('ReferenceID').AsInteger := qSprRef.FieldByName('ReferenceID').AsInteger;
+  spRefBookFieldsBrowse.Open;
   for i:= 0 to tvRefBook.ColumnCount - 1 do
-    if dmRefBooks.spRefBookFields.Locate('RefFieldName', tvRefBook.Columns[i].Caption, [loCaseInsensitive]) then
+    if spRefBookFieldsBrowse.Locate('BrowserFieldName', tvRefBook.Columns[i].Caption, [loCaseInsensitive]) then
     begin
-      tvRefBook.Columns[i].Caption := dmRefBooks.spRefBookFields.FieldByName('RefFieldRUSName').AsString;
-      if dmRefBooks.spRefBookFields.FieldByName('IsKeyField').AsInteger = 1 then
-        tvRefBook.DataController.KeyFieldNames := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
-    end;
+      if spRefBookFieldsBrowse.FieldByName('IsVisible').AsInteger = 0 then
+        tvRefBook.Columns[i].Visible := False;
+      tvRefBook.Columns[i].Caption := spRefBookFieldsBrowse.FieldByName('BrowserFieldRUSName').AsString;
+      if spRefBookFieldsBrowse.FieldByName('IsKeyField').AsInteger = 1 then
+        tvRefBook.DataController.KeyFieldNames := spRefBookFieldsBrowse.FieldByName('BrowserFieldName').AsString;
+      tvRefBook.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
+      if spRefBookFieldsBrowse.FieldByName('ColumnTypeID').AsInteger = 5 then
+      begin
+        tvRefBook.Columns[i].PropertiesClass := TcxCheckBoxProperties;
+        with tvRefBook.Columns[i].Properties as TcxCheckBoxProperties do
+        begin
+          AllowGrayed := False;
+          ValueChecked := 1;
+          ValueUnchecked := 0;
+        end;
+      end;
+    end
+    else
+      tvRefBook.Columns[i].Visible := False;
+
+  tvRefBook.StoreToStream(OriginalSettings);
+  tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
+end;
+
+procedure TfmShowRefBook.N9Click(Sender: TObject);
+begin
+  OriginalSettings.Position := 0;
+  tvRefBook.RestoreFromStream(OriginalSettings, True, True, [], '');
 end;
 
 end.

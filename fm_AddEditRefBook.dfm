@@ -1,8 +1,9 @@
 object fmAddEditRefBook: TfmAddEditRefBook
   Left = 0
   Top = 0
-  ClientHeight = 560
-  ClientWidth = 773
+  BorderStyle = bsDialog
+  ClientHeight = 562
+  ClientWidth = 775
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,14 +12,15 @@ object fmAddEditRefBook: TfmAddEditRefBook
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlBottom: TAdvPanel
     Left = 0
-    Top = 496
-    Width = 773
+    Top = 498
+    Width = 775
     Height = 64
     Align = alBottom
     BevelOuter = bvNone
@@ -61,11 +63,11 @@ object fmAddEditRefBook: TfmAddEditRefBook
     Styler = dmMain.AdvPanelStyler1
     Text = ''
     DesignSize = (
-      773
+      775
       64)
     FullHeight = 200
     object btnSave: TcxButton
-      Left = 537
+      Left = 539
       Top = 20
       Width = 75
       Height = 25
@@ -75,7 +77,7 @@ object fmAddEditRefBook: TfmAddEditRefBook
       OnClick = btnSaveClick
     end
     object btnCancel: TcxButton
-      Left = 681
+      Left = 683
       Top = 20
       Width = 75
       Height = 25
@@ -88,8 +90,8 @@ object fmAddEditRefBook: TfmAddEditRefBook
   object pnlClient: TAdvPanel
     Left = 0
     Top = 0
-    Width = 773
-    Height = 496
+    Width = 775
+    Height = 498
     Align = alClient
     BevelOuter = bvNone
     Color = 16643823
@@ -131,5 +133,47 @@ object fmAddEditRefBook: TfmAddEditRefBook
     Styler = dmMain.AdvPanelStyler1
     Text = ''
     FullHeight = 200
+  end
+  object spRefBookFieldsAddEditView: TUniStoredProc
+    StoredProcName = 'spGetReferenceFieldList'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceFieldList (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 92
+    Top = 32
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = 1
+      end>
+  end
+  object dsForeignRefBook: TUniDataSource
+    DataSet = spForeignRefBook
+    Left = 192
+    Top = 108
+  end
+  object spForeignRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 76
+    Top = 108
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
   end
 end

@@ -101,17 +101,17 @@ procedure TMainForm.CreateMainMenu;
 var
   mi: TMenuItem;
 begin
-  dmRefBooks.qSprRef.Close;
-  dmRefBooks.qSprRef.Open;
+  dmRefBooks.qSprRefForMainMenu.Close;
+  dmRefBooks.qSprRefForMainMenu.Open;
 
-  while not dmRefBooks.qSprRef.Eof do
+  while not dmRefBooks.qSprRefForMainMenu.Eof do
   begin
     mi := TMenuItem.Create(Nil);
-    mi.Caption := dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
-    mi.Tag := dmRefBooks.qSprRef.RecNo;
+    mi.Caption := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString;
+    mi.Tag := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
     mi.OnClick := miRefBookClick;
     miRefBooks.Add(mi);
-    dmRefBooks.qSprRef.Next;
+    dmRefBooks.qSprRefForMainMenu.Next;
   end;
 end;
 
@@ -125,8 +125,9 @@ procedure TMainForm.miRefBookClick(Sender: TObject);
 var
   mi: TMenuItem;
 begin
-  dmRefBooks.qSprRef.RecNo := (Sender as TMenuItem).Tag;
-  mi := FindFormInMainMenu('Справочник - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString);
+  if not dmRefBooks.qSprRefForMainMenu.Locate('ReferenceID', (Sender as TMenuItem).Tag, []) then
+    raise Exception.Create('Ошибка открытия справочника ' + (Sender as TMenuItem).Caption);
+  mi := FindFormInMainMenu('Справочник - ' + dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString);
   if (mi <> nil) then
     TCustomForm(mi.Tag).BringToFront
   else

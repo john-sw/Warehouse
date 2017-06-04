@@ -22,7 +22,8 @@ uses
   Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, dm_RefBooks, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   cxDBExtLookupComboBox, cxDBEdit, AdvCombo, AdvDBComboBox, Vcl.DBGrids, Uni,
-  AdvDBLookupComboBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxCheckBox;
+  AdvDBLookupComboBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxCheckBox,
+  Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel;
 
 type
   TRefBookFormMode = (fmAdd, fmEdit, fmView);
@@ -33,10 +34,14 @@ type
     btnSave: TcxButton;
     btnCancel: TcxButton;
     pnlClient: TAdvPanel;
+    spRefBookFieldsAddEditView: TUniStoredProc;
+    dsForeignRefBook: TUniDataSource;
+    spForeignRefBook: TUniStoredProc;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     function InsertFieldControlPanel: TAdvPanel;
     procedure InsertFieldLabel(APanel: TAdvPanel);
@@ -46,16 +51,17 @@ type
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
     function IsControlsModified(AControl: TWinControl): Boolean;
-    procedure InsertRecord;
-    procedure UpdateRecord;
     procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
     function GetControlValue(AControl: TControl): Variant;
+    function CheckControl(AControl: TcxCustomEdit): Boolean;
+    function CheckReqControls: TWinControl;
     { Private declarations }
   public
     { Public declarations }
     FormMode: TRefBookFormMode;
-    spRefBook: TUniStoredProc;
     CurrentID: Integer;
+    RefBookName: string;
+    spParentRefBook: TUniStoredProc;
   end;
 
 var
@@ -67,6 +73,32 @@ uses
   dm_main;
 
 {$R *.dfm}
+
+procedure TfmAddEditRefBook.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  // ModalResult может быть установлен в btnSaveClick
+  if (FormMode = fmView) then
+    ModalResult := mrOk;
+  if ModalResult = mrOk then
+  begin
+    CanClose := True;
+    Exit;
+  end;
+  if IsControlsModified(pnlClient) then
+    case MessageBox(0,'Сохранить изменения?', 'Подтверждение', MB_YESNOCANCEL + MB_ICONQUESTION) of
+      id_yes:
+              begin
+                btnSaveClick(Nil);
+                ModalResult := mrOk;
+              end;
+      id_no: ModalResult := mrNo;
+    else
+      ModalResult := mrCancel;
+    end
+  else
+    ModalResult := mrNo;
+  CanClose := (ModalResult <> mrCancel);
+end;
 
 procedure TfmAddEditRefBook.FormCreate(Sender: TObject);
 begin
@@ -88,17 +120,24 @@ end;
 
 procedure TfmAddEditRefBook.InsertFieldLabel(APanel: TAdvPanel);
 var
-  c: TcxLabel;
+  c: THTMLabel;
+  s: string;
 begin
-  c := TcxLabel.Create(APanel);
+  c := THTMLabel.Create(APanel);
   c.Parent := APanel;
-  c.AutoSize := False;
+//  c.AutoSize := False;
   c.Width := 200;
-  c.Align := alLeft;
-  c.Properties.WordWrap := True;
-  c.Properties.Alignment.Vert := taVCenter;
+//  c.Align := alLeft;
+  c.Left := 10;
+  c.Top := 1;
+  c.Height := APanel.Height - 2;
+//  c.Properties.WordWrap := True;
+//  c.Properties.Alignment.Vert := taVCenter;
+  c.VAlignment := tvaCenter;
   c.Transparent := True;
-  c.Caption := dmRefBooks.spRefBookFields.FieldByName('RefFieldRUSName').AsString;
+  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+    s := '<b><font color="#FF0000">* </font></b>';
+  c.HTMLText.Text := s + spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldEdit(APanel: TAdvPanel);
@@ -110,19 +149,19 @@ begin
   c.AutoSize := False;
   c.Top := 4;
   c.Left := 210;
-  c.Style.BorderStyle := ebsThick;
+  c.Style.BorderStyle := ebsSingle;
   c.Width := APanel.Width - c.Left - 10;
   c.Anchors := [akLeft, akTop, akRight];
-  if dmRefBooks.spRefBookFields.FieldByName('IsRequired').AsInteger = 1 then
-    c.Style.BorderColor := clRed
-  else
-    c.Style.BorderColor := clNavy;
+//  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+//    c.Style.BorderColor := clRed
+//  else
+//    c.Style.BorderColor := clNavy;
   c.Tag := 1;
-  c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     c.Text := ''
   else
-    c.Text := spRefBook.FieldByName(c.Name).AsString;
+    c.Text := spParentRefBook.FieldByName(c.Name).AsString;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldDate(APanel: TAdvPanel);
@@ -133,19 +172,19 @@ begin
   c.Parent := APanel;
   c.Top := 4;
   c.Left := 210;
-  c.Style.BorderStyle := ebsThick;
+  c.Style.BorderStyle := ebsSingle;
   c.Width := 150;
   c.Anchors := [akLeft, akTop, akRight];
-  if dmRefBooks.spRefBookFields.FieldByName('IsRequired').AsInteger = 1 then
-    c.Style.BorderColor := clRed
-  else
-    c.Style.BorderColor := clNavy;
-  c.Tag := dmRefBooks.spRefBookFields.RecNo;
-  c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+//  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+//    c.Style.BorderColor := clRed
+//  else
+//    c.Style.BorderColor := clNavy;
+  c.Tag := spRefBookFieldsAddEditView.RecNo;
+  c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     c.Date := 0
   else
-    c.Date := spRefBook.FieldByName(c.Name).AsDateTime;
+    c.Date := spParentRefBook.FieldByName(c.Name).AsDateTime;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldCheck(APanel: TAdvPanel);
@@ -158,20 +197,20 @@ begin
   c.Caption := '';
   c.Width := c.Height;
   c.Left := 210;
-  c.Style.BorderStyle := ebsThick;
+  c.Style.BorderStyle := ebsSingle;
   c.Anchors := [akLeft, akTop];
-  if dmRefBooks.spRefBookFields.FieldByName('IsRequired').AsInteger = 1 then
-    c.Style.BorderColor := clRed
-  else
-    c.Style.BorderColor := clNavy;
+//  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+//    c.Style.BorderColor := clRed
+//  else
+//    c.Style.BorderColor := clNavy;
   c.Transparent := True;
   c.Properties.FullFocusRect := True;
-  c.Tag := dmRefBooks.spRefBookFields.RecNo;
-  c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  c.Tag := spRefBookFieldsAddEditView.RecNo;
+  c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     c.Checked := False
   else
-    c.Checked := Boolean(spRefBook.FieldByName(c.Name).AsInteger);
+    c.Checked := Boolean(spParentRefBook.FieldByName(c.Name).AsInteger);
 end;
 
 procedure TfmAddEditRefBook.InsertFieldLookup(APanel: TAdvPanel);
@@ -182,45 +221,46 @@ begin
   c.Parent := APanel;
   c.Top := 4;
   c.Left := 210;
-  c.Style.BorderStyle := ebsThick;
+  c.Style.BorderStyle := ebsSingle;
   c.Width := APanel.Width - c.Left - 10;
   c.Anchors := [akLeft, akTop, akRight];
-  if dmRefBooks.spRefBookFields.FieldByName('IsRequired').AsInteger = 1 then
-    c.Style.BorderColor := clRed
-  else
-    c.Style.BorderColor := clNavy;
+//  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+//    c.Style.BorderColor := clRed
+//  else
+//    c.Style.BorderColor := clNavy;
 
-  dmRefBooks.spForeignRefBook.StoredProcName := dmRefBooks.spRefBookFields.FieldByName('ReferenceProcName').AsString;
-  dmRefBooks.spForeignRefBook.Open;
+  spForeignRefBook.StoredProcName := spRefBookFieldsAddEditView.FieldByName('ReferenceProcName').AsString;
+  spForeignRefBook.Open;
 
-  c.Properties.ListSource := dmRefBooks.dsForeignRefBook;
+  c.Properties.ListSource := dsForeignRefBook;
   c.Properties.ListColumns.Add.FieldName := 'Name';
   c.Properties.ListFieldNames := 'Name';
   c.Properties.KeyFieldNames := 'ID';
   c.Properties.ListOptions.ShowHeader := False;
-  c.Tag := dmRefBooks.spRefBookFields.RecNo;
-  c.Name := dmRefBooks.spRefBookFields.FieldByName('RefFieldName').AsString;
+  c.Tag := spRefBookFieldsAddEditView.RecNo;
+  c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     c.EditValue := -1
   else
-    c.EditValue := spRefBook.FieldByName(c.Name).AsInteger;
+    c.EditValue := spParentRefBook.FieldByName(c.Name).AsInteger;
 end;
 
 function TfmAddEditRefBook.IsControlsModified(AControl: TWinControl): Boolean;
+var
+   i: Integer;
 begin
-  Result := True; // ModifiedAfterEnter
+  Result := False;
+  for i:= 0 to pnlClient.ControlCount - 1 do
+  begin
+    Result := TcxCustomEdit(TAdvPanel(pnlClient.Controls[i]).Controls[1]).EditModified;
+    if Result then
+      Break;
+  end;
 end;
 
 procedure TfmAddEditRefBook.btnCancelClick(Sender: TObject);
 begin
-  if (FormMode = fmView) then
-    ModalResult := mrCancel
-  else
-    if IsControlsModified(pnlClient) then
-      case MessageBox(0,'Сохранить изменения?', 'Подтверждение', MB_YESNOCANCEL + MB_ICONQUESTION) of
-        id_yes: btnSaveClick(Nil);
-        id_no: ModalResult := mrCancel;
-      end;
+  Close;
 end;
 
 function TfmAddEditRefBook.GetControlValue(AControl: TControl): Variant;
@@ -256,27 +296,60 @@ begin
     sp.Execute;
 end;
 
-procedure TfmAddEditRefBook.InsertRecord;
-begin
-//  dmRefBooks.spInsertRefBook.StoredProcName := dmRefBooks.qSprRef.FieldByName('InsertProcName').AsString;
-  dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(dmRefBooks.qSprRef.FieldByName('InsertProcName').AsString);
-  SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
-end;
-
-procedure TfmAddEditRefBook.UpdateRecord;
-begin
-  dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(dmRefBooks.qSprRef.FieldByName('UpdateProcName').AsString);
-  dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := CurrentID;
-  SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
-end;
-
 procedure TfmAddEditRefBook.btnSaveClick(Sender: TObject);
+var
+  InvalidControl: TWinControl;
 begin
-  case FormMode of
-    fmAdd: InsertRecord;
-    fmEdit: UpdateRecord;
+  if (FormMode = fmAdd) or IsControlsModified(pnlClient) then
+  begin
+    InvalidControl := CheckReqControls;
+    if InvalidControl = nil then
+    begin
+      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      ModalResult := mrOk;
+    end
+    else
+    begin
+      MessageBox(0,'Необходимо заполнить обязательные поля', 'Ошибка', MB_OK + MB_ICONERROR);
+      SetFocusedControl(InvalidControl);
+    end;
+  end
+  else
+    ModalResult := mrCancel;
+end;
+
+function TfmAddEditRefBook.CheckControl(AControl: TcxCustomEdit): Boolean;
+begin
+  spRefBookFieldsAddEditView.Locate('RefFieldName', AControl.Name, []);
+  if (spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 0) then
+    Result := True
+  else
+  begin
+    case AControl.Tag of
+      1: Result := (AControl as TcxTextEdit).Text <> ''; // DBTextEdit
+      2: Result := (AControl as TcxDateEdit).Date = 0; // DBDateEdit
+  //          3	DBCalcEdit
+  //          4	DBMaskEdit
+      5: Result := not (AControl as TcxCheckBox).Checked; // DBCheckBox
+      6: Result := (AControl as TcxLookupComboBox).EditingValue >= 0 ; // DBLookupEdit
+  //          7	DBImageEdit
+    end;  
   end;
-  ModalResult := mrOk;
+  if Result then
+    AControl.Style.BorderColor := clWindowFrame
+  else
+    AControl.Style.BorderColor := clRed
+end;
+
+function TfmAddEditRefBook.CheckReqControls: TWinControl;
+var
+   i: Integer;
+begin
+  Result := Nil;
+  for i:= 0 to pnlClient.ControlCount - 1 do
+    if not CheckControl(TcxCustomEdit(TAdvPanel(pnlClient.Controls[i]).Controls[1])) then
+      if Result = nil then
+        Result := TWinControl(TAdvPanel(pnlClient.Controls[i]).Controls[1]);
 end;
 
 procedure TfmAddEditRefBook.FillForm;
@@ -285,7 +358,7 @@ var
   FirstControl: TWinControl;
 begin
   FirstControl := nil;
-  with dmRefBooks.spRefBookFields do
+  with spRefBookFieldsAddEditView do
   begin
     First; // справочник открыт в TfmShowRefBook.FormShow.
     while not eof do
@@ -317,16 +390,18 @@ begin
   if FirstControl <> nil then
     ActiveControl := FirstControl;
   pnlClient.Enabled := (FormMode <> fmView);
+  Height := (pnlClient.ControlCount + 1) * 30 + pnlBottom.Height;
 end;
 
 procedure TfmAddEditRefBook.FormShow(Sender: TObject);
 begin
+  spRefBookFieldsAddEditView.Open; // параметр устанавливается в TfmShowRefBook
   case FormMode of
-    fmAdd: Caption := 'Добавление - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmEdit: Caption := 'Изменение - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAdd: Caption := 'Добавление - ' + RefBookName;
+    fmEdit: Caption := 'Изменение - ' + RefBookName;
     fmView:
       begin
-        Caption := 'Просмотр - ' + dmRefBooks.qSprRef.FieldByName('ReferenceRUSName').AsString;
+        Caption := 'Просмотр - ' + RefBookName;
         btnSave.Visible := False;
       end;
   end;

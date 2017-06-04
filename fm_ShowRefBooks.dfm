@@ -182,7 +182,7 @@ object fmShowRefBook: TfmShowRefBook
       OptionsData.Deleting = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
-      OptionsSelection.CellSelect = False
+      OptionsView.ShowColumnFilterButtons = sfbAlways
     end
     object GridRefBookLevel1: TcxGridLevel
       GridView = tvRefBook
@@ -207,8 +207,8 @@ object fmShowRefBook: TfmShowRefBook
   end
   object dsShowRefBook: TUniDataSource
     DataSet = spShowRefBook
-    Left = 124
-    Top = 84
+    Left = 132
+    Top = 92
   end
   object pmDefaultPopupMenu: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
@@ -217,15 +217,19 @@ object fmShowRefBook: TfmShowRefBook
     Top = 204
     object N1: TMenuItem
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+      Visible = False
     end
     object N2: TMenuItem
       Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+      Visible = False
     end
     object N3: TMenuItem
       Caption = #1055#1088#1086#1089#1084#1086#1090#1088
+      Visible = False
     end
     object N4: TMenuItem
       Caption = #1059#1076#1072#1083#1080#1090#1100
+      Visible = False
     end
     object N5: TMenuItem
       Caption = '-'
@@ -243,10 +247,44 @@ object fmShowRefBook: TfmShowRefBook
       Caption = '-'
     end
     object N9: TMenuItem
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+      Caption = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+      OnClick = N9Click
     end
-    object N10: TMenuItem
-      Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
-    end
+  end
+  object spRefBookFieldsBrowse: TUniStoredProc
+    StoredProcName = 'spGetReferenceBrowser;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 256
+    Top = 88
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceBrowser;1'
+  end
+  object qSprRef: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprReference'
+      'where ReferenceID = :ID')
+    Left = 28
+    Top = 144
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        Value = nil
+      end>
   end
 end
