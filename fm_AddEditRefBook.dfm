@@ -33,6 +33,7 @@ object fmAddEditRefBook: TfmAddEditRefBook
     ParentFont = False
     TabOrder = 0
     UseDockManager = True
+    OnClick = pnlBottomClick
     Version = '2.3.0.8'
     BorderColor = 13087391
     Caption.Color = 16643823

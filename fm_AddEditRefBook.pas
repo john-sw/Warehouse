@@ -42,6 +42,7 @@ type
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure pnlBottomClick(Sender: TObject);
   private
     function InsertFieldControlPanel: TAdvPanel;
     procedure InsertFieldLabel(APanel: TAdvPanel);
@@ -85,16 +86,11 @@ begin
     Exit;
   end;
   if IsControlsModified(pnlClient) then
-    case MessageBox(0,'Сохранить изменения?', 'Подтверждение', MB_YESNOCANCEL + MB_ICONQUESTION) of
-      id_yes:
-              begin
-                btnSaveClick(Nil);
-                ModalResult := mrOk;
-              end;
-      id_no: ModalResult := mrNo;
+    if MessageBox(0,'Вы действительно хотите выйти без сохранения изменений?',
+                  'Подтверждение', MB_YESNO + MB_ICONQUESTION) = ID_YES then
+      ModalResult := mrNo
     else
-      ModalResult := mrCancel;
-    end
+      ModalResult := mrCancel
   else
     ModalResult := mrNo;
   CanClose := (ModalResult <> mrCancel);
@@ -159,7 +155,10 @@ begin
   c.Tag := 1;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
-    c.Text := ''
+    if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
+      c.Text := ''
+    else
+      c.Text := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsString
   else
     c.Text := spParentRefBook.FieldByName(c.Name).AsString;
 end;
@@ -182,7 +181,10 @@ begin
   c.Tag := spRefBookFieldsAddEditView.RecNo;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
-    c.Date := 0
+    if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
+      c.Date := 0
+    else
+      c.Date := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsDateTime
   else
     c.Date := spParentRefBook.FieldByName(c.Name).AsDateTime;
 end;
@@ -208,7 +210,10 @@ begin
   c.Tag := spRefBookFieldsAddEditView.RecNo;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
-    c.Checked := False
+    if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
+      c.Checked := False
+    else
+      c.Checked := Boolean(spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsInteger)
   else
     c.Checked := Boolean(spParentRefBook.FieldByName(c.Name).AsInteger);
 end;
@@ -240,7 +245,10 @@ begin
   c.Tag := spRefBookFieldsAddEditView.RecNo;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
-    c.EditValue := -1
+    if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
+      c.EditValue := -1
+    else
+      c.EditValue := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsInteger
   else
     c.EditValue := spParentRefBook.FieldByName(c.Name).AsInteger;
 end;
@@ -256,6 +264,11 @@ begin
     if Result then
       Break;
   end;
+end;
+
+procedure TfmAddEditRefBook.pnlBottomClick(Sender: TObject);
+begin
+  TWinControl(TAdvPanel(pnlClient.Controls[0]).Controls[1]).SetFocus;
 end;
 
 procedure TfmAddEditRefBook.btnCancelClick(Sender: TObject);
@@ -310,8 +323,8 @@ begin
     end
     else
     begin
-      MessageBox(0,'Необходимо заполнить обязательные поля', 'Ошибка', MB_OK + MB_ICONERROR);
-      SetFocusedControl(InvalidControl);
+      MessageBox(Self.Handle,'Необходимо заполнить обязательные поля', 'Ошибка', MB_OK + MB_ICONERROR);
+      InvalidControl.SetFocus;
     end;
   end
   else
@@ -320,11 +333,9 @@ end;
 
 function TfmAddEditRefBook.CheckControl(AControl: TcxCustomEdit): Boolean;
 begin
-  spRefBookFieldsAddEditView.Locate('RefFieldName', AControl.Name, []);
-  if (spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 0) then
-    Result := True
-  else
-  begin
+  Result := True;
+  if spRefBookFieldsAddEditView.Locate('RefFieldName', AControl.Name, []) and
+     (spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1) then
     case AControl.Tag of
       1: Result := (AControl as TcxTextEdit).Text <> ''; // DBTextEdit
       2: Result := (AControl as TcxDateEdit).Date = 0; // DBDateEdit
@@ -333,8 +344,7 @@ begin
       5: Result := not (AControl as TcxCheckBox).Checked; // DBCheckBox
       6: Result := (AControl as TcxLookupComboBox).EditingValue >= 0 ; // DBLookupEdit
   //          7	DBImageEdit
-    end;  
-  end;
+    end;
   if Result then
     AControl.Style.BorderColor := clWindowFrame
   else

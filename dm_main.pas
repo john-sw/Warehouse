@@ -17,7 +17,8 @@ uses
   dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
-  cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus;
+  cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus,
+  Vcl.Forms, cxLocalization;
 
 type
   TdmMain = class(TDataModule)
@@ -28,6 +29,8 @@ type
     cxLookAndFeelController1: TcxLookAndFeelController;
     AdvMenuOfficeStyler1: TAdvMenuOfficeStyler;
     AdvMenuFantasyStyler1: TAdvMenuFantasyStyler;
+    cxLocalizer: TcxLocalizer;
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,5 +45,15 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdmMain.DataModuleCreate(Sender: TObject);
+begin
+  try
+    cxLocalizer.FileName := IncludeTrailingBackslash(ExtractFilePath(Application.ExeName)) + 'RussianLng.ini';
+    cxLocalizer.Active := True;
+    cxLocalizer.Locale := 1049;
+  except
+  end;
+end;
 
 end.

@@ -24,7 +24,13 @@ uses
   dxSkinscxPCPainter, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, Vcl.Menus, cxContainer,
-  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons, AdvMenus, cxCheckBox;
+  cxLocalization, cxGroupBox, Vcl.StdCtrls, cxButtons, AdvMenus, cxCheckBox,
+  dxPSGlbl, dxPSUtl, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPgsDlg, dxPSEngn,
+  dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore,
+  dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
+  dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
+  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList;
 
 type
   TfmShowRefBook = class(TForm)
@@ -47,23 +53,44 @@ type
     N3: TMenuItem;
     N4: TMenuItem;
     N5: TMenuItem;
-    Excel1: TMenuItem;
-    N6: TMenuItem;
+    miExportToExcel: TMenuItem;
+    miPrint: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
     spRefBookFieldsBrowse: TUniStoredProc;
     qSprRef: TUniQuery;
+    N10: TMenuItem;
+    ExportToExcelSaveDialog: TSaveDialog;
+    prnStyleManager: TdxPrintStyleManager;
+    prnRefBook: TdxComponentPrinter;
+    prnRefBookLink1: TdxGridReportLink;
+    alRefBook: TActionList;
+    actAdd: TAction;
+    actEdit: TAction;
+    actView: TAction;
+    actDelete: TAction;
+    ilRefBookActionImages: TcxImageList;
+    actRefresh: TAction;
+    N6: TMenuItem;
+    N14: TMenuItem;
+    actExport: TAction;
+    actPrint: TAction;
+    actClose: TAction;
+    actCopyCell: TAction;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure btnCloseClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnRefreshClick(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
-    procedure btnEditClick(Sender: TObject);
-    procedure btnViewClick(Sender: TObject);
-    procedure btnDelClick(Sender: TObject);
     procedure N9Click(Sender: TObject);
+    procedure actAddExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure actViewExecute(Sender: TObject);
+    procedure actDeleteExecute(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure actExportExecute(Sender: TObject);
+    procedure actPrintExecute(Sender: TObject);
+    procedure actCloseExecute(Sender: TObject);
+    procedure actCopyCellExecute(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -79,9 +106,9 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook;
+uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
 
-procedure TfmShowRefBook.btnAddClick(Sender: TObject);
+procedure TfmShowRefBook.actAddExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
@@ -99,12 +126,17 @@ begin
   end;
 end;
 
-procedure TfmShowRefBook.btnCloseClick(Sender: TObject);
+procedure TfmShowRefBook.actCloseExecute(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TfmShowRefBook.btnDelClick(Sender: TObject);
+procedure TfmShowRefBook.actCopyCellExecute(Sender: TObject);
+begin
+  ClipBoard.AsText := tvRefBook.Controller.FocusedRecord.Values[tvRefBook.Controller.FocusedColumn.Index];
+end;
+
+procedure TfmShowRefBook.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
@@ -120,7 +152,7 @@ begin
   end;
 end;
 
-procedure TfmShowRefBook.btnEditClick(Sender: TObject);
+procedure TfmShowRefBook.actEditExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
@@ -141,13 +173,27 @@ begin
   end;
 end;
 
-procedure TfmShowRefBook.btnRefreshClick(Sender: TObject);
+procedure TfmShowRefBook.actExportExecute(Sender: TObject);
+begin
+  if ExportToExcelSaveDialog.Execute(Self.Handle) then
+    if AnsiLowerCase(ExtractFileExt(ExportToExcelSaveDialog.FileName)) = '.xls' then
+      ExportGridToExcel(ExportToExcelSaveDialog.FileName, GridRefBook, True, True, True, '')
+    else
+      ExportGridToXLSX(ExportToExcelSaveDialog.FileName, GridRefBook, True, True, True, '');
+end;
+
+procedure TfmShowRefBook.actPrintExecute(Sender: TObject);
+begin
+  prnRefBook.Preview();
+end;
+
+procedure TfmShowRefBook.actRefreshExecute(Sender: TObject);
 begin
   spShowRefBook.Close;
   spShowRefBook.Open;
 end;
 
-procedure TfmShowRefBook.btnViewClick(Sender: TObject);
+procedure TfmShowRefBook.actViewExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
   try
@@ -190,14 +236,14 @@ begin
   spRefBookFieldsBrowse.ParamByName('ReferenceID').AsInteger := qSprRef.FieldByName('ReferenceID').AsInteger;
   spRefBookFieldsBrowse.Open;
   for i:= 0 to tvRefBook.ColumnCount - 1 do
-    if spRefBookFieldsBrowse.Locate('BrowserFieldName', tvRefBook.Columns[i].Caption, [loCaseInsensitive]) then
+    if (spRefBookFieldsBrowse.Locate('BrowserFieldName', tvRefBook.Columns[i].Caption, [loCaseInsensitive])) then
     begin
-      if spRefBookFieldsBrowse.FieldByName('IsVisible').AsInteger = 0 then
+      if (spRefBookFieldsBrowse.FieldByName('IsVisible').AsInteger = 0) then
         tvRefBook.Columns[i].Visible := False;
+
       tvRefBook.Columns[i].Caption := spRefBookFieldsBrowse.FieldByName('BrowserFieldRUSName').AsString;
       if spRefBookFieldsBrowse.FieldByName('IsKeyField').AsInteger = 1 then
         tvRefBook.DataController.KeyFieldNames := spRefBookFieldsBrowse.FieldByName('BrowserFieldName').AsString;
-      tvRefBook.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
       if spRefBookFieldsBrowse.FieldByName('ColumnTypeID').AsInteger = 5 then
       begin
         tvRefBook.Columns[i].PropertiesClass := TcxCheckBoxProperties;
@@ -208,12 +254,29 @@ begin
           ValueUnchecked := 0;
         end;
       end;
+      if spRefBookFieldsBrowse.FieldByName('HaveFilter').AsInteger = 0 then
+        tvRefBook.Columns[i].Options.Filtering := False;
+      if spRefBookFieldsBrowse.FieldByName('HaveSummary').AsInteger = 1 then
+      begin
+        tvRefBook.Columns[i].Summary.FooterKind := TcxSummaryKind(spRefBookFieldsBrowse.FieldByName('FooterType').AsInteger);
+        tvRefBook.Columns[i].Summary.FooterFormat := spRefBookFieldsBrowse.FieldByName('FooterFormat').AsString;
+        with TcxGridDBTableSummaryItem(tvRefBook.DataController.Summary.FooterSummaryItems.Add) do
+        begin
+          Kind := TcxSummaryKind(spRefBookFieldsBrowse.FieldByName('FooterType').AsInteger);
+          Column := tvRefBook.Columns[i];
+          FieldName := spRefBookFieldsBrowse.FieldByName('BrowserFieldName').AsString;
+        end;
+      end;
+
+      tvRefBook.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
     end
     else
       tvRefBook.Columns[i].Visible := False;
+  actEdit.Enabled := (tvRefBook.DataController.KeyFieldNames <> '');
 
   tvRefBook.StoreToStream(OriginalSettings);
   tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
+  tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 end;
 
 procedure TfmShowRefBook.N9Click(Sender: TObject);

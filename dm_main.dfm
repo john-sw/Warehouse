@@ -1,5 +1,6 @@
 object dmMain: TdmMain
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 300
   Width = 456
   object MainConnection: TUniConnection
@@ -248,5 +249,9 @@ object dmMain: TdmMain
     NotesFont.Style = []
     Left = 216
     Top = 200
+  end
+  object cxLocalizer: TcxLocalizer
+    Left = 48
+    Top = 208
   end
 end
