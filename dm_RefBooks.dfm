@@ -22,8 +22,59 @@ object dmRefBooks: TdmRefBooks
     Connection = dmMain.MainConnection
     SQL.Strings = (
       'select * from sprReference'
+      'where IsSimpleRefBook = 1'
       'order by ReferenceRUSName')
     Left = 72
     Top = 24
+  end
+  object dsShowRefBookGoods: TUniDataSource
+    DataSet = spShowRefBookGoods
+    Left = 360
+    Top = 20
+  end
+  object spShowRefBookGoods: TUniStoredProc
+    StoredProcName = 'br_aspProdCat;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL br_aspProdCat;1}')
+    Connection = dmMain.MainConnection
+    AfterScroll = spShowRefBookGoodsAfterScroll
+    Left = 240
+    Top = 20
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'br_aspProdCat;1'
+  end
+  object spGetGoodsForProdCat: TUniStoredProc
+    StoredProcName = 'br_aspProd;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL br_aspProd;1 (:ProdCatID)}')
+    Connection = dmMain.MainConnection
+    Active = True
+    Left = 240
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        DataType = ftInteger
+        Name = 'ProdCatID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'br_aspProd;1'
+  end
+  object dsGetGoodsForProdCat: TUniDataSource
+    DataSet = spGetGoodsForProdCat
+    Left = 364
+    Top = 80
   end
 end

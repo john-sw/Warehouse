@@ -1,9 +1,9 @@
-object fmShowRefBook: TfmShowRefBook
+object fmShowRefBookGoods: TfmShowRefBookGoods
   Left = 0
   Top = 0
-  Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082' - '
-  ClientHeight = 545
-  ClientWidth = 886
+  Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082' - '#1058#1086#1074#1072#1088#1099
+  ClientHeight = 539
+  ClientWidth = 968
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,68 +12,18 @@ object fmShowRefBook: TfmShowRefBook
   Font.Style = []
   FormStyle = fsMDIChild
   OldCreateOrder = False
-  Position = poOwnerFormCenter
+  Position = poMainFormCenter
   Visible = True
   OnClose = FormClose
-  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object pnlTop: TAdvPanel
+  object pnlClient: TAdvPanel
     Left = 0
     Top = 0
-    Width = 886
-    Height = 41
-    Align = alTop
-    BevelOuter = bvNone
-    Color = 16643823
-    TabOrder = 0
-    UseDockManager = True
-    Version = '2.3.0.8'
-    BorderColor = 13087391
-    Caption.Color = 16643823
-    Caption.ColorTo = 15784647
-    Caption.Font.Charset = DEFAULT_CHARSET
-    Caption.Font.Color = clWindowText
-    Caption.Font.Height = -11
-    Caption.Font.Name = 'Tahoma'
-    Caption.Font.Style = []
-    Caption.GradientDirection = gdVertical
-    Caption.Indent = 2
-    Caption.ShadeLight = 255
-    CollapsColor = clNone
-    CollapsDelay = 0
-    ColorTo = 15784647
-    ShadowColor = clBlack
-    ShadowOffset = 0
-    StatusBar.BorderColor = 16643823
-    StatusBar.BorderStyle = bsSingle
-    StatusBar.Font.Charset = DEFAULT_CHARSET
-    StatusBar.Font.Color = 5978398
-    StatusBar.Font.Height = -11
-    StatusBar.Font.Name = 'Tahoma'
-    StatusBar.Font.Style = []
-    StatusBar.Color = 16643823
-    StatusBar.ColorTo = 15784647
-    StatusBar.GradientDirection = gdVertical
-    Styler = dmMain.AdvPanelStyler1
-    Text = ''
-    FullHeight = 200
-    object btnRefresh: TcxButton
-      Left = 16
-      Top = 10
-      Width = 100
-      Height = 25
-      Action = actRefresh
-      TabOrder = 0
-    end
-  end
-  object pnlBottom: TAdvPanel
-    Left = 0
-    Top = 481
-    Width = 886
-    Height = 64
-    Align = alBottom
+    Width = 968
+    Height = 539
+    Align = alClient
     BevelOuter = bvNone
     Color = 16643823
     Font.Charset = DEFAULT_CHARSET
@@ -82,7 +32,7 @@ object fmShowRefBook: TfmShowRefBook
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     UseDockManager = True
     Version = '2.3.0.8'
     BorderColor = 13087391
@@ -113,271 +63,306 @@ object fmShowRefBook: TfmShowRefBook
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    DesignSize = (
-      886
-      64)
     FullHeight = 200
-    object btnAdd: TcxButton
-      Left = 44
-      Top = 16
-      Width = 100
-      Height = 25
-      Action = actAdd
+    object cxGroupBox1: TcxGroupBox
+      Left = 0
+      Top = 0
+      Align = alLeft
+      Caption = ' '#1043#1088#1091#1087#1087#1099' '#1090#1086#1074#1072#1088#1086#1074' '
       TabOrder = 0
-    end
-    object btnEdit: TcxButton
-      Left = 156
-      Top = 16
-      Width = 100
-      Height = 25
-      Action = actEdit
-      TabOrder = 1
-    end
-    object btnView: TcxButton
-      Left = 268
-      Top = 16
-      Width = 100
-      Height = 25
-      Action = actView
-      TabOrder = 2
-    end
-    object btnDel: TcxButton
-      Left = 380
-      Top = 16
-      Width = 100
-      Height = 25
-      Action = actDelete
-      TabOrder = 3
-    end
-    object btnClose: TcxButton
-      Left = 782
-      Top = 16
-      Width = 100
-      Height = 25
-      Action = actClose
-      Anchors = [akTop, akRight]
-      TabOrder = 4
-    end
-  end
-  object GridRefBook: TcxGrid
-    Left = 0
-    Top = 41
-    Width = 886
-    Height = 440
-    Align = alClient
-    PopupMenu = pmDefaultPopupMenu
-    TabOrder = 2
-    object tvRefBook: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = dsShowRefBook
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsData.Deleting = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.ShowColumnFilterButtons = sfbAlways
-    end
-    object GridRefBookLevel1: TcxGridLevel
-      GridView = tvRefBook
-    end
-  end
-  object spShowRefBook: TUniStoredProc
-    StoredProcName = 'br_aspThermoType;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL br_aspThermoType;1}')
-    Connection = dmMain.MainConnection
-    AfterOpen = spShowRefBookAfterOpen
-    Left = 48
-    Top = 88
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = 0
-      end>
-    CommandStoredProcName = 'br_aspThermoType;1'
-    StoredProcIsQuery = True
-  end
-  object dsShowRefBook: TUniDataSource
-    DataSet = spShowRefBook
-    Left = 152
-    Top = 88
-  end
-  object pmDefaultPopupMenu: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
-    Version = '2.5.7.0'
-    Left = 540
-    Top = 204
-    object N14: TMenuItem
-      Action = actRefresh
-    end
-    object N6: TMenuItem
-      Caption = '-'
-    end
-    object N1: TMenuItem
-      Action = actAdd
-    end
-    object N2: TMenuItem
-      Action = actEdit
-    end
-    object N3: TMenuItem
-      Action = actView
-    end
-    object N4: TMenuItem
-      Action = actDelete
-    end
-    object N5: TMenuItem
-      Caption = '-'
-    end
-    object N7: TMenuItem
-      Action = actCopyCell
-    end
-    object N10: TMenuItem
-      Caption = '-'
-    end
-    object miExportToExcel: TMenuItem
-      Action = actExport
-    end
-    object miPrint: TMenuItem
-      Action = actPrint
-    end
-    object N8: TMenuItem
-      Caption = '-'
-    end
-    object N9: TMenuItem
-      Caption = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
-      OnClick = N9Click
-    end
-  end
-  object spRefBookFieldsBrowse: TUniStoredProc
-    StoredProcName = 'spGetReferenceBrowser;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
-    Connection = dmMain.MainConnection
-    Left = 256
-    Top = 88
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = nil
+      Height = 539
+      Width = 251
+      object RzToolbar1: TRzToolbar
+        Left = 2
+        Top = 18
+        Width = 247
+        Height = 29
+        Images = ilRefBookActionImages
+        BorderInner = fsNone
+        BorderOuter = fsGroove
+        BorderSides = [sdTop]
+        BorderWidth = 0
+        GradientColorStyle = gcsMSOffice
+        TabOrder = 0
+        VisualStyle = vsGradient
+        ToolbarControls = (
+          RzToolButton1
+          RzSpacer1
+          RzToolButton2
+          RzSpacer2
+          RzToolButton5
+          RzSpacer4
+          RzToolButton3
+          RzToolButton4
+          RzSpacer3)
+        object RzToolButton1: TRzToolButton
+          Left = 4
+          Top = 2
+          Width = 39
+          DropDownMenu = pmAddProdCat
+          ToolStyle = tsDropDown
+          Action = actAddProdCat
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer1: TRzSpacer
+          Left = 43
+          Top = 2
+        end
+        object RzToolButton2: TRzToolButton
+          Left = 51
+          Top = 2
+          Action = actEditProdCat
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer2: TRzSpacer
+          Left = 76
+          Top = 2
+        end
+        object RzToolButton5: TRzToolButton
+          Left = 84
+          Top = 2
+          Action = actViewProdCat
+        end
+        object RzSpacer4: TRzSpacer
+          Left = 109
+          Top = 2
+        end
+        object RzToolButton3: TRzToolButton
+          Left = 117
+          Top = 2
+          Action = actDeleteProdCat
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzToolButton4: TRzToolButton
+          Left = 142
+          Top = 2
+          Action = actRefreshProdCat
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer3: TRzSpacer
+          Left = 167
+          Top = 2
+        end
       end
-      item
-        DataType = ftInteger
-        Name = 'ReferenceID'
-        ParamType = ptInput
-        Value = nil
-      end>
-    CommandStoredProcName = 'spGetReferenceBrowser;1'
-  end
-  object qSprRef: TUniQuery
-    Connection = dmMain.MainConnection
-    SQL.Strings = (
-      'select * from sprReference'
-      'where ReferenceID = :ID')
-    Left = 52
-    Top = 156
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-  end
-  object ExportToExcelSaveDialog: TSaveDialog
-    DefaultExt = 'xlsx'
-    Filter = 'Excel 2007 (*.xlsx)|*.xlsx|Excel XP files (*.xls)|*.xls'
-    Left = 492
-    Top = 92
-  end
-  object prnStyleManager: TdxPrintStyleManager
-    Version = 0
-    Left = 620
-    Top = 92
-  end
-  object prnRefBook: TdxComponentPrinter
-    CurrentLink = prnRefBookLink1
-    Version = 0
-    Left = 712
-    Top = 92
-    object prnRefBookLink1: TdxGridReportLink
-      Active = True
-      Component = GridRefBook
-      PrinterPage.DMPaper = 1
-      PrinterPage.Footer = 6350
-      PrinterPage.Header = 6350
-      PrinterPage.Margins.Bottom = 12700
-      PrinterPage.Margins.Left = 12700
-      PrinterPage.Margins.Right = 12700
-      PrinterPage.Margins.Top = 12700
-      PrinterPage.PageSize.X = 215900
-      PrinterPage.PageSize.Y = 279400
-      PrinterPage._dxMeasurementUnits_ = 0
-      PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42927.037792685190000000
-      BuiltInReportLink = True
+      object tlGridProdCat: TcxDBTreeList
+        Left = 2
+        Top = 47
+        Width = 247
+        Height = 490
+        Align = alClient
+        Bands = <
+          item
+          end>
+        DataController.DataSource = dmRefBooks.dsShowRefBookGoods
+        DataController.ParentField = 'ParentID'
+        DataController.KeyField = 'ProdCatID'
+        Navigator.Buttons.CustomButtons = <>
+        OptionsView.ColumnAutoWidth = True
+        OptionsView.Headers = False
+        PopupMenu = pmProdCat
+        RootValue = -1
+        TabOrder = 1
+        object cxDBTreeList1ProdCatName: TcxDBTreeListColumn
+          DataBinding.FieldName = 'ProdCatName'
+          Options.Footer = False
+          Options.GroupFooter = False
+          Options.Editing = False
+          Options.ShowEditButtons = eisbNever
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          Position.BandIndex = 0
+          Summary.FooterSummaryItems = <>
+          Summary.GroupFooterSummaryItems = <>
+        end
+      end
     end
-  end
-  object alRefBook: TActionList
-    Images = ilRefBookActionImages
-    Left = 188
-    Top = 196
-    object actAdd: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddExecute
+    object cxSplitter1: TcxSplitter
+      Left = 251
+      Top = 0
+      Width = 8
+      Height = 539
+      HotZoneClassName = 'TcxSimpleStyle'
     end
-    object actEdit: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditExecute
-    end
-    object actView: TAction
-      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      ImageIndex = 2
-      OnExecute = actViewExecute
-    end
-    object actDelete: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      ShortCut = 46
-      OnExecute = actDeleteExecute
-    end
-    object actRefresh: TAction
-      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
-      ImageIndex = 4
-      ShortCut = 116
-      OnExecute = actRefreshExecute
-    end
-    object actExport: TAction
-      Caption = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
-      ImageIndex = 5
-      OnExecute = actExportExecute
-    end
-    object actPrint: TAction
-      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
-      ImageIndex = 6
-      OnExecute = actPrintExecute
-    end
-    object actClose: TAction
-      Caption = #1047#1072#1082#1088#1099#1090#1100
-      ImageIndex = 7
-      OnExecute = actCloseExecute
-    end
-    object actCopyCell: TAction
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      ImageIndex = 8
-      ShortCut = 16451
-      OnExecute = actCopyCellExecute
+    object cxGroupBox2: TcxGroupBox
+      Left = 259
+      Top = 0
+      Align = alClient
+      Caption = ' '#1058#1086#1074#1072#1088#1099' '
+      TabOrder = 2
+      Height = 539
+      Width = 709
+      object pnlBottom: TAdvPanel
+        Left = 2
+        Top = 480
+        Width = 705
+        Height = 57
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = 16643823
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        UseDockManager = True
+        Version = '2.3.0.8'
+        BorderColor = 13087391
+        Caption.Color = 16643823
+        Caption.ColorTo = 15784647
+        Caption.Font.Charset = DEFAULT_CHARSET
+        Caption.Font.Color = 5978398
+        Caption.Font.Height = -11
+        Caption.Font.Name = 'Tahoma'
+        Caption.Font.Style = []
+        Caption.GradientDirection = gdVertical
+        Caption.Indent = 2
+        Caption.ShadeLight = 255
+        CollapsColor = clNone
+        CollapsDelay = 0
+        ColorTo = 15784647
+        ShadowColor = clBlack
+        ShadowOffset = 0
+        StatusBar.BorderColor = 16643823
+        StatusBar.BorderStyle = bsSingle
+        StatusBar.Font.Charset = DEFAULT_CHARSET
+        StatusBar.Font.Color = 5978398
+        StatusBar.Font.Height = -11
+        StatusBar.Font.Name = 'Tahoma'
+        StatusBar.Font.Style = []
+        StatusBar.Color = 16643823
+        StatusBar.ColorTo = 15784647
+        StatusBar.GradientDirection = gdVertical
+        Styler = dmMain.AdvPanelStyler1
+        Text = ''
+        DesignSize = (
+          705
+          57)
+        FullHeight = 200
+        object btnAdd: TcxButton
+          Left = 44
+          Top = 16
+          Width = 100
+          Height = 25
+          Action = actAdd
+          TabOrder = 0
+        end
+        object btnEdit: TcxButton
+          Left = 156
+          Top = 16
+          Width = 100
+          Height = 25
+          Action = actEdit
+          TabOrder = 1
+        end
+        object btnView: TcxButton
+          Left = 268
+          Top = 16
+          Width = 100
+          Height = 25
+          Action = actView
+          TabOrder = 2
+        end
+        object btnDel: TcxButton
+          Left = 380
+          Top = 16
+          Width = 100
+          Height = 25
+          Action = actDelete
+          TabOrder = 3
+        end
+        object btnClose: TcxButton
+          Left = 600
+          Top = 16
+          Width = 100
+          Height = 25
+          Action = actClose
+          Anchors = [akTop, akRight]
+          TabOrder = 4
+        end
+      end
+      object pnlTop: TAdvPanel
+        Left = 2
+        Top = 18
+        Width = 705
+        Height = 29
+        Align = alTop
+        BevelOuter = bvNone
+        Color = 16643823
+        TabOrder = 1
+        UseDockManager = True
+        Version = '2.3.0.8'
+        BorderColor = 13087391
+        Caption.Color = 16643823
+        Caption.ColorTo = 15784647
+        Caption.Font.Charset = DEFAULT_CHARSET
+        Caption.Font.Color = clBlack
+        Caption.Font.Height = -11
+        Caption.Font.Name = 'Tahoma'
+        Caption.Font.Style = []
+        Caption.GradientDirection = gdVertical
+        Caption.Indent = 2
+        Caption.ShadeLight = 255
+        CollapsColor = clNone
+        CollapsDelay = 0
+        ColorTo = 15784647
+        ShadowColor = clBlack
+        ShadowOffset = 0
+        StatusBar.BorderColor = 16643823
+        StatusBar.BorderStyle = bsSingle
+        StatusBar.Font.Charset = DEFAULT_CHARSET
+        StatusBar.Font.Color = 5978398
+        StatusBar.Font.Height = -11
+        StatusBar.Font.Name = 'Tahoma'
+        StatusBar.Font.Style = []
+        StatusBar.Color = 16643823
+        StatusBar.ColorTo = 15784647
+        StatusBar.GradientDirection = gdVertical
+        Styler = dmMain.AdvPanelStyler1
+        Text = ''
+        FullHeight = 200
+        object btnRefresh: TcxButton
+          Left = 16
+          Top = 0
+          Width = 100
+          Height = 25
+          Action = actRefresh
+          TabOrder = 0
+        end
+      end
+      object GridRefBook: TcxGrid
+        Left = 2
+        Top = 47
+        Width = 705
+        Height = 433
+        Align = alClient
+        PopupMenu = pmDefaultPopupMenu
+        TabOrder = 2
+        object tvRefBook: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.DataSource = dmRefBooks.dsGetGoodsForProdCat
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.ShowColumnFilterButtons = sfbAlways
+        end
+        object GridRefBookLevel1: TcxGridLevel
+          GridView = tvRefBook
+        end
+      end
     end
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
-    DesignInfo = 16253112
+    DesignInfo = 1048732
     ImageInfo = <
       item
         Image.Data = {
@@ -712,5 +697,265 @@ object fmShowRefBook: TfmShowRefBook
           00000000000000000000000000039A7B6FC0CEA495FFCFA494FFCDA494FFCCA3
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
       end>
+  end
+  object spRefBookFieldsBrowse: TUniStoredProc
+    StoredProcName = 'spGetReferenceBrowser;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 308
+    Top = 108
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceBrowser;1'
+  end
+  object qSprRef: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprReference'
+      'where ReferenceID = :ID')
+    Left = 816
+    Top = 124
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        Value = nil
+      end>
+  end
+  object ExportToExcelSaveDialog: TSaveDialog
+    DefaultExt = 'xlsx'
+    Filter = 'Excel 2007 (*.xlsx)|*.xlsx|Excel XP files (*.xls)|*.xls'
+    Left = 492
+    Top = 92
+  end
+  object prnRefBook: TdxComponentPrinter
+    CurrentLink = prnRefBookLink1
+    Version = 0
+    Left = 712
+    Top = 92
+    object prnRefBookLink1: TdxGridReportLink
+      Active = True
+      Component = GridRefBook
+      PageNumberFormat = pnfNumeral
+      PrinterPage.DMPaper = 1
+      PrinterPage.Footer = 6350
+      PrinterPage.Header = 6350
+      PrinterPage.Margins.Bottom = 12700
+      PrinterPage.Margins.Left = 12700
+      PrinterPage.Margins.Right = 12700
+      PrinterPage.Margins.Top = 12700
+      PrinterPage.PageSize.X = 215900
+      PrinterPage.PageSize.Y = 279400
+      PrinterPage._dxMeasurementUnits_ = 0
+      PrinterPage._dxLastMU_ = 2
+      ReportDocument.CreationDate = 42929.026695729170000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      BuiltInReportLink = True
+    end
+  end
+  object prnStyleManager: TdxPrintStyleManager
+    Version = 0
+    Left = 620
+    Top = 92
+  end
+  object alRefBook: TActionList
+    Images = ilRefBookActionImages
+    Left = 728
+    Top = 196
+    object actAdd: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100
+      ImageIndex = 0
+      ShortCut = 45
+      OnExecute = actAddExecute
+    end
+    object actEdit: TAction
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
+      ImageIndex = 1
+      OnExecute = actEditExecute
+    end
+    object actView: TAction
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      Hint = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      ImageIndex = 2
+      OnExecute = actViewExecute
+    end
+    object actDelete: TAction
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      Hint = #1059#1076#1072#1083#1080#1090#1100
+      ImageIndex = 3
+      ShortCut = 46
+      OnExecute = actDeleteExecute
+    end
+    object actRefresh: TAction
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100
+      ImageIndex = 4
+      ShortCut = 116
+      OnExecute = actRefreshExecute
+    end
+    object actExport: TAction
+      Caption = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
+      Hint = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
+      ImageIndex = 5
+      OnExecute = actExportExecute
+    end
+    object actPrint: TAction
+      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
+      Hint = #1055#1077#1095#1072#1090#1072#1090#1100
+      ImageIndex = 6
+      OnExecute = actPrintExecute
+    end
+    object actClose: TAction
+      Caption = #1047#1072#1082#1088#1099#1090#1100
+      Hint = #1047#1072#1082#1088#1099#1090#1100
+      ImageIndex = 7
+      OnExecute = actCloseExecute
+    end
+    object actCopyCell: TAction
+      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      ImageIndex = 8
+      ShortCut = 16451
+      OnExecute = actCopyCellExecute
+    end
+    object actAddProdCatSub: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1086#1076#1095#1080#1085#1077#1085#1085#1091#1102' '#1075#1088#1091#1087#1087#1091
+      ImageIndex = 0
+      OnExecute = actAddProdCatExecute
+    end
+    object actAddProdCat: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1075#1088#1091#1087#1087#1091
+      ImageIndex = 0
+      ShortCut = 45
+      OnExecute = actAddProdCatExecute
+    end
+    object actEditProdCat: TAction
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
+      ImageIndex = 1
+      OnExecute = actEditProdCatExecute
+    end
+    object actViewProdCat: TAction
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      Hint = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      ImageIndex = 2
+      OnExecute = actViewProdCatExecute
+    end
+    object actDeleteProdCat: TAction
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      Hint = #1059#1076#1072#1083#1080#1090#1100
+      ImageIndex = 3
+      OnExecute = actDeleteProdCatExecute
+    end
+    object actRefreshProdCat: TAction
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100
+      ImageIndex = 4
+      ShortCut = 116
+      OnExecute = actRefreshProdCatExecute
+    end
+  end
+  object pmDefaultPopupMenu: TAdvPopupMenu
+    MenuStyler = dmMain.AdvMenuFantasyStyler1
+    Version = '2.5.7.0'
+    Left = 540
+    Top = 204
+    object N14: TMenuItem
+      Action = actRefresh
+    end
+    object N6: TMenuItem
+      Caption = '-'
+    end
+    object N1: TMenuItem
+      Action = actAdd
+    end
+    object N2: TMenuItem
+      Action = actEdit
+    end
+    object N3: TMenuItem
+      Action = actView
+    end
+    object N4: TMenuItem
+      Action = actDelete
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object N7: TMenuItem
+      Action = actCopyCell
+    end
+    object N10: TMenuItem
+      Caption = '-'
+    end
+    object miExportToExcel: TMenuItem
+      Action = actExport
+    end
+    object miPrint: TMenuItem
+      Action = actPrint
+    end
+    object N8: TMenuItem
+      Caption = '-'
+    end
+    object N9: TMenuItem
+      Caption = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+    end
+  end
+  object pmAddProdCat: TAdvPopupMenu
+    MenuStyler = dmMain.AdvMenuFantasyStyler1
+    Version = '2.5.7.0'
+    Left = 208
+    Top = 20
+    object miAddProdCat: TMenuItem
+      Action = actAddProdCat
+      Default = True
+    end
+    object miAddProdCatSub: TMenuItem
+      Action = actAddProdCatSub
+    end
+  end
+  object pmProdCat: TAdvPopupMenu
+    MenuStyler = dmMain.AdvMenuFantasyStyler1
+    Version = '2.5.7.0'
+    Left = 116
+    Top = 144
+    object MenuItem1: TMenuItem
+      Action = actRefreshProdCat
+    end
+    object MenuItem2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem3: TMenuItem
+      Action = actAddProdCat
+    end
+    object MenuItem4: TMenuItem
+      Action = actEditProdCat
+    end
+    object MenuItem5: TMenuItem
+      Action = actViewProdCat
+    end
+    object MenuItem6: TMenuItem
+      Action = actDeleteProdCat
+    end
+    object MenuItem7: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem8: TMenuItem
+      Action = actCopyCell
+    end
   end
 end

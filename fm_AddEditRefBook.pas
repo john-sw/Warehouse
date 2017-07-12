@@ -26,9 +26,6 @@ uses
   Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel;
 
 type
-  TRefBookFormMode = (fmAdd, fmEdit, fmView);
-
-type
   TfmAddEditRefBook = class(TForm)
     pnlBottom: TAdvPanel;
     btnSave: TcxButton;
@@ -51,7 +48,6 @@ type
     procedure InsertFieldCheck(APanel: TAdvPanel);
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
-    function IsControlsModified(AControl: TWinControl): Boolean;
     procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
     function GetControlValue(AControl: TControl): Variant;
     function CheckControl(AControl: TcxCustomEdit): Boolean;
@@ -70,8 +66,7 @@ var
 
 implementation
 
-uses
-  dm_main;
+uses dm_main;
 
 {$R *.dfm}
 
@@ -251,19 +246,6 @@ begin
       c.EditValue := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsInteger
   else
     c.EditValue := spParentRefBook.FieldByName(c.Name).AsInteger;
-end;
-
-function TfmAddEditRefBook.IsControlsModified(AControl: TWinControl): Boolean;
-var
-   i: Integer;
-begin
-  Result := False;
-  for i:= 0 to pnlClient.ControlCount - 1 do
-  begin
-    Result := TcxCustomEdit(TAdvPanel(pnlClient.Controls[i]).Controls[1]).EditModified;
-    if Result then
-      Break;
-  end;
 end;
 
 procedure TfmAddEditRefBook.pnlBottomClick(Sender: TObject);

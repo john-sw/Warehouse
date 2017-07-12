@@ -20,20 +20,13 @@ uses
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
   dxSkinsdxStatusBarPainter, dxSkinsdxBarPainter, dxRibbonSkins,
   dxBarApplicationMenu, dxRibbon, dxBar, cxClasses, dxStatusBar, Vcl.Menus,
-  AdvMenus;
+  AdvMenus, dxRibbonStatusBar, Vcl.StdCtrls, cxButtons;
 
 const
   WM_CloseForm = WM_USER + 1;
 
 type
   TMainForm = class(TForm)
-    dxStatusBar1: TdxStatusBar;
-    MainBarManager: TdxBarManager;
-    dxRibbon1Tab1: TdxRibbonTab;
-    dxRibbon1: TdxRibbon;
-    dxBarGroup1: TdxBarGroup;
-    dxRibbon1Tab2: TdxRibbonTab;
-    dxRibbon1Tab3: TdxRibbonTab;
     AdvMainMenu1: TAdvMainMenu;
     N3: TMenuItem;
     N6: TMenuItem;
@@ -44,7 +37,12 @@ type
     N4: TMenuItem;
     N8: TMenuItem;
     N12: TMenuItem;
+    dxRibbonStatusBar1: TdxRibbonStatusBar;
+    dxBarManager1: TdxBarManager;
+    dxBarManager1Bar1: TdxBar;
+    btnShowRefBookGoods: TdxBarLargeButton;
     procedure FormShow(Sender: TObject);
+    procedure btnShowRefBookGoodsClick(Sender: TObject);
   private
     { Private declarations }
     procedure CreateMainMenu;
@@ -63,7 +61,7 @@ var
 implementation
 
 uses
-  dm_RefBooks, dm_main, fm_ShowRefBooks;
+  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods;
 
 {$R *.dfm}
 
@@ -112,6 +110,20 @@ begin
     mi.OnClick := miRefBookClick;
     miRefBooks.Add(mi);
     dmRefBooks.qSprRefForMainMenu.Next;
+  end;
+end;
+
+procedure TMainForm.btnShowRefBookGoodsClick(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  mi := FindFormInMainMenu('Справочник - Товары');
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
+  begin
+    Application.CreateForm(TfmShowRefBookGoods, fmShowRefBookGoods);
+    AddFormToMainMenu(fmShowRefBookGoods);
   end;
 end;
 

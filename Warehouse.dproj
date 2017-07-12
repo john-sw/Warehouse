@@ -104,6 +104,18 @@
             <Form>fmAddEditRefBook</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="fm_ShowRefBookGoods.pas">
+            <Form>fmShowRefBookGoods</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="fm_AddEditRefBookGoods.pas">
+            <Form>fmAddEditRefBookGoods</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="fm_AddEditProdCat.pas">
+            <Form>fmAddEditProdCat</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

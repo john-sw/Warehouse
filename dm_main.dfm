@@ -5,16 +5,22 @@ object dmMain: TdmMain
   Width = 456
   object MainConnection: TUniConnection
     ProviderName = 'SQL Server'
+    Database = 'RasprCenter2017'
     Username = 'eugene'
+    Server = '92.53.104.153'
+    Connected = True
     ConnectDialog = MainConnectDialog
+    LoginPrompt = False
     Left = 128
     Top = 16
+    EncryptedPassword = '9CFF9AFF91FF9AFF94FF8CFF8EFF9CFF9AFF9CFF94FF9DFF8DFF'
   end
   object MainConnectDialog: TUniConnectDialog
     DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
     PortLabel = #1055#1086#1088#1090
     ProviderLabel = #1055#1088#1086#1074#1072#1081#1076#1077#1088
     Retries = 1
+    SavePassword = True
     Caption = #1057#1086#1077#1076#1080#1085#1077#1085#1080#1077
     UsernameLabel = #1048#1084#1103
     PasswordLabel = #1055#1072#1088#1086#1083#1100
@@ -98,6 +104,8 @@ object dmMain: TdmMain
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfOffice11
+    NativeStyle = True
+    SkinName = 'Office2010Blue'
     Left = 176
     Top = 92
   end

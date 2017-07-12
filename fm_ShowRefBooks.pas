@@ -91,6 +91,7 @@ type
     procedure actPrintExecute(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
     procedure actCopyCellExecute(Sender: TObject);
+    procedure spShowRefBookAfterOpen(DataSet: TDataSet);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -283,6 +284,15 @@ procedure TfmShowRefBook.N9Click(Sender: TObject);
 begin
   OriginalSettings.Position := 0;
   tvRefBook.RestoreFromStream(OriginalSettings, True, True, [], '');
+end;
+
+procedure TfmShowRefBook.spShowRefBookAfterOpen(DataSet: TDataSet);
+begin
+  actEdit.Enabled := (not spShowRefBook.Eof);
+  actView.Enabled := actEdit.Enabled;
+  actDelete.Enabled := actEdit.Enabled;
+  actExport.Enabled := actEdit.Enabled;
+  actPrint.Enabled := actEdit.Enabled;
 end;
 
 end.
