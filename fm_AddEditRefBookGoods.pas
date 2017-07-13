@@ -24,7 +24,7 @@ uses
   Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus;
+  cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset;
 
 type
   TfmAddEditRefBookGoods = class(TForm)
@@ -33,11 +33,9 @@ type
     cxLabel2: TcxLabel;
     cxLabel4: TcxLabel;
     cxLabel7: TcxLabel;
-    cxLabel8: TcxLabel;
-    edtProdName: TcxTextEdit;
+    edtProdDescr: TcxTextEdit;
     lcCountry: TcxLookupComboBox;
     edtArticleNumber: TcxTextEdit;
-    lcUnit: TcxLookupComboBox;
     cbOnlyIntSales: TcxCheckBox;
     cxGroupBox1: TcxGroupBox;
     cxLabel9: TcxLabel;
@@ -79,7 +77,6 @@ type
     dsDescriptions: TUniDataSource;
     dsBarcodes: TUniDataSource;
     spBarcodes: TUniStoredProc;
-    tvDescriptionsColumn1: TcxGridDBColumn;
     tvBarcodesColumn1: TcxGridDBColumn;
     tbDescr: TRzToolbar;
     RzToolButton1: TRzToolButton;
@@ -102,6 +99,23 @@ type
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
+    lcUnit: TcxLookupComboBox;
+    cxLabel8: TcxLabel;
+    lcThermoType: TcxLookupComboBox;
+    cxLabel3: TcxLabel;
+    dsThermoType: TUniDataSource;
+    qThermoType: TUniQuery;
+    cxLabel5: TcxLabel;
+    edtProdName: TcxTextEdit;
+    mdDescr: TdxMemData;
+    mdDescrProdDescrID: TIntegerField;
+    mdDescrProdDescription: TStringField;
+    tvDescriptionsColumn1: TcxGridDBColumn;
+    mdBarcode: TdxMemData;
+    mdBarcodeBarCodeID: TIntegerField;
+    mdBarcodeBarCode: TStringField;
+    mdBarcodeUnitQty: TIntegerField;
+    tvBarcodesColumn2: TcxGridDBColumn;
     procedure FormShow(Sender: TObject);
     procedure actAddBarcodeExecute(Sender: TObject);
     procedure actEditBarcodeExecute(Sender: TObject);
@@ -110,7 +124,15 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure actAddDescrExecute(Sender: TObject);
+    procedure spDescriptionsAfterOpen(DataSet: TDataSet);
+    procedure RzToolButton3Click(Sender: TObject);
+    procedure spBarcodesAfterOpen(DataSet: TDataSet);
+    procedure actEditDescrExecute(Sender: TObject);
+    procedure actDeleteDescrExecute(Sender: TObject);
+    procedure mdDescrAfterPost(DataSet: TDataSet);
   private
+    IsModified: Boolean;
     procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
     function CheckReqControls: TWinControl;
     { Private declarations }
@@ -130,19 +152,63 @@ implementation
 
 {$R *.dfm}
 
+uses dm_main;
+
 procedure TfmAddEditRefBookGoods.actAddBarcodeExecute(Sender: TObject);
+var
+  s: string;
 begin
-  spBarcodes.Insert;
+  if not InputQuery('Ввод штрих-код','Штрих-код: ', s) then
+    Exit;
+  mdBarcode.Insert;
+  mdBarcode.FieldByName('BarCode').AsString := s;
+  mdBarcode.Post;
+end;
+
+procedure TfmAddEditRefBookGoods.actAddDescrExecute(Sender: TObject);
+var
+  s: string;
+begin
+  if not InputQuery('Ввод описания','Описание: ', s) then
+    Exit;
+  mdDescr.Insert;
+  mdDescr.FieldByName('ProdDescription').AsString := s;
+  mdDescr.Post;
 end;
 
 procedure TfmAddEditRefBookGoods.actDeleteBarcodeExecute(Sender: TObject);
 begin
-  spBarcodes.Delete;
+  mdBarcode.Delete;
+end;
+
+procedure TfmAddEditRefBookGoods.actDeleteDescrExecute(Sender: TObject);
+begin
+  mdDescr.Delete;
+  IsModified := True;
 end;
 
 procedure TfmAddEditRefBookGoods.actEditBarcodeExecute(Sender: TObject);
+var
+  s: string;
 begin
-  spBarcodes.Edit;
+  s := mdBarcode.FieldByName('BarCode').AsString;
+  if not InputQuery('Ввод штрих-код','Штрих-код: ', s) then
+    Exit;
+  mdBarcode.Edit;
+  mdBarcode.FieldByName('BarCode').AsString := s;
+  mdBarcode.Post;
+end;
+
+procedure TfmAddEditRefBookGoods.actEditDescrExecute(Sender: TObject);
+var
+  s: string;
+begin
+  s := mdDescr.FieldByName('ProdDescription').AsString;
+  if not InputQuery('Ввод описания','Описание: ', s) then
+    Exit;
+  mdDescr.Edit;
+  mdDescr.FieldByName('ProdDescription').AsString := s;
+  mdDescr.Post;
 end;
 
 procedure TfmAddEditRefBookGoods.btnCancelClick(Sender: TObject);
@@ -152,21 +218,15 @@ end;
 
 procedure TfmAddEditRefBookGoods.SetParamsAndExecStoredProc(sp: TUniStoredProc);
 var
-   i: Integer;
-   c: TControl;
+  sp1: TUniStoredProc;
 begin
-  {for i := 0 to pnlClient.ControlCount - 1 do
-  begin
-    c := TAdvPanel(pnlClient.Controls[i]).Controls[1];
-    sp.ParamByName(c.Name).Value := GetControlValue(c);
-  end; }
   sp.ParamByName('ProdCatID').Value := ParentID;
   sp.ParamByName('ProdName').Value := edtProdName.Text;
-//  sp.ParamByName('ProdDescription').Value := edtComment.Text;
+  sp.ParamByName('ProdDescription').Value := edtProdDescr.Text;
   sp.ParamByName('ArticleNumber').Value := edtArticleNumber.Text;
   sp.ParamByName('CountryID').Value := lcCountry.EditValue;
   sp.ParamByName('UnitID').Value := lcUnit.EditValue;
-  //sp.ParamByName('ThermoTypeID').Value := ParentID;
+  sp.ParamByName('ThermoTypeID').Value := lcThermoType.EditValue;
   sp.ParamByName('OnlyIntSales').Value := Integer(cbOnlyIntSales.Checked);
   sp.ParamByName('NettoWeight').Value := ceNettoWeight.Value;
   sp.ParamByName('BruttoWeight').Value := ceBruttoWeight.Value;
@@ -182,17 +242,117 @@ begin
   end
   else
     sp.Execute;
+  try
+    sp1 := TUniStoredProc.Create(Nil);
+    sp1.Connection := dmMain.MainConnection;
 
+    if (FormMode = fmEdit) then
+    begin
+      sp1.CreateProcCall('delProdDescription');
+      spDescriptions.First;
+      while not spDescriptions.Eof do
+      begin
+        if not mdDescr.Locate('ProdDescrID', spDescriptions.FieldByName('ProdDescrID').AsInteger, []) then
+        begin
+          sp1.ParamByName('ID').AsInteger := spDescriptions.FieldByName('ProdDescrID').AsInteger;
+          sp1.Execute;
+        end;
+        spDescriptions.Next;
+      end;
+      sp1.CreateProcCall('delBarCode');
+      spBarcodes.First;
+      while not spBarcodes.Eof do
+      begin
+        if not mdBarcode.Locate('BarCodeID', spBarcodes.FieldByName('BarCodeID').AsInteger, []) then
+        begin
+          sp1.ParamByName('ID').AsInteger := spBarcodes.FieldByName('BarCodeID').AsInteger;
+          sp1.Execute;
+        end;
+        spBarcodes.Next;
+      end;
+    end;
+    mdDescr.First;
+    while not mdDescr.Eof do
+    begin
+      if mdDescr.FieldByName('ProdDescrID').IsNull then
+        sp1.CreateProcCall('insProdDescription')
+      else
+      begin
+        sp1.CreateProcCall('updProdDescription');
+        sp1.ParamByName('ID').AsInteger := mdDescr.FieldByName('ProdDescrID').AsInteger;
+      end;
+      sp1.ParamByName('ProdID').AsInteger := CurrentID;
+      sp1.ParamByName('ProdDescription').AsString := mdDescr.FieldByName('ProdDescription').AsString;
+      sp1.ParamByName('IsReadOnly').AsInteger := 0;
+      sp1.Execute;
+      mdDescr.Next;
+    end;
+
+    mdBarcode.First;
+    while not mdBarcode.Eof do
+    begin
+      if mdBarcode.FieldByName('BarCodeID').IsNull then
+        sp1.CreateProcCall('insBarCode')
+      else
+      begin
+        sp1.CreateProcCall('updBarCode');
+        sp1.ParamByName('ID').AsInteger := mdBarcode.FieldByName('BarCodeID').AsInteger;
+      end;
+      sp1.ParamByName('ProdID').AsInteger := CurrentID;
+      sp1.ParamByName('BarCode').AsString := mdBarcode.FieldByName('BarCode').AsString;
+      sp1.ParamByName('UnitQty').AsInteger := mdBarcode.FieldByName('UnitQty').AsInteger;
+      sp1.Execute;
+      mdBarcode.Next;
+    end;
+
+  finally
+    FreeAndNil(sp1);
+  end;
+end;
+
+procedure TfmAddEditRefBookGoods.spBarcodesAfterOpen(DataSet: TDataSet);
+begin
+  while not spBarcodes.Eof do
+  begin
+    mdBarcode.Insert;
+    mdBarcode.FieldByName('BarCodeID').AsString := spBarcodes.FieldByName('BarCodeID').AsString;
+    mdBarcode.FieldByName('BarCode').AsString := spBarcodes.FieldByName('BarCode').AsString;
+    mdBarcode.FieldByName('UnitQty').AsInteger := spBarcodes.FieldByName('UnitQty').AsInteger;
+    mdBarcode.Post;
+    spBarcodes.Next;
+  end;
+end;
+
+procedure TfmAddEditRefBookGoods.spDescriptionsAfterOpen(DataSet: TDataSet);
+begin
+  while not spDescriptions.Eof do
+  begin
+    mdDescr.Insert;
+    mdDescr.FieldByName('ProdDescrID').AsString := spDescriptions.FieldByName('ProdDescrID').AsString;
+    mdDescr.FieldByName('ProdDescription').AsString := spDescriptions.FieldByName('ProdDescription').AsString;
+    mdDescr.Post;
+    spDescriptions.Next;
+  end;
 end;
 
 function TfmAddEditRefBookGoods.CheckReqControls: TWinControl;
 begin
+  Result := nil;
+
   if Trim(edtComment.Text) <> '' then
     edtComment.Style.BorderColor := clWindowFrame
   else
   begin
     edtComment.Style.BorderColor := clRed;
     Result := edtComment;
+  end;
+
+  if Trim(VarToStr(lcUnit.EditValue)) <> '' then
+    lcUnit.Style.BorderColor := clWindowFrame
+  else
+  begin
+    lcUnit.Style.BorderColor := clRed;
+    Result := lcUnit;
   end;
 
   if ceProdVolume.Value <> 0 then
@@ -219,12 +379,12 @@ begin
     Result := ceNettoWeight;
   end;
 
-  if Trim(VarToStr(lcUnit.EditValue)) <> '' then
-    lcUnit.Style.BorderColor := clWindowFrame
+  if Trim(VarToStr(lcThermoType.EditValue)) <> '' then
+    lcThermoType.Style.BorderColor := clWindowFrame
   else
   begin
-    lcUnit.Style.BorderColor := clRed;
-    Result := lcUnit;
+    lcThermoType.Style.BorderColor := clRed;
+    Result := lcThermoType;
   end;
 
   if Trim(VarToStr(lcCountry.EditValue)) <> '' then
@@ -257,7 +417,7 @@ procedure TfmAddEditRefBookGoods.btnSaveClick(Sender: TObject);
 var
   InvalidControl: TWinControl;
 begin
-  if (FormMode = fmAdd) or IsControlsModified(pnlClient) then
+  if (FormMode = fmAdd) or IsModified or IsControlsModified(pnlClient) then
   begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
@@ -285,7 +445,7 @@ begin
     CanClose := True;
     Exit;
   end;
-  if IsControlsModified(pnlClient) then
+  if IsModified or IsControlsModified(pnlClient) then
     if MessageBox(0,'Вы действительно хотите выйти без сохранения изменений?',
                   'Подтверждение', MB_YESNO + MB_ICONQUESTION) = ID_YES then
       ModalResult := mrNo
@@ -306,13 +466,18 @@ procedure TfmAddEditRefBookGoods.FormShow(Sender: TObject);
 begin
   qCountries.Open;
   qUnit.Open;
+  qThermoType.Open;
+  mdBarcode.Open;
+  mdDescr.Open;
   if FormMode in [fmEdit, fmView] then
     with dmRefBooks.spGetGoodsForProdCat do
     begin
       edtProdName.Text := FieldByName('ProdName').AsString;
+      edtProdDescr.Text := FieldByName('ProdDescription').AsString;
       edtArticleNumber.Text := FieldByName('ArticleNumber').AsString;
       lcCountry.EditValue := FieldByName('CountryID').AsInteger;
       lcUnit.EditValue := FieldByName('UnitID').AsInteger;
+      lcThermoType.EditValue := FieldByName('ThermoTypeID').AsInteger;
       cbOnlyIntSales.Checked := Boolean(FieldByName('OnlyIntSales').AsInteger);
       ceNettoWeight.Value := FieldByName('NettoWeight').AsFloat;
       ceBruttoWeight.Value := FieldByName('BruttoWeight').AsFloat;
@@ -337,6 +502,18 @@ begin
         btnSave.Visible := False;
       end;
   end;
+  IsModified := False;
+end;
+
+procedure TfmAddEditRefBookGoods.mdDescrAfterPost(DataSet: TDataSet);
+begin
+  IsModified := True;
+end;
+
+procedure TfmAddEditRefBookGoods.RzToolButton3Click(Sender: TObject);
+begin
+  mdDescr.Delete;
+  IsModified := True;
 end;
 
 end.

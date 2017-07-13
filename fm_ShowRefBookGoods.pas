@@ -251,6 +251,7 @@ begin
     fmAddEditRefBookGoods.spParentRefBook := dmRefBooks.spGetGoodsForProdCat;
     fmAddEditRefBookGoods.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBookGoods.CurrentID := dmRefBooks.spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    fmAddEditRefBookGoods.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
     dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
     dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBookGoods.CurrentID;
     if fmAddEditRefBookGoods.ShowModal = mrOk then

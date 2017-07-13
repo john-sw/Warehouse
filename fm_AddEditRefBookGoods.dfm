@@ -66,37 +66,31 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     FullHeight = 200
     object cxLabel1: TcxLabel
       Left = 32
-      Top = 28
-      Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072
+      Top = 36
+      Caption = #1054#1087#1080#1089#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072
       Transparent = True
     end
     object cxLabel2: TcxLabel
       Left = 32
-      Top = 56
+      Top = 64
       Caption = #1040#1088#1090#1080#1082#1091#1083
       Transparent = True
     end
     object cxLabel4: TcxLabel
-      Left = 285
-      Top = 55
+      Left = 332
+      Top = 63
       Caption = #1057#1090#1088#1072#1085#1072
       Transparent = True
     end
     object cxLabel7: TcxLabel
       Left = 32
-      Top = 216
+      Top = 224
       Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
       Transparent = True
     end
-    object cxLabel8: TcxLabel
-      Left = 32
-      Top = 82
-      Caption = #1045#1076'. '#1080#1079#1084#1077#1088#1077#1085#1080#1103
-      Transparent = True
-    end
-    object edtProdName: TcxTextEdit
+    object edtProdDescr: TcxTextEdit
       Left = 154
-      Top = 28
+      Top = 36
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
@@ -107,12 +101,12 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 5
+      TabOrder = 1
       Width = 403
     end
     object lcCountry: TcxLookupComboBox
-      Left = 344
-      Top = 56
+      Left = 379
+      Top = 64
       Properties.KeyFieldNames = 'CountryID'
       Properties.ListColumns = <
         item
@@ -126,52 +120,33 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       StyleDisabled.LookAndFeel.NativeStyle = False
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 6
-      Width = 213
+      TabOrder = 3
+      Width = 178
     end
     object edtArticleNumber: TcxTextEdit
-      Left = 127
-      Top = 55
+      Left = 154
+      Top = 63
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.NativeStyle = False
       StyleDisabled.LookAndFeel.NativeStyle = False
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 7
-      Width = 141
-    end
-    object lcUnit: TcxLookupComboBox
-      Left = 127
-      Top = 82
-      Properties.KeyFieldNames = 'UnitID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'UnitName'
-        end>
-      Properties.ListOptions.ShowHeader = False
-      Properties.ListSource = dsUnit
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebsSingle
-      Style.LookAndFeel.NativeStyle = False
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 8
-      Width = 141
+      TabOrder = 2
+      Width = 168
     end
     object cbOnlyIntSales: TcxCheckBox
-      Left = 285
-      Top = 83
+      Left = 379
+      Top = 91
       Caption = #1062#1077#1083#1086#1095#1080#1089#1083#1077#1085#1085#1086#1077' '#1076#1074#1080#1078#1077#1085#1080#1077
-      TabOrder = 9
-      Width = 272
+      TabOrder = 5
+      Width = 158
     end
     object cxGroupBox1: TcxGroupBox
       Left = 32
-      Top = 114
+      Top = 122
       Caption = ' '#1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1080' '#1077#1076#1080#1085#1080#1094#1099' '#1090#1086#1074#1072#1088#1072' '
-      TabOrder = 10
+      TabOrder = 6
       Transparent = True
       Height = 91
       Width = 525
@@ -206,11 +181,11 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         StyleDisabled.LookAndFeel.NativeStyle = False
         StyleFocused.LookAndFeel.NativeStyle = False
         StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 3
+        TabOrder = 1
         Width = 121
       end
       object ceProdVolume: TcxCalcEdit
-        Left = 312
+        Left = 347
         Top = 22
         BeepOnEnter = False
         EditValue = 0.000000000000000000
@@ -222,8 +197,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         StyleDisabled.LookAndFeel.NativeStyle = False
         StyleFocused.LookAndFeel.NativeStyle = False
         StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 4
-        Width = 121
+        TabOrder = 2
+        Width = 140
       end
       object ceNettoWeight: TcxCalcEdit
         Left = 95
@@ -235,28 +210,53 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         StyleDisabled.LookAndFeel.NativeStyle = False
         StyleFocused.LookAndFeel.NativeStyle = False
         StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 5
+        TabOrder = 0
         Width = 121
+      end
+      object lcUnit: TcxLookupComboBox
+        Left = 347
+        Top = 54
+        Properties.KeyFieldNames = 'UnitID'
+        Properties.ListColumns = <
+          item
+            FieldName = 'UnitName'
+          end>
+        Properties.ListOptions.ShowHeader = False
+        Properties.ListSource = dsUnit
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebsSingle
+        Style.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.NativeStyle = False
+        TabOrder = 3
+        Width = 140
+      end
+      object cxLabel8: TcxLabel
+        Left = 253
+        Top = 58
+        Caption = #1045#1076'. '#1080#1079#1084#1077#1088#1077#1085#1080#1103
+        Transparent = True
       end
     end
     object edtComment: TcxTextEdit
       Left = 127
-      Top = 215
+      Top = 223
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.NativeStyle = False
       StyleDisabled.LookAndFeel.NativeStyle = False
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 11
+      TabOrder = 7
       Width = 430
     end
     object cxPageControl1: TcxPageControl
       Left = 32
-      Top = 252
+      Top = 260
       Width = 525
       Height = 251
-      TabOrder = 12
+      TabOrder = 8
       Properties.ActivePage = cxTabSheet1
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 247
@@ -302,12 +302,12 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             Images = ilRefBookActionImages
             OptionsData.Appending = True
             OptionsData.Inserting = False
+            OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
-            OptionsView.Header = False
             OptionsView.ShowColumnFilterButtons = sfbAlways
             object tvDescriptionsColumn1: TcxGridDBColumn
+              Caption = #1054#1087#1080#1089#1072#1085#1080#1077
               DataBinding.FieldName = 'ProdDescription'
-              Options.ShowCaption = False
             end
           end
           object GridDescrLevel1: TcxGridLevel
@@ -336,7 +336,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           object RzToolButton1: TRzToolButton
             Left = 4
             Top = 2
-            Action = actAddBarcode
+            Action = actAddDescr
             ParentShowHint = False
             ShowHint = True
           end
@@ -347,7 +347,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           object RzToolButton2: TRzToolButton
             Left = 37
             Top = 2
-            Action = actEditBarcode
+            Action = actEditDescr
             ParentShowHint = False
             ShowHint = True
           end
@@ -358,7 +358,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           object RzToolButton3: TRzToolButton
             Left = 70
             Top = 2
-            Action = actDeleteBarcode
+            Action = actDeleteDescr
             ParentShowHint = False
             ShowHint = True
           end
@@ -367,6 +367,10 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       object cxTabSheet2: TcxTabSheet
         Caption = #1064#1090#1088#1080#1093#1082#1086#1076#1099
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object GridBarcode: TcxGrid
           Left = 0
           Top = 29
@@ -377,19 +381,33 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           TabOrder = 0
           object tvBarcodes: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
+            Navigator.Buttons.First.Visible = False
+            Navigator.Buttons.PriorPage.Visible = False
+            Navigator.Buttons.Prior.Visible = False
+            Navigator.Buttons.Next.Visible = False
+            Navigator.Buttons.NextPage.Visible = False
+            Navigator.Buttons.Last.Visible = False
+            Navigator.Buttons.Insert.Visible = False
+            Navigator.Buttons.Refresh.Visible = False
+            Navigator.Buttons.SaveBookmark.Visible = False
+            Navigator.Buttons.GotoBookmark.Visible = False
+            Navigator.Buttons.Filter.Visible = False
             DataController.DataSource = dsBarcodes
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
             OptionsData.Deleting = False
-            OptionsData.Editing = False
             OptionsData.Inserting = False
+            OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
-            OptionsView.Header = False
             OptionsView.ShowColumnFilterButtons = sfbAlways
             object tvBarcodesColumn1: TcxGridDBColumn
+              Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076#1099
               DataBinding.FieldName = 'BarCode'
-              Options.ShowCaption = False
+            end
+            object tvBarcodesColumn2: TcxGridDBColumn
+              Caption = #1050#1086#1083'-'#1074#1086' '#1077#1076#1080#1085#1080#1094' '#1090#1086#1074#1072#1088#1072
+              DataBinding.FieldName = 'UnitQty'
             end
           end
           object cxGridLevel1: TcxGridLevel
@@ -446,6 +464,53 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           end
         end
       end
+    end
+    object lcThermoType: TcxLookupComboBox
+      Left = 154
+      Top = 90
+      Properties.KeyFieldNames = 'ThermoTypeID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'ThermoTypeName'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsThermoType
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 4
+      Width = 168
+    end
+    object cxLabel3: TcxLabel
+      Left = 32
+      Top = 90
+      Caption = #1058#1077#1084#1087#1077#1088#1072#1090#1091#1088#1085#1099#1081' '#1088#1077#1078#1080#1084
+      Transparent = True
+    end
+    object cxLabel5: TcxLabel
+      Left = 32
+      Top = 8
+      Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072
+      Transparent = True
+    end
+    object edtProdName: TcxTextEdit
+      Left = 154
+      Top = 8
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 0
+      Width = 403
     end
   end
   object pnlBottom: TAdvPanel
@@ -523,8 +588,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spGetReferenceFieldList (:ReferenceID)}')
     Connection = dmMain.MainConnection
-    Left = 480
-    Top = 148
+    Left = 488
+    Top = 240
     ParamData = <
       item
         DataType = ftInteger
@@ -557,13 +622,13 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       'select * from sprUnit'
       'order by UnitName')
-    Left = 166
-    Top = 76
+    Left = 406
+    Top = 164
   end
   object dsUnit: TUniDataSource
     DataSet = qUnit
-    Left = 216
-    Top = 76
+    Left = 464
+    Top = 164
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
@@ -910,16 +975,19 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     object actAddDescr: TAction
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
       ImageIndex = 0
+      OnExecute = actAddDescrExecute
     end
     object actEditDescr: TAction
       Caption = #1048#1079#1084#1077#1085#1080#1090#1100
       Hint = #1048#1079#1084#1077#1085#1080#1090#1100
       ImageIndex = 1
+      OnExecute = actEditDescrExecute
     end
     object actDeleteDescr: TAction
       Caption = #1059#1076#1072#1083#1080#1090#1100
       Hint = #1059#1076#1072#1083#1080#1090#1100
       ImageIndex = 3
+      OnExecute = actDeleteDescrExecute
     end
     object actAddBarcode: TAction
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
@@ -944,8 +1012,9 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspProdDescription;1 (:ProdID)}')
     Connection = dmMain.MainConnection
-    Left = 80
-    Top = 356
+    AfterOpen = spDescriptionsAfterOpen
+    Left = 72
+    Top = 328
     ParamData = <
       item
         DataType = ftInteger
@@ -962,22 +1031,23 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     CommandStoredProcName = 'br_aspProdDescription;1'
   end
   object dsDescriptions: TUniDataSource
-    DataSet = spDescriptions
-    Left = 80
-    Top = 408
+    DataSet = mdDescr
+    Left = 72
+    Top = 440
   end
   object dsBarcodes: TUniDataSource
-    DataSet = spBarcodes
+    DataSet = mdBarcode
     Left = 156
-    Top = 408
+    Top = 444
   end
   object spBarcodes: TUniStoredProc
     StoredProcName = 'br_aspBarCode;1'
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspBarCode;1 (:ProdID)}')
     Connection = dmMain.MainConnection
+    AfterOpen = spBarcodesAfterOpen
     Left = 156
-    Top = 356
+    Top = 328
     ParamData = <
       item
         DataType = ftInteger
@@ -1033,6 +1103,48 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     end
     object MenuItem13: TMenuItem
       Action = actDeleteBarcode
+    end
+  end
+  object dsThermoType: TUniDataSource
+    DataSet = qThermoType
+    Left = 244
+    Top = 80
+  end
+  object qThermoType: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprThermoType'
+      'order by ThermoTypeName')
+    Left = 186
+    Top = 80
+  end
+  object mdDescr: TdxMemData
+    Indexes = <>
+    SortOptions = []
+    AfterPost = mdDescrAfterPost
+    Left = 72
+    Top = 384
+    object mdDescrProdDescrID: TIntegerField
+      FieldName = 'ProdDescrID'
+    end
+    object mdDescrProdDescription: TStringField
+      FieldName = 'ProdDescription'
+    end
+  end
+  object mdBarcode: TdxMemData
+    Indexes = <>
+    SortOptions = []
+    AfterPost = mdDescrAfterPost
+    Left = 152
+    Top = 388
+    object mdBarcodeBarCodeID: TIntegerField
+      FieldName = 'BarCodeID'
+    end
+    object mdBarcodeBarCode: TStringField
+      FieldName = 'BarCode'
+    end
+    object mdBarcodeUnitQty: TIntegerField
+      FieldName = 'UnitQty'
     end
   end
 end
