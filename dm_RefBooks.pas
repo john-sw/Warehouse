@@ -17,6 +17,7 @@ type
     spShowRefBookGoods: TUniStoredProc;
     spGetGoodsForProdCat: TUniStoredProc;
     dsGetGoodsForProdCat: TUniDataSource;
+    spGetReferenceFieldList: TUniStoredProc;
     procedure spShowRefBookGoodsAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
@@ -28,6 +29,8 @@ var
   dmRefBooks: TdmRefBooks;
 
 function IsControlsModified(AControl: TWinControl): Boolean;
+function CheckControl(AControl: TcxCustomEdit; AspCheck: TUniStoredProc): Boolean; overload;
+function CheckControl(AControl: TcxCustomEdit; AspCheck: TUniStoredProc; AFieldName: String): Boolean; overload;
 function CheckReqControls(AControl: TWinControl; AspCheck: TUniStoredProc): TWinControl;
 procedure SetControlsReadOnly(AControl: TWinControl; AReadOnly: Boolean);
 
@@ -74,10 +77,10 @@ begin
   end;
 end;
 
-function CheckControl(AControl: TcxCustomEdit; AspCheck: TUniStoredProc): Boolean;
+function CheckControl(AControl: TcxCustomEdit; AspCheck: TUniStoredProc; AFieldName: String): Boolean; overload;
 begin
   Result := True;
-  if AspCheck.Locate('RefFieldName', AControl.Name, []) and
+  if AspCheck.Locate('RefFieldName', AFieldName, [loCaseInsensitive]) and
      (AspCheck.FieldByName('IsRequired').AsInteger = 1) then
     case AControl.Tag of
       1: Result := (AControl as TcxTextEdit).Text <> ''; // DBTextEdit
@@ -93,6 +96,12 @@ begin
   else
     AControl.Style.BorderColor := clRed
 end;
+
+function CheckControl(AControl: TcxCustomEdit; AspCheck: TUniStoredProc): Boolean;
+begin
+  Result := CheckControl(AControl, AspCheck, AControl.Name);
+end;
+
 
 function CheckReqControls(AControl: TWinControl; AspCheck: TUniStoredProc): TWinControl;
 var

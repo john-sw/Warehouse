@@ -41,6 +41,7 @@ type
     dxBarManager1: TdxBarManager;
     dxBarManager1Bar1: TdxBar;
     btnShowRefBookGoods: TdxBarLargeButton;
+    btnShowClients: TdxBarLargeButton;
     procedure FormShow(Sender: TObject);
     procedure btnShowRefBookGoodsClick(Sender: TObject);
   private

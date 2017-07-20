@@ -395,6 +395,7 @@ begin
       begin
         Caption := 'Просмотр - ' + RefBookName;
         btnSave.Visible := False;
+        btnCancel.Caption := 'Закрыть';
       end;
   end;
   FillForm;

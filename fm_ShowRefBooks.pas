@@ -30,23 +30,15 @@ uses
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
-  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList;
+  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton;
 
 type
   TfmShowRefBook = class(TForm)
-    pnlTop: TAdvPanel;
-    pnlBottom: TAdvPanel;
     spShowRefBook: TUniStoredProc;
     dsShowRefBook: TUniDataSource;
     tvRefBook: TcxGridDBTableView;
     GridRefBookLevel1: TcxGridLevel;
     GridRefBook: TcxGrid;
-    btnAdd: TcxButton;
-    btnEdit: TcxButton;
-    btnView: TcxButton;
-    btnDel: TcxButton;
-    btnClose: TcxButton;
-    btnRefresh: TcxButton;
     pmDefaultPopupMenu: TAdvPopupMenu;
     N1: TMenuItem;
     N2: TMenuItem;
@@ -78,6 +70,18 @@ type
     actPrint: TAction;
     actClose: TAction;
     actCopyCell: TAction;
+    RzToolbar2: TRzToolbar;
+    RzToolButton6: TRzToolButton;
+    RzSpacer5: TRzSpacer;
+    RzToolButton7: TRzToolButton;
+    RzSpacer6: TRzSpacer;
+    RzToolButton8: TRzToolButton;
+    RzSpacer7: TRzSpacer;
+    RzToolButton9: TRzToolButton;
+    RzSpacer8: TRzSpacer;
+    RzToolButton10: TRzToolButton;
+    RzSpacer9: TRzSpacer;
+    RzToolButton11: TRzToolButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

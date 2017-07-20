@@ -4,7 +4,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
   BorderStyle = bsDialog
   Caption = 'fmAddEditRefBookGoods'
   ClientHeight = 587
-  ClientWidth = 588
+  ClientWidth = 549
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
   object pnlClient: TAdvPanel
     Left = 0
     Top = 0
-    Width = 588
+    Width = 549
     Height = 523
     Align = alClient
     BevelOuter = bvNone
@@ -65,31 +65,32 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     Text = ''
     FullHeight = 200
     object cxLabel1: TcxLabel
-      Left = 32
-      Top = 36
+      Left = 10
+      Top = 38
       Caption = #1054#1087#1080#1089#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072
       Transparent = True
     end
     object cxLabel2: TcxLabel
-      Left = 32
-      Top = 64
+      Left = 10
+      Top = 65
       Caption = #1040#1088#1090#1080#1082#1091#1083
       Transparent = True
     end
     object cxLabel4: TcxLabel
-      Left = 332
-      Top = 63
+      Left = 310
+      Top = 65
       Caption = #1057#1090#1088#1072#1085#1072
       Transparent = True
     end
     object cxLabel7: TcxLabel
-      Left = 32
+      Left = 10
       Top = 224
       Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077
       Transparent = True
     end
     object edtProdDescr: TcxTextEdit
-      Left = 154
+      Tag = 1
+      Left = 132
       Top = 36
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
@@ -105,8 +106,9 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 403
     end
     object lcCountry: TcxLookupComboBox
-      Left = 379
-      Top = 64
+      Tag = 6
+      Left = 357
+      Top = 63
       Properties.KeyFieldNames = 'CountryID'
       Properties.ListColumns = <
         item
@@ -124,7 +126,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 178
     end
     object edtArticleNumber: TcxTextEdit
-      Left = 154
+      Tag = 1
+      Left = 132
       Top = 63
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
@@ -136,6 +139,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 168
     end
     object cbOnlyIntSales: TcxCheckBox
+      Tag = 5
       Left = 379
       Top = 91
       Caption = #1062#1077#1083#1086#1095#1080#1089#1083#1077#1085#1085#1086#1077' '#1076#1074#1080#1078#1077#1085#1080#1077
@@ -143,7 +147,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 158
     end
     object cxGroupBox1: TcxGroupBox
-      Left = 32
+      Left = 10
       Top = 122
       Caption = ' '#1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1080' '#1077#1076#1080#1085#1080#1094#1099' '#1090#1086#1074#1072#1088#1072' '
       TabOrder = 6
@@ -158,7 +162,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       end
       object cxLabel12: TcxLabel
         Left = 16
-        Top = 58
+        Top = 56
         Caption = #1042#1077#1089' '#1073#1088#1091#1090#1090#1086
         Transparent = True
       end
@@ -169,8 +173,9 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         Transparent = True
       end
       object ceBruttoWeight: TcxCalcEdit
+        Tag = 6
         Left = 95
-        Top = 55
+        Top = 54
         BeepOnEnter = False
         EditValue = 0.000000000000000000
         Style.BorderColor = clWindowFrame
@@ -185,6 +190,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         Width = 121
       end
       object ceProdVolume: TcxCalcEdit
+        Tag = 6
         Left = 347
         Top = 22
         BeepOnEnter = False
@@ -201,6 +207,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         Width = 140
       end
       object ceNettoWeight: TcxCalcEdit
+        Tag = 6
         Left = 95
         Top = 22
         EditValue = 0.000000000000000000
@@ -214,6 +221,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         Width = 121
       end
       object lcUnit: TcxLookupComboBox
+        Tag = 6
         Left = 347
         Top = 54
         Properties.KeyFieldNames = 'UnitID'
@@ -234,13 +242,14 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       end
       object cxLabel8: TcxLabel
         Left = 253
-        Top = 58
+        Top = 56
         Caption = #1045#1076'. '#1080#1079#1084#1077#1088#1077#1085#1080#1103
         Transparent = True
       end
     end
     object edtComment: TcxTextEdit
-      Left = 127
+      Tag = 1
+      Left = 105
       Top = 223
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
@@ -252,7 +261,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 430
     end
     object cxPageControl1: TcxPageControl
-      Left = 32
+      Left = 10
       Top = 260
       Width = 525
       Height = 251
@@ -277,6 +286,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           object tvDescriptions: TcxGridDBTableView
             Navigator.Buttons.ConfirmDelete = True
             Navigator.Buttons.CustomButtons = <>
+            Navigator.Buttons.Images = ilRefBookActionImages
             Navigator.Buttons.First.Visible = False
             Navigator.Buttons.PriorPage.Visible = False
             Navigator.Buttons.Prior.Visible = False
@@ -289,13 +299,12 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             Navigator.Buttons.Delete.ImageIndex = 3
             Navigator.Buttons.Edit.ImageIndex = 1
             Navigator.Buttons.Cancel.ImageIndex = 7
-            Navigator.Buttons.Cancel.Visible = True
-            Navigator.Buttons.Refresh.Visible = False
+            Navigator.Buttons.Refresh.ImageIndex = 4
             Navigator.Buttons.SaveBookmark.Visible = False
             Navigator.Buttons.GotoBookmark.Visible = False
             Navigator.Buttons.Filter.Visible = False
             DataController.DataSource = dsDescriptions
-            DataController.KeyFieldNames = 'ProdDescrID'
+            DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
@@ -308,6 +317,14 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             object tvDescriptionsColumn1: TcxGridDBColumn
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
               DataBinding.FieldName = 'ProdDescription'
+              PropertiesClassName = 'TcxTextEditProperties'
+              Properties.HideSelection = False
+              Properties.ValidateOnEnter = True
+              Properties.OnValidate = tvDescriptionsColumn1PropertiesValidate
+            end
+            object tvDescriptionsRecId: TcxGridDBColumn
+              DataBinding.FieldName = 'RecId'
+              Visible = False
             end
           end
           object GridDescrLevel1: TcxGridLevel
@@ -367,10 +384,6 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       object cxTabSheet2: TcxTabSheet
         Caption = #1064#1090#1088#1080#1093#1082#1086#1076#1099
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object GridBarcode: TcxGrid
           Left = 0
           Top = 29
@@ -381,17 +394,6 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
           TabOrder = 0
           object tvBarcodes: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
-            Navigator.Buttons.First.Visible = False
-            Navigator.Buttons.PriorPage.Visible = False
-            Navigator.Buttons.Prior.Visible = False
-            Navigator.Buttons.Next.Visible = False
-            Navigator.Buttons.NextPage.Visible = False
-            Navigator.Buttons.Last.Visible = False
-            Navigator.Buttons.Insert.Visible = False
-            Navigator.Buttons.Refresh.Visible = False
-            Navigator.Buttons.SaveBookmark.Visible = False
-            Navigator.Buttons.GotoBookmark.Visible = False
-            Navigator.Buttons.Filter.Visible = False
             DataController.DataSource = dsBarcodes
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
@@ -404,10 +406,14 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             object tvBarcodesColumn1: TcxGridDBColumn
               Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076#1099
               DataBinding.FieldName = 'BarCode'
+              PropertiesClassName = 'TcxTextEditProperties'
+              Properties.OnValidate = tvBarcodesColumn1PropertiesValidate
             end
             object tvBarcodesColumn2: TcxGridDBColumn
               Caption = #1050#1086#1083'-'#1074#1086' '#1077#1076#1080#1085#1080#1094' '#1090#1086#1074#1072#1088#1072
               DataBinding.FieldName = 'UnitQty'
+              PropertiesClassName = 'TcxTextEditProperties'
+              Properties.OnValidate = tvBarcodesColumn1PropertiesValidate
             end
           end
           object cxGridLevel1: TcxGridLevel
@@ -466,7 +472,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       end
     end
     object lcThermoType: TcxLookupComboBox
-      Left = 154
+      Tag = 6
+      Left = 132
       Top = 90
       Properties.KeyFieldNames = 'ThermoTypeID'
       Properties.ListColumns = <
@@ -485,19 +492,20 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       Width = 168
     end
     object cxLabel3: TcxLabel
-      Left = 32
-      Top = 90
+      Left = 10
+      Top = 92
       Caption = #1058#1077#1084#1087#1077#1088#1072#1090#1091#1088#1085#1099#1081' '#1088#1077#1078#1080#1084
       Transparent = True
     end
     object cxLabel5: TcxLabel
-      Left = 32
-      Top = 8
+      Left = 10
+      Top = 10
       Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072
       Transparent = True
     end
     object edtProdName: TcxTextEdit
-      Left = 154
+      Tag = 1
+      Left = 132
       Top = 8
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
@@ -516,7 +524,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
   object pnlBottom: TAdvPanel
     Left = 0
     Top = 523
-    Width = 588
+    Width = 549
     Height = 64
     Align = alBottom
     BevelOuter = bvNone
@@ -559,26 +567,96 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     Styler = dmMain.AdvPanelStyler1
     Text = ''
     DesignSize = (
-      588
+      549
       64)
     FullHeight = 200
     object btnSave: TcxButton
-      Left = 352
+      Left = 319
       Top = 20
-      Width = 75
+      Width = 100
       Height = 25
       Anchors = [akTop, akRight]
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      OptionsImage.Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000000000
+        00000000000000000002000000070000000C0000001000000012000000110000
+        000E000000080000000200000000000000000000000000000000000000000000
+        000100000004000101120D2A1D79184E36C6216B4BFF216B4BFF216C4BFF1A53
+        3AD20F2F21840001011500000005000000010000000000000000000000000000
+        0005050F0A351C5B40DC24805CFF29AC7EFF2CC592FF2DC894FF2DC693FF2AAE
+        80FF258560FF1A563DD405110C3D00000007000000010000000000000003040E
+        0A31206548ED299D74FF2FC896FF2EC996FF56D4ACFF68DAB5FF3BCD9DFF30C9
+        96FF32CA99FF2BA479FF227050F805110C3D00000005000000000000000A1A57
+        3DD02EA57CFF33CA99FF2EC896FF4CD2A8FF20835CFF00673BFF45BE96FF31CB
+        99FF31CB98FF34CC9CFF31AD83FF1B5C41D300010113000000020B23185E2E8A
+        66FF3BCD9EFF30CA97FF4BD3A9FF349571FF87AF9DFFB1CFC1FF238A60FF45D3
+        A8FF36CF9FFF33CD9BFF3ED0A3FF319470FF0F32237F00000007184D37B63DB3
+        8CFF39CD9FFF4BD5A9FF43A382FF699782FFF8F1EEFFF9F3EEFF357F5DFF56C4
+        A1FF43D5A8FF3ED3A4FF3CD1A4FF41BC95FF1B5C43CD0000000B1C6446DF4BCA
+        A4FF44D2A8FF4FB392FF4E826AFFF0E9E6FFC0C3B5FFEFE3DDFFCEDDD4FF1B75
+        4FFF60DCB8FF48D8ACFF47D6AAFF51D4ACFF247A58F80000000E217050F266D9
+        B8FF46D3A8FF0B6741FFD2D2CBFF6A8F77FF116B43FF73967EFFF1E8E3FF72A2
+        8BFF46A685FF5EDFBAFF4CD9AFFF6BE2C2FF278460FF020604191E684ADC78D9
+        BEFF52DAB1FF3DBA92FF096941FF2F9C76FF57DEB8FF2D9973FF73967EFFF0EA
+        E7FF4F886CFF5ABB9AFF5BDEB9FF7FE2C7FF27835FF80000000C19523BAB77C8
+        B0FF62E0BCFF56DDB7FF59DFBAFF5CE1BDFF5EE2BEFF5FE4C1FF288C67FF698E
+        76FFE6E1DCFF176B47FF5FD8B4FF83D5BDFF1E674CC60000000909201747439C
+        7BFF95ECD6FF5ADFBAFF5EE2BDFF61E4BFFF64E6C1FF67E6C5FF67E8C7FF39A1
+        7EFF1F6D4AFF288B64FF98EFD9FF4DAC8CFF1036286D00000004000000041C5F
+        46B578C6ADFF9AEED9FF65E5C0FF64E7C3FF69E7C6FF6BE8C8FF6CE9C9FF6BEA
+        C9FF5ED6B6FF97EDD7FF86D3BBFF237759D20102010C0000000100000001030A
+        0718247B5BDA70C1A8FFB5F2E3FF98F0DAFF85EDD4FF75EBCEFF88EFD6FF9CF2
+        DDFFBAF4E7FF78CDB3FF2A906DEA0615102E0000000200000000000000000000
+        0001030A07171E694FB844AB87FF85D2BBFFA8E6D6FFC5F4EBFFABE9D8FF89D8
+        C1FF4BB692FF237F60CB05130E27000000030000000000000000000000000000
+        000000000001000000030A241B411B60489D258464CF2C9D77EE258867CF1F71
+        56B00E3226560000000600000002000000000000000000000000}
       TabOrder = 0
       OnClick = btnSaveClick
     end
     object btnCancel: TcxButton
-      Left = 496
+      Left = 439
       Top = 20
-      Width = 75
+      Width = 100
       Height = 25
       Anchors = [akTop, akRight]
       Caption = #1054#1090#1084#1077#1085#1072
+      OptionsImage.Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000000000
+        0000000000020000000C05031A46110852AB190C76E31D0E89FF1C0E89FF190C
+        76E4120852AD06031B4D0000000E000000030000000000000000000000000000
+        000301010519130A55A9211593FF2225AEFF2430C2FF2535CBFF2535CCFF2430
+        C3FF2225AFFF211594FF140B58B20101051E0000000400000000000000020101
+        03151C1270CD2522A6FF2D3DCCFF394BD3FF3445D1FF2939CDFF2839CDFF3344
+        D0FF394AD4FF2D3CCDFF2523A8FF1C1270D20101051D00000003000000091912
+        5BA72A27AAFF2F41D0FF3541C7FF2726ABFF3137BCFF384AD3FF384BD3FF3137
+        BCFF2726ABFF3540C7FF2E40D0FF2927ACFF1A115EB10000000D08061C3D3129
+        A2FD2C3CCCFF3842C6FF5F5DBDFFEDEDF8FF8B89CEFF3337B9FF3437B9FF8B89
+        CEFFEDEDF8FF5F5DBDFF3741C6FF2B3ACDFF3028A4FF0907204A1E185F9F373B
+        BCFF3042D0FF2621A5FFECE7ECFFF5EBE4FFF8F2EEFF9491D1FF9491D1FFF8F1
+        EDFFF3E9E2FFECE6EBFF2621A5FF2E3FCFFF343ABEFF201A66B0312A92E03542
+        CBFF3446D1FF2C2FB5FF8070ADFFEBDBD3FFF4EAE4FFF7F2EDFFF8F1EDFFF4E9
+        E2FFEADAD1FF7F6FACFF2B2EB5FF3144D0FF3040CBFF312A95E53E37AEFA3648
+        D0FF374AD3FF3A4ED5FF3234B4FF8A7FB9FFF6ECE7FFF5ECE6FFF4EBE5FFF6EB
+        E5FF897DB8FF3233B4FF384BD3FF3547D2FF3446D1FF3E37AEFA453FB4FA4557
+        D7FF3B50D5FF4C5FDAFF4343B7FF9189C7FFF7EFE9FFF6EEE9FFF6EFE8FFF7ED
+        E8FF9087C5FF4242B7FF495DD8FF394CD4FF3F52D4FF443FB3FA403DA1DC5967
+        DAFF5B6EDDFF4F4DBAFF8F89CAFFFBF6F4FFF7F1ECFFEDE1D9FFEDE0D9FFF7F0
+        EAFFFAF5F2FF8F89CAFF4E4DB9FF576ADCFF5765D9FF403EA4E12E2D70987C85
+        DDFF8798E8FF291D9BFFE5DADEFFF6EEEBFFEDDFDAFF816EA9FF816EA9FFEDDF
+        D8FFF4ECE7FFE5D9DCFF291D9BFF8494E7FF7A81DDFF33317BAC111125356768
+        D0FC9EACEDFF686FCEFF5646A1FFCCB6BCFF7A68A8FF4C4AB6FF4D4BB7FF7A68
+        A8FFCBB5BCFF5646A1FF666DCCFF9BAAEEFF696CD0FD1212273F000000043B3B
+        79977D84DFFFA5B6F1FF6D74D0FF2D219BFF5151B9FF8EA2ECFF8EA1ECFF5252
+        BBFF2D219BFF6B72D0FFA2B3F0FF8086E0FF404183A700000008000000010303
+        050C4E509DBC8087E2FFAEBDF3FFA3B6F1FF9DAFF0FF95A9EEFF95A8EEFF9BAD
+        EFFFA2B3F0FFACBCF3FF838AE3FF4F52A0C10303051100000002000000000000
+        000100000005323464797378D9F8929CEAFFA1AEEFFFB0BFF3FFB0BFF4FFA2AE
+        EFFF939DE9FF7479DAF83234647D000000080000000200000000000000000000
+        000000000000000000031213232D40437D935D61B5D07378DFFC7378DFFC5D61
+        B5D040437D951212223000000004000000010000000000000000}
       TabOrder = 1
       OnClick = btnCancelClick
     end
@@ -1012,7 +1090,6 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspProdDescription;1 (:ProdID)}')
     Connection = dmMain.MainConnection
-    AfterOpen = spDescriptionsAfterOpen
     Left = 72
     Top = 328
     ParamData = <
@@ -1045,7 +1122,6 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspBarCode;1 (:ProdID)}')
     Connection = dmMain.MainConnection
-    AfterOpen = spBarcodesAfterOpen
     Left = 156
     Top = 328
     ParamData = <

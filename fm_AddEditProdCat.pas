@@ -138,6 +138,7 @@ begin
         Caption := 'Просмотр - ' + RefBookName;
         edtProdCatName.Properties.ReadOnly := True;
         btnSave.Visible := False;
+        btnCancel.Caption := 'Закрыть';
       end;
   end;
   if (FormMode = fmAdd) then

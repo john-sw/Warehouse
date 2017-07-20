@@ -70,17 +70,19 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Align = alLeft
       Caption = ' '#1043#1088#1091#1087#1087#1099' '#1090#1086#1074#1072#1088#1086#1074' '
       TabOrder = 0
+      Transparent = True
       Height = 539
       Width = 251
       object RzToolbar1: TRzToolbar
         Left = 2
-        Top = 18
+        Top = 508
         Width = 247
         Height = 29
+        Align = alBottom
         Images = ilRefBookActionImages
         BorderInner = fsNone
         BorderOuter = fsGroove
-        BorderSides = [sdTop]
+        BorderSides = [sdBottom]
         BorderWidth = 0
         GradientColorStyle = gcsMSOffice
         TabOrder = 0
@@ -93,8 +95,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
           RzToolButton5
           RzSpacer4
           RzToolButton3
-          RzToolButton4
-          RzSpacer3)
+          RzSpacer3
+          RzToolButton4)
         object RzToolButton1: TRzToolButton
           Left = 4
           Top = 2
@@ -136,21 +138,21 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
           ParentShowHint = False
           ShowHint = True
         end
-        object RzToolButton4: TRzToolButton
+        object RzSpacer3: TRzSpacer
           Left = 142
+          Top = 2
+        end
+        object RzToolButton4: TRzToolButton
+          Left = 150
           Top = 2
           Action = actRefreshProdCat
           ParentShowHint = False
           ShowHint = True
         end
-        object RzSpacer3: TRzSpacer
-          Left = 167
-          Top = 2
-        end
       end
       object tlGridProdCat: TcxDBTreeList
         Left = 2
-        Top = 47
+        Top = 18
         Width = 247
         Height = 490
         Align = alClient
@@ -166,6 +168,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         PopupMenu = pmProdCat
         RootValue = -1
         TabOrder = 1
+        ExplicitTop = 47
         object cxDBTreeList1ProdCatName: TcxDBTreeListColumn
           DataBinding.FieldName = 'ProdCatName'
           Options.Footer = False
@@ -193,156 +196,19 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Align = alClient
       Caption = ' '#1058#1086#1074#1072#1088#1099' '
       TabOrder = 2
+      Transparent = True
       Height = 539
       Width = 709
-      object pnlBottom: TAdvPanel
-        Left = 2
-        Top = 480
-        Width = 705
-        Height = 57
-        Align = alBottom
-        BevelOuter = bvNone
-        Color = 16643823
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-        UseDockManager = True
-        Version = '2.3.0.8'
-        BorderColor = 13087391
-        Caption.Color = 16643823
-        Caption.ColorTo = 15784647
-        Caption.Font.Charset = DEFAULT_CHARSET
-        Caption.Font.Color = 5978398
-        Caption.Font.Height = -11
-        Caption.Font.Name = 'Tahoma'
-        Caption.Font.Style = []
-        Caption.GradientDirection = gdVertical
-        Caption.Indent = 2
-        Caption.ShadeLight = 255
-        CollapsColor = clNone
-        CollapsDelay = 0
-        ColorTo = 15784647
-        ShadowColor = clBlack
-        ShadowOffset = 0
-        StatusBar.BorderColor = 16643823
-        StatusBar.BorderStyle = bsSingle
-        StatusBar.Font.Charset = DEFAULT_CHARSET
-        StatusBar.Font.Color = 5978398
-        StatusBar.Font.Height = -11
-        StatusBar.Font.Name = 'Tahoma'
-        StatusBar.Font.Style = []
-        StatusBar.Color = 16643823
-        StatusBar.ColorTo = 15784647
-        StatusBar.GradientDirection = gdVertical
-        Styler = dmMain.AdvPanelStyler1
-        Text = ''
-        DesignSize = (
-          705
-          57)
-        FullHeight = 200
-        object btnAdd: TcxButton
-          Left = 44
-          Top = 16
-          Width = 100
-          Height = 25
-          Action = actAdd
-          TabOrder = 0
-        end
-        object btnEdit: TcxButton
-          Left = 156
-          Top = 16
-          Width = 100
-          Height = 25
-          Action = actEdit
-          TabOrder = 1
-        end
-        object btnView: TcxButton
-          Left = 268
-          Top = 16
-          Width = 100
-          Height = 25
-          Action = actView
-          TabOrder = 2
-        end
-        object btnDel: TcxButton
-          Left = 380
-          Top = 16
-          Width = 100
-          Height = 25
-          Action = actDelete
-          TabOrder = 3
-        end
-        object btnClose: TcxButton
-          Left = 600
-          Top = 16
-          Width = 100
-          Height = 25
-          Action = actClose
-          Anchors = [akTop, akRight]
-          TabOrder = 4
-        end
-      end
-      object pnlTop: TAdvPanel
+      object GridRefBook: TcxGrid
         Left = 2
         Top = 18
         Width = 705
-        Height = 29
-        Align = alTop
-        BevelOuter = bvNone
-        Color = 16643823
-        TabOrder = 1
-        UseDockManager = True
-        Version = '2.3.0.8'
-        BorderColor = 13087391
-        Caption.Color = 16643823
-        Caption.ColorTo = 15784647
-        Caption.Font.Charset = DEFAULT_CHARSET
-        Caption.Font.Color = clBlack
-        Caption.Font.Height = -11
-        Caption.Font.Name = 'Tahoma'
-        Caption.Font.Style = []
-        Caption.GradientDirection = gdVertical
-        Caption.Indent = 2
-        Caption.ShadeLight = 255
-        CollapsColor = clNone
-        CollapsDelay = 0
-        ColorTo = 15784647
-        ShadowColor = clBlack
-        ShadowOffset = 0
-        StatusBar.BorderColor = 16643823
-        StatusBar.BorderStyle = bsSingle
-        StatusBar.Font.Charset = DEFAULT_CHARSET
-        StatusBar.Font.Color = 5978398
-        StatusBar.Font.Height = -11
-        StatusBar.Font.Name = 'Tahoma'
-        StatusBar.Font.Style = []
-        StatusBar.Color = 16643823
-        StatusBar.ColorTo = 15784647
-        StatusBar.GradientDirection = gdVertical
-        Styler = dmMain.AdvPanelStyler1
-        Text = ''
-        FullHeight = 200
-        object btnRefresh: TcxButton
-          Left = 16
-          Top = 0
-          Width = 100
-          Height = 25
-          Action = actRefresh
-          TabOrder = 0
-        end
-      end
-      object GridRefBook: TcxGrid
-        Left = 2
-        Top = 47
-        Width = 705
-        Height = 433
+        Height = 490
         Align = alClient
         PopupMenu = pmDefaultPopupMenu
-        TabOrder = 2
+        TabOrder = 0
+        ExplicitTop = 47
+        ExplicitHeight = 433
         object tvRefBook: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dmRefBooks.dsGetGoodsForProdCat
@@ -358,11 +224,123 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
           GridView = tvRefBook
         end
       end
+      object RzToolbar2: TRzToolbar
+        Left = 2
+        Top = 508
+        Width = 705
+        Height = 29
+        Align = alBottom
+        Images = ilRefBookActionImages
+        BorderInner = fsNone
+        BorderOuter = fsGroove
+        BorderSides = [sdBottom]
+        BorderWidth = 0
+        GradientColorStyle = gcsMSOffice
+        TabOrder = 1
+        VisualStyle = vsGradient
+        ToolbarControls = (
+          RzToolButton6
+          RzSpacer5
+          RzToolButton7
+          RzSpacer6
+          RzToolButton8
+          RzSpacer7
+          RzToolButton9
+          RzSpacer8
+          RzToolButton10
+          RzSpacer9
+          RzToolButton11)
+        object RzToolButton6: TRzToolButton
+          Left = 4
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actAdd
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer5: TRzSpacer
+          Left = 94
+          Top = 2
+        end
+        object RzToolButton7: TRzToolButton
+          Left = 102
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actEdit
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer6: TRzSpacer
+          Left = 192
+          Top = 2
+        end
+        object RzToolButton8: TRzToolButton
+          Left = 200
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actView
+        end
+        object RzSpacer7: TRzSpacer
+          Left = 290
+          Top = 2
+        end
+        object RzToolButton9: TRzToolButton
+          Left = 298
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actDelete
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer8: TRzSpacer
+          Left = 388
+          Top = 2
+        end
+        object RzToolButton10: TRzToolButton
+          Left = 396
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actRefresh
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object RzSpacer9: TRzSpacer
+          Left = 486
+          Top = 2
+        end
+        object RzToolButton11: TRzToolButton
+          Left = 494
+          Top = 2
+          Width = 90
+          ShowCaption = True
+          UseToolbarButtonSize = False
+          UseToolbarShowCaption = False
+          Action = actClose
+          Align = alRight
+          ParentShowHint = False
+          ShowHint = True
+        end
+      end
     end
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
-    DesignInfo = 1048732
+    DesignInfo = 4718788
     ImageInfo = <
       item
         Image.Data = {
@@ -748,6 +726,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -759,7 +738,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42930.028022500000000000
+      ReportDocument.CreationDate = 42930.071382905090000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -916,8 +896,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
   object pmAddProdCat: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
     Version = '2.5.7.0'
-    Left = 208
-    Top = 20
+    Left = 216
+    Top = 72
     object miAddProdCat: TMenuItem
       Action = actAddProdCat
       Default = True

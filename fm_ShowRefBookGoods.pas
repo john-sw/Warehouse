@@ -47,14 +47,6 @@ type
     RzToolButton2: TRzToolButton;
     RzSpacer2: TRzSpacer;
     ilRefBookActionImages: TcxImageList;
-    pnlBottom: TAdvPanel;
-    btnAdd: TcxButton;
-    btnEdit: TcxButton;
-    btnView: TcxButton;
-    btnDel: TcxButton;
-    btnClose: TcxButton;
-    pnlTop: TAdvPanel;
-    btnRefresh: TcxButton;
     GridRefBook: TcxGrid;
     tvRefBook: TcxGridDBTableView;
     GridRefBookLevel1: TcxGridLevel;
@@ -98,8 +90,6 @@ type
     RzToolButton5: TRzToolButton;
     RzSpacer4: TRzSpacer;
     RzToolButton3: TRzToolButton;
-    RzToolButton4: TRzToolButton;
-    RzSpacer3: TRzSpacer;
     pmAddProdCat: TAdvPopupMenu;
     miAddProdCat: TMenuItem;
     miAddProdCatSub: TMenuItem;
@@ -113,6 +103,20 @@ type
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
+    RzToolbar2: TRzToolbar;
+    RzToolButton6: TRzToolButton;
+    RzSpacer5: TRzSpacer;
+    RzToolButton7: TRzToolButton;
+    RzSpacer6: TRzSpacer;
+    RzToolButton8: TRzToolButton;
+    RzSpacer7: TRzSpacer;
+    RzToolButton9: TRzToolButton;
+    RzSpacer8: TRzSpacer;
+    RzSpacer3: TRzSpacer;
+    RzToolButton4: TRzToolButton;
+    RzToolButton10: TRzToolButton;
+    RzSpacer9: TRzSpacer;
+    RzToolButton11: TRzToolButton;
     procedure FormShow(Sender: TObject);
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
@@ -206,16 +210,16 @@ procedure TfmShowRefBookGoods.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  {with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with dmRefBooks.spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
-    ParamByName('ID').Value := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    ParamByName('ID').Value := dmRefBooks.spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     Execute;
-    spShowRefBook.Refresh;
+    dmRefBooks.spGetGoodsForProdCat.Refresh;
   finally
     EnableControls;
-  end;   }
+  end;
 end;
 
 procedure TfmShowRefBookGoods.actDeleteProdCatExecute(Sender: TObject);

@@ -54,7 +54,6 @@ object dmRefBooks: TdmRefBooks
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspProd;1 (:ProdCatID)}')
     Connection = dmMain.MainConnection
-    Active = True
     Left = 240
     Top = 80
     ParamData = <
@@ -62,7 +61,7 @@ object dmRefBooks: TdmRefBooks
         DataType = ftInteger
         Name = 'RETURN_VALUE'
         ParamType = ptResult
-        Value = 0
+        Value = nil
       end
       item
         DataType = ftInteger
@@ -76,5 +75,27 @@ object dmRefBooks: TdmRefBooks
     DataSet = spGetGoodsForProdCat
     Left = 364
     Top = 80
+  end
+  object spGetReferenceFieldList: TUniStoredProc
+    StoredProcName = 'spGetReferenceFieldList;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceFieldList;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 68
+    Top = 144
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceFieldList;1'
   end
 end
