@@ -163,12 +163,14 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         DataController.ParentField = 'ParentID'
         DataController.KeyField = 'ProdCatID'
         Navigator.Buttons.CustomButtons = <>
+        OptionsSelection.CellSelect = False
+        OptionsSelection.InvertSelect = False
         OptionsView.ColumnAutoWidth = True
         OptionsView.Headers = False
         PopupMenu = pmProdCat
         RootValue = -1
+        Styles.Selection = dmMain.GridStyleSelectedRow
         TabOrder = 1
-        ExplicitTop = 47
         object cxDBTreeList1ProdCatName: TcxDBTreeListColumn
           DataBinding.FieldName = 'ProdCatName'
           Options.Footer = False
@@ -207,18 +209,21 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         Align = alClient
         PopupMenu = pmDefaultPopupMenu
         TabOrder = 0
-        ExplicitTop = 47
-        ExplicitHeight = 433
         object tvRefBook: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dmRefBooks.dsGetGoodsForProdCat
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.ImmediateEditor = False
           OptionsData.Deleting = False
           OptionsData.Editing = False
           OptionsData.Inserting = False
+          OptionsSelection.UnselectFocusedRecordOnExit = False
           OptionsView.ShowColumnFilterButtons = sfbAlways
+          Styles.ContentEven = dmMain.GridStyleEvenRow
+          Styles.Inactive = dmMain.GridStyleSelectedRow
+          Styles.Selection = dmMain.GridStyleSelectedRow
         end
         object GridRefBookLevel1: TcxGridLevel
           GridView = tvRefBook
@@ -726,7 +731,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -738,8 +742,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42930.071382905090000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42946.085529328700000000
       BuiltInReportLink = True
     end
   end
@@ -775,7 +778,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Caption = #1059#1076#1072#1083#1080#1090#1100
       Hint = #1059#1076#1072#1083#1080#1090#1100
       ImageIndex = 3
-      ShortCut = 46
       OnExecute = actDeleteExecute
     end
     object actRefresh: TAction
@@ -847,6 +849,13 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       ShortCut = 116
       OnExecute = actRefreshProdCatExecute
     end
+    object actCopyCellProdCat: TAction
+      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      ImageIndex = 8
+      ShortCut = 16451
+      OnExecute = actCopyCellProdCatExecute
+    end
   end
   object pmDefaultPopupMenu: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
@@ -896,8 +905,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
   object pmAddProdCat: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
     Version = '2.5.7.0'
-    Left = 216
-    Top = 72
+    Left = 188
+    Top = 148
     object miAddProdCat: TMenuItem
       Action = actAddProdCat
       Default = True
@@ -933,7 +942,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Caption = '-'
     end
     object MenuItem8: TMenuItem
-      Action = actCopyCell
+      Action = actCopyCellProdCat
     end
   end
 end

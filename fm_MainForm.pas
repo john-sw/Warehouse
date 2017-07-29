@@ -44,6 +44,7 @@ type
     btnShowClients: TdxBarLargeButton;
     procedure FormShow(Sender: TObject);
     procedure btnShowRefBookGoodsClick(Sender: TObject);
+    procedure btnShowClientsClick(Sender: TObject);
   private
     { Private declarations }
     procedure CreateMainMenu;
@@ -62,7 +63,7 @@ var
 implementation
 
 uses
-  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods;
+  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients;
 
 {$R *.dfm}
 
@@ -111,6 +112,20 @@ begin
     mi.OnClick := miRefBookClick;
     miRefBooks.Add(mi);
     dmRefBooks.qSprRefForMainMenu.Next;
+  end;
+end;
+
+procedure TMainForm.btnShowClientsClick(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  mi := FindFormInMainMenu('Справочник - Контрагенты');
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
+  begin
+    Application.CreateForm(TfmShowRefBookClients, fmShowRefBookClients);
+    AddFormToMainMenu(fmShowRefBookClients);
   end;
 end;
 

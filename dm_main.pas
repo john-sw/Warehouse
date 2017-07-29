@@ -18,7 +18,7 @@ uses
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
   cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus,
-  Vcl.Forms, cxLocalization;
+  Vcl.Forms, cxLocalization, cxStyles;
 
 type
   TdmMain = class(TDataModule)
@@ -26,10 +26,12 @@ type
     MainConnectDialog: TUniConnectDialog;
     MainProvider: TSQLServerUniProvider;
     AdvPanelStyler1: TAdvPanelStyler;
-    cxLookAndFeelController1: TcxLookAndFeelController;
     AdvMenuOfficeStyler1: TAdvMenuOfficeStyler;
     AdvMenuFantasyStyler1: TAdvMenuFantasyStyler;
     cxLocalizer: TcxLocalizer;
+    GridStyleRepository: TcxStyleRepository;
+    GridStyleSelectedRow: TcxStyle;
+    GridStyleEvenRow: TcxStyle;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

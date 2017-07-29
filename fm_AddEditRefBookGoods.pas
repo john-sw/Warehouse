@@ -130,10 +130,6 @@ type
     procedure actEditDescrExecute(Sender: TObject);
     procedure actDeleteDescrExecute(Sender: TObject);
     procedure mdDescrAfterPost(DataSet: TDataSet);
-    procedure tvDescriptionsColumn1PropertiesValidate(Sender: TObject; var DisplayValue: Variant;
-      var ErrorText: TCaption; var Error: Boolean);
-    procedure tvBarcodesColumn1PropertiesValidate(Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
-      var Error: Boolean);
   private
     IsModified: Boolean;
     procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
@@ -155,27 +151,43 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main;
+uses dm_main, fm_AddEditLinkedRefBook;
 
 procedure TfmAddEditRefBookGoods.actAddBarcodeExecute(Sender: TObject);
 begin
-  tvBarcodes.DataController.DataSet.Append;
-  tvBarcodes.DataController.DataSet.FieldByName('UnitQty').AsInteger := 1;
-  tvBarcodes.DataController.DataSet.Post;
-  GridBarcode.SetFocus;
-  tvBarcodesColumn1.FocusWithSelection;
-  tvBarcodesColumn1.Editing := True;
-  tvBarcodes.Controller.EditingController.Edit.ModifiedAfterEnter := True;
+  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  try
+    fmAddEditLinkedRefBook.RefBookName := 'Штрих-коды товара';
+    fmAddEditLinkedRefBook.FormMode := fmAdd;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 9; //barcodes
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdBarcode;
+
+    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    begin
+      GridBarcode.SetFocus;
+      tvBarcodesColumn1.FocusWithSelection;
+    end;
+  finally
+    FreeAndNil(fmAddEditLinkedRefBook);
+  end;
 end;
 
 procedure TfmAddEditRefBookGoods.actAddDescrExecute(Sender: TObject);
 begin
-  tvDescriptions.DataController.DataSet.Append;
-  tvDescriptions.DataController.DataSet.Post;
-  GridDescr.SetFocus;
-  tvDescriptionsColumn1.FocusWithSelection;
-  tvDescriptionsColumn1.Editing := True;
-  tvDescriptions.Controller.EditingController.Edit.ModifiedAfterEnter := True;
+  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  try
+    fmAddEditLinkedRefBook.RefBookName := 'Описание товара';
+    fmAddEditLinkedRefBook.FormMode := fmAdd;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 8; //descriptions
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdDescr;
+    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    begin
+      GridDescr.SetFocus;
+      tvDescriptionsColumn1.FocusWithSelection;
+    end;
+  finally
+    FreeAndNil(fmAddEditLinkedRefBook);
+  end;
 end;
 
 procedure TfmAddEditRefBookGoods.actDeleteBarcodeExecute(Sender: TObject);
@@ -200,12 +212,38 @@ end;
 
 procedure TfmAddEditRefBookGoods.actEditBarcodeExecute(Sender: TObject);
 begin
-  tvBarcodes.Controller.FocusedColumn.Editing := True;
+  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  try
+    fmAddEditLinkedRefBook.RefBookName := 'Штрих-коды товара';
+    fmAddEditLinkedRefBook.FormMode := fmEdit;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 9; //barcodes
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdBarcode;
+    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    begin
+      GridBarcode.SetFocus;
+      tvBarcodesColumn1.FocusWithSelection;
+    end
+  finally
+    FreeAndNil(fmAddEditLinkedRefBook);
+  end;
 end;
 
 procedure TfmAddEditRefBookGoods.actEditDescrExecute(Sender: TObject);
 begin
-  tvDescriptionsColumn1.Editing := True;
+  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  try
+    fmAddEditLinkedRefBook.RefBookName := 'Описание товара';
+    fmAddEditLinkedRefBook.FormMode := fmEdit;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 8; //descriptions
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdDescr;
+    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    begin
+      GridDescr.SetFocus;
+      tvDescriptionsColumn1.FocusWithSelection;
+    end;
+  finally
+    FreeAndNil(fmAddEditLinkedRefBook);
+  end;
 end;
 
 procedure TfmAddEditRefBookGoods.btnCancelClick(Sender: TObject);
@@ -217,122 +255,102 @@ procedure TfmAddEditRefBookGoods.SetParamsAndExecStoredProc(sp: TUniStoredProc);
 var
   sp1: TUniStoredProc;
 begin
-  sp.ParamByName('ProdCatID').Value := ParentID;
-  sp.ParamByName('ProdName').Value := edtProdName.Text;
-  sp.ParamByName('ProdDescription').Value := edtProdDescr.Text;
-  sp.ParamByName('ArticleNumber').Value := edtArticleNumber.Text;
-  sp.ParamByName('CountryID').Value := lcCountry.EditValue;
-  sp.ParamByName('UnitID').Value := lcUnit.EditValue;
-  sp.ParamByName('ThermoTypeID').Value := lcThermoType.EditValue;
-  sp.ParamByName('OnlyIntSales').Value := Integer(cbOnlyIntSales.Checked);
-  sp.ParamByName('NettoWeight').Value := ceNettoWeight.Value;
-  sp.ParamByName('BruttoWeight').Value := ceBruttoWeight.Value;
-  sp.ParamByName('ProdVolume').Value := ceProdVolume.Value;
-  sp.ParamByName('Comment').Value := edtComment.Text;
-  sp.ParamByName('IsVisible').Value := 1;
-
-  if (FormMode = fmAdd) then
-  begin
-    sp.Open;
-    if not sp.Eof then
-      CurrentID := sp.FieldByName('ID').AsInteger;
-  end
-  else
-    sp.Execute;
   try
-    sp1 := TUniStoredProc.Create(Nil);
-    sp1.Connection := dmMain.MainConnection;
+    dmMain.MainConnection.StartTransaction;
 
-    if (FormMode = fmEdit) then
+    sp.ParamByName('ProdCatID').Value := ParentID;
+    sp.ParamByName('ProdName').Value := edtProdName.Text;
+    sp.ParamByName('ProdDescription').Value := edtProdDescr.Text;
+    sp.ParamByName('ArticleNumber').Value := edtArticleNumber.Text;
+    sp.ParamByName('CountryID').Value := lcCountry.EditValue;
+    sp.ParamByName('UnitID').Value := lcUnit.EditValue;
+    sp.ParamByName('ThermoTypeID').Value := lcThermoType.EditValue;
+    sp.ParamByName('OnlyIntSales').Value := Integer(cbOnlyIntSales.Checked);
+    sp.ParamByName('NettoWeight').Value := ceNettoWeight.Value;
+    sp.ParamByName('BruttoWeight').Value := ceBruttoWeight.Value;
+    sp.ParamByName('ProdVolume').Value := ceProdVolume.Value;
+    sp.ParamByName('Comment').Value := edtComment.Text;
+    sp.ParamByName('IsVisible').Value := 1;
+
+    if (FormMode = fmAdd) then
     begin
-      sp1.CreateProcCall('delProdDescription');
-      spDescriptions.First;
-      while not spDescriptions.Eof do
+      sp.Open;
+      if not sp.Eof then
+        CurrentID := sp.FieldByName('ID').AsInteger;
+    end
+    else
+      sp.Execute;
+
+    try
+      sp1 := TUniStoredProc.Create(Nil);
+      sp1.Connection := dmMain.MainConnection;
+
+      if (FormMode = fmEdit) then
       begin
-        if not mdDescr.Locate('ProdDescrID', spDescriptions.FieldByName('ProdDescrID').AsInteger, []) then
+        sp1.CreateProcCall('delProdDescription');
+        spDescriptions.First;
+        while not spDescriptions.Eof do
         begin
-          sp1.ParamByName('ID').AsInteger := spDescriptions.FieldByName('ProdDescrID').AsInteger;
-          sp1.Execute;
+          if not mdDescr.Locate('ProdDescrID', spDescriptions.FieldByName('ProdDescrID').AsInteger, []) then
+          begin
+            sp1.ParamByName('ID').AsInteger := spDescriptions.FieldByName('ProdDescrID').AsInteger;
+            sp1.Execute;
+          end;
+          spDescriptions.Next;
         end;
-        spDescriptions.Next;
-      end;
-      sp1.CreateProcCall('delBarCode');
-      spBarcodes.First;
-      while not spBarcodes.Eof do
-      begin
-        if not mdBarcode.Locate('BarCodeID', spBarcodes.FieldByName('BarCodeID').AsInteger, []) then
+        sp1.CreateProcCall('delBarCode');
+        spBarcodes.First;
+        while not spBarcodes.Eof do
         begin
-          sp1.ParamByName('ID').AsInteger := spBarcodes.FieldByName('BarCodeID').AsInteger;
-          sp1.Execute;
+          if not mdBarcode.Locate('BarCodeID', spBarcodes.FieldByName('BarCodeID').AsInteger, []) then
+          begin
+            sp1.ParamByName('ID').AsInteger := spBarcodes.FieldByName('BarCodeID').AsInteger;
+            sp1.Execute;
+          end;
+          spBarcodes.Next;
         end;
-        spBarcodes.Next;
       end;
-    end;
-    mdDescr.First;
-    while not mdDescr.Eof do
-    begin
-      if mdDescr.FieldByName('ProdDescrID').IsNull then
-        sp1.CreateProcCall('insProdDescription')
-      else
+      mdDescr.First;
+      while not mdDescr.Eof do
       begin
-        sp1.CreateProcCall('updProdDescription');
-        sp1.ParamByName('ID').AsInteger := mdDescr.FieldByName('ProdDescrID').AsInteger;
+        if mdDescr.FieldByName('ProdDescrID').IsNull then
+          sp1.CreateProcCall('insProdDescription')
+        else
+        begin
+          sp1.CreateProcCall('updProdDescription');
+          sp1.ParamByName('ID').AsInteger := mdDescr.FieldByName('ProdDescrID').AsInteger;
+        end;
+        sp1.ParamByName('ProdID').AsInteger := CurrentID;
+        sp1.ParamByName('ProdDescription').AsString := mdDescr.FieldByName('ProdDescription').AsString;
+        sp1.ParamByName('IsReadOnly').AsInteger := 0;
+        sp1.Execute;
+        mdDescr.Next;
       end;
-      sp1.ParamByName('ProdID').AsInteger := CurrentID;
-      sp1.ParamByName('ProdDescription').AsString := mdDescr.FieldByName('ProdDescription').AsString;
-      sp1.ParamByName('IsReadOnly').AsInteger := 0;
-      sp1.Execute;
-      mdDescr.Next;
-    end;
 
-    mdBarcode.First;
-    while not mdBarcode.Eof do
-    begin
-      if mdBarcode.FieldByName('BarCodeID').IsNull then
-        sp1.CreateProcCall('insBarCode')
-      else
+      mdBarcode.First;
+      while not mdBarcode.Eof do
       begin
-        sp1.CreateProcCall('updBarCode');
-        sp1.ParamByName('ID').AsInteger := mdBarcode.FieldByName('BarCodeID').AsInteger;
+        if mdBarcode.FieldByName('BarCodeID').IsNull then
+          sp1.CreateProcCall('insBarCode')
+        else
+        begin
+          sp1.CreateProcCall('updBarCode');
+          sp1.ParamByName('ID').AsInteger := mdBarcode.FieldByName('BarCodeID').AsInteger;
+        end;
+        sp1.ParamByName('ProdID').AsInteger := CurrentID;
+        sp1.ParamByName('BarCode').AsString := mdBarcode.FieldByName('BarCode').AsString;
+        sp1.ParamByName('UnitQty').AsInteger := mdBarcode.FieldByName('UnitQty').AsInteger;
+        sp1.Execute;
+        mdBarcode.Next;
       end;
-      sp1.ParamByName('ProdID').AsInteger := CurrentID;
-      sp1.ParamByName('BarCode').AsString := mdBarcode.FieldByName('BarCode').AsString;
-      sp1.ParamByName('UnitQty').AsInteger := mdBarcode.FieldByName('UnitQty').AsInteger;
-      sp1.Execute;
-      mdBarcode.Next;
-    end;
 
-  finally
-    FreeAndNil(sp1);
+    finally
+      FreeAndNil(sp1);
+    end;
+  except
+    if dmMain.MainConnection.InTransaction then
+      dmMain.MainConnection.Rollback;
   end;
-end;
-
-procedure TfmAddEditRefBookGoods.tvBarcodesColumn1PropertiesValidate(Sender: TObject; var DisplayValue: Variant;
-  var ErrorText: TCaption; var Error: Boolean);
-begin
-  if  VarToStr(DisplayValue) <> '' then
-    Exit;
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 9; //barcodes
-  dmRefBooks.spGetReferenceFieldList.Open;
-  Error := dm_RefBooks.CheckControl(TcxCustomEdit(Sender), dmRefBooks.spGetReferenceFieldList);
-  dmRefBooks.spGetReferenceFieldList.Close;
-  if Error then
-    ErrorText := 'Необходимо заполнить обязательные поля';
-end;
-
-procedure TfmAddEditRefBookGoods.tvDescriptionsColumn1PropertiesValidate(Sender: TObject; var DisplayValue: Variant;
-  var ErrorText: TCaption; var Error: Boolean);
-begin
-  if VarToStr(DisplayValue) <> '' then
-    Exit;
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 8; //descriptions
-  dmRefBooks.spGetReferenceFieldList.Open;
-  Error := dm_RefBooks.CheckControl(TcxCustomEdit(Sender), dmRefBooks.spGetReferenceFieldList);
-  dmRefBooks.spGetReferenceFieldList.Close;
-  if Error then
-    ErrorText := 'Необходимо заполнить обязательные поля';
 end;
 
 function TfmAddEditRefBookGoods.CheckReqControls: TWinControl;

@@ -1,4 +1,4 @@
-unit fm_AddEditRefBook;
+unit fm_AddEditLinkedRefBook;
 
 interface
 
@@ -26,7 +26,7 @@ uses
   Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel, cxCalc;
 
 type
-  TfmAddEditRefBook = class(TForm)
+  TfmAddEditLinkedRefBook = class(TForm)
     pnlBottom: TAdvPanel;
     btnSave: TcxButton;
     btnCancel: TcxButton;
@@ -49,7 +49,7 @@ type
     procedure InsertFieldCheck(APanel: TAdvPanel);
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure AppendUpdateRecordSet;
     function GetControlValue(AControl: TControl): Variant;
     function CheckControl(AControl: TcxCustomEdit): Boolean;
     function CheckReqControls: TWinControl;
@@ -59,11 +59,11 @@ type
     FormMode: TRefBookFormMode;
     CurrentID: Integer;
     RefBookName: string;
-    spParentRefBook: TUniStoredProc;
+    rsRefBookDataSet: TDataSet;
   end;
 
 var
-  fmAddEditRefBook: TfmAddEditRefBook;
+  fmAddEditLinkedRefBook: TfmAddEditLinkedRefBook;
 
 implementation
 
@@ -71,7 +71,7 @@ uses dm_main;
 
 {$R *.dfm}
 
-procedure TfmAddEditRefBook.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfmAddEditLinkedRefBook.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   // ModalResult может быть установлен в btnSaveClick
   if (FormMode = fmView) then
@@ -92,13 +92,13 @@ begin
   CanClose := (ModalResult <> mrCancel);
 end;
 
-procedure TfmAddEditRefBook.FormCreate(Sender: TObject);
+procedure TfmAddEditLinkedRefBook.FormCreate(Sender: TObject);
 begin
   FormMode := fmAdd;
   CurrentID := 0;
 end;
 
-function TfmAddEditRefBook.InsertFieldControlPanel: TAdvPanel;
+function TfmAddEditLinkedRefBook.InsertFieldControlPanel: TAdvPanel;
 begin
   Result := TAdvPanel.Create(pnlClient);
   Result.Parent := pnlClient;
@@ -110,18 +110,21 @@ begin
   Result.Anchors := [akLeft, akTop, akRight];
 end;
 
-procedure TfmAddEditRefBook.InsertFieldLabel(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldLabel(APanel: TAdvPanel);
 var
   c: THTMLabel;
   s: string;
 begin
   c := THTMLabel.Create(APanel);
   c.Parent := APanel;
+//  c.AutoSize := False;
   c.Width := 200;
+//  c.Align := alLeft;
   c.Left := 10;
   c.Top := 1;
   c.Height := APanel.Height - 2;
-
+//  c.Properties.WordWrap := True;
+//  c.Properties.Alignment.Vert := taVCenter;
   c.VAlignment := tvaCenter;
   c.Transparent := True;
   if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
@@ -129,7 +132,7 @@ begin
   c.HTMLText.Text := s + spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString;
 end;
 
-procedure TfmAddEditRefBook.InsertFieldEdit(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldEdit(APanel: TAdvPanel);
 var
   c: TcxTextEdit;
 begin
@@ -141,6 +144,10 @@ begin
   c.Style.BorderStyle := ebsSingle;
   c.Width := APanel.Width - c.Left - 10;
   c.Anchors := [akLeft, akTop, akRight];
+//  if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
+//    c.Style.BorderColor := clRed
+//  else
+//    c.Style.BorderColor := clNavy;
   c.Tag := 1;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
@@ -149,10 +156,10 @@ begin
     else
       c.Text := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsString
   else
-    c.Text := spParentRefBook.FieldByName(c.Name).AsString;
+    c.Text := rsRefBookDataSet.FieldByName(c.Name).AsString;
 end;
 
-procedure TfmAddEditRefBook.InsertFieldCalc(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldCalc(APanel: TAdvPanel);
 var
   c: TcxCalcEdit;
 begin
@@ -172,10 +179,10 @@ begin
     else
       c.Value := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsFloat
   else
-    c.Value := spParentRefBook.FieldByName(c.Name).AsFloat;
+    c.Value := rsRefBookDataSet.FieldByName(c.Name).AsFloat;
 end;
 
-procedure TfmAddEditRefBook.InsertFieldDate(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldDate(APanel: TAdvPanel);
 var
   c: TcxDateEdit;
 begin
@@ -186,6 +193,7 @@ begin
   c.Style.BorderStyle := ebsSingle;
   c.Width := 150;
   c.Anchors := [akLeft, akTop, akRight];
+
   c.Tag := spRefBookFieldsAddEditView.RecNo;
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
@@ -194,10 +202,10 @@ begin
     else
       c.Date := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsDateTime
   else
-    c.Date := spParentRefBook.FieldByName(c.Name).AsDateTime;
+    c.Date := rsRefBookDataSet.FieldByName(c.Name).AsDateTime;
 end;
 
-procedure TfmAddEditRefBook.InsertFieldCheck(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldCheck(APanel: TAdvPanel);
 var
   c: TcxCheckBox;
 begin
@@ -209,6 +217,7 @@ begin
   c.Left := 210;
   c.Style.BorderStyle := ebsSingle;
   c.Anchors := [akLeft, akTop];
+
   c.Transparent := True;
   c.Properties.FullFocusRect := True;
   c.Tag := spRefBookFieldsAddEditView.RecNo;
@@ -219,10 +228,10 @@ begin
     else
       c.Checked := Boolean(spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsInteger)
   else
-    c.Checked := Boolean(spParentRefBook.FieldByName(c.Name).AsInteger);
+    c.Checked := Boolean(rsRefBookDataSet.FieldByName(c.Name).AsInteger);
 end;
 
-procedure TfmAddEditRefBook.InsertFieldLookup(APanel: TAdvPanel);
+procedure TfmAddEditLinkedRefBook.InsertFieldLookup(APanel: TAdvPanel);
 var
   c: TcxLookupComboBox;
 begin
@@ -250,53 +259,52 @@ begin
     else
       c.EditValue := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsInteger
   else
-    c.EditValue := spParentRefBook.FieldByName(c.Name).AsInteger;
+    c.EditValue := rsRefBookDataSet.FieldByName(c.Name).AsInteger;
 end;
 
-procedure TfmAddEditRefBook.pnlBottomClick(Sender: TObject);
+procedure TfmAddEditLinkedRefBook.pnlBottomClick(Sender: TObject);
 begin
   TWinControl(TAdvPanel(pnlClient.Controls[0]).Controls[1]).SetFocus;
 end;
 
-procedure TfmAddEditRefBook.btnCancelClick(Sender: TObject);
+procedure TfmAddEditLinkedRefBook.btnCancelClick(Sender: TObject);
 begin
   Close;
 end;
 
-function TfmAddEditRefBook.GetControlValue(AControl: TControl): Variant;
+function TfmAddEditLinkedRefBook.GetControlValue(AControl: TControl): Variant;
 begin
   case AControl.Tag of
-    1: Result := (AControl as TcxTextEdit).Text; // DBTextEdit
-    2: Result := (AControl as TcxDateEdit).Date; // DBDateEdit
+    1: Result := (AControl as TcxTextEdit).Text;  // DBTextEdit
+    2: Result := (AControl as TcxDateEdit).Date;  // DBDateEdit
     3: Result := (AControl as TcxCalcEdit).Value; // DBCalcEdit
-//          4	DBMaskEdit
+//          4   DBMaskEdit
     5: Result := Integer((AControl as TcxCheckBox).Checked); // DBCheckBox
     6: Result := (AControl as TcxLookupComboBox).EditingValue; // DBLookupEdit
-//          7	DBImageEdit
+//          7   DBImageEdit
   end;
 end;
 
-procedure TfmAddEditRefBook.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditLinkedRefBook.AppendUpdateRecordSet;
 var
    i: Integer;
    c: TControl;
 begin
+  if not (rsRefBookDataSet.State in [dsEdit, dsInsert]) then
+    if FormMode = fmAdd then
+      rsRefBookDataSet.Append
+    else
+      rsRefBookDataSet.Edit;
+
   for i := 0 to pnlClient.ControlCount - 1 do
   begin
     c := TAdvPanel(pnlClient.Controls[i]).Controls[1];
-    sp.ParamByName(c.Name).Value := GetControlValue(c);
+    rsRefBookDataSet.FieldByName(c.Name).Value := GetControlValue(c);
   end;
-  if (FormMode = fmAdd) then
-  begin
-    sp.Open;
-    if not sp.Eof then
-      CurrentID := sp.FieldByName('ID').AsInteger;
-  end
-  else
-    sp.Execute;
+  rsRefBookDataSet.Post;
 end;
 
-procedure TfmAddEditRefBook.btnSaveClick(Sender: TObject);
+procedure TfmAddEditLinkedRefBook.btnSaveClick(Sender: TObject);
 var
   InvalidControl: TWinControl;
 begin
@@ -305,7 +313,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      AppendUpdateRecordSet;
       ModalResult := mrOk;
     end
     else
@@ -318,19 +326,19 @@ begin
     ModalResult := mrCancel;
 end;
 
-function TfmAddEditRefBook.CheckControl(AControl: TcxCustomEdit): Boolean;
+function TfmAddEditLinkedRefBook.CheckControl(AControl: TcxCustomEdit): Boolean;
 begin
   Result := True;
   if spRefBookFieldsAddEditView.Locate('RefFieldName', AControl.Name, []) and
      (spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1) then
     case AControl.Tag of
       1: Result := (AControl as TcxTextEdit).Text <> ''; // DBTextEdit
-      2: Result := (AControl as TcxDateEdit).Date = 0; // DBDateEdit
+      2: Result := (AControl as TcxDateEdit).Date = 0;   // DBDateEdit
       // 3: Result := (AControl as TcxCalcEdit).Value = 0;   //  DBCalcEdit
-  //          4	DBMaskEdit
+  //          4 DBMaskEdit
       5: Result := not (AControl as TcxCheckBox).Checked; // DBCheckBox
       6: Result := (AControl as TcxLookupComboBox).EditingValue >= 0 ; // DBLookupEdit
-  //          7	DBImageEdit
+  //          7 DBImageEdit
     end;
   if Result then
     AControl.Style.BorderColor := clWindowFrame
@@ -338,7 +346,7 @@ begin
     AControl.Style.BorderColor := clRed
 end;
 
-function TfmAddEditRefBook.CheckReqControls: TWinControl;
+function TfmAddEditLinkedRefBook.CheckReqControls: TWinControl;
 var
    i: Integer;
 begin
@@ -349,7 +357,7 @@ begin
         Result := TWinControl(TAdvPanel(pnlClient.Controls[i]).Controls[1]);
 end;
 
-procedure TfmAddEditRefBook.FillForm;
+procedure TfmAddEditLinkedRefBook.FillForm;
 var
   FieldPanel: TAdvPanel;
   FirstControl: TWinControl;
@@ -370,10 +378,10 @@ begin
           1: InsertFieldEdit(FieldPanel); // DBTextEdit
           2: InsertFieldDate(FieldPanel); // DBDateEdit
           3: InsertFieldCalc(FieldPanel); // DBCalcEdit
-//          4	DBMaskEdit
+//          4   DBMaskEdit
           5: InsertFieldCheck(FieldPanel); // DBCheckBox
           6: InsertFieldLookup(FieldPanel); // DBLookupEdit
-//          7	DBImageEdit
+//          7   DBImageEdit
         end;
         if (FieldPanel.ControlCount = 2) then
         begin
@@ -390,7 +398,7 @@ begin
   Height := (pnlClient.ControlCount + 1) * 30 + pnlBottom.Height;
 end;
 
-procedure TfmAddEditRefBook.FormShow(Sender: TObject);
+procedure TfmAddEditLinkedRefBook.FormShow(Sender: TObject);
 begin
   spRefBookFieldsAddEditView.Open; // параметр устанавливается в TfmShowRefBook
   case FormMode of

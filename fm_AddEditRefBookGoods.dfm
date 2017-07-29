@@ -268,18 +268,17 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       TabOrder = 8
       Properties.ActivePage = cxTabSheet1
       Properties.CustomButtons.Buttons = <>
-      ClientRectBottom = 247
-      ClientRectLeft = 2
-      ClientRectRight = 521
-      ClientRectTop = 22
+      ClientRectBottom = 251
+      ClientRectRight = 525
+      ClientRectTop = 24
       object cxTabSheet1: TcxTabSheet
         Caption = #1054#1087#1080#1089#1072#1085#1080#1103' '#1090#1086#1074#1072#1088#1072
         ImageIndex = 0
         object GridDescr: TcxGrid
           Left = 0
           Top = 29
-          Width = 519
-          Height = 196
+          Width = 525
+          Height = 198
           Align = alClient
           PopupMenu = pmDescr
           TabOrder = 0
@@ -309,18 +308,23 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
             Images = ilRefBookActionImages
-            OptionsData.Appending = True
+            OptionsData.Deleting = False
+            OptionsData.Editing = False
             OptionsData.Inserting = False
+            OptionsSelection.UnselectFocusedRecordOnExit = False
             OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
+            OptionsView.Indicator = True
             OptionsView.ShowColumnFilterButtons = sfbAlways
+            Styles.ContentEven = dmMain.GridStyleEvenRow
+            Styles.Inactive = dmMain.GridStyleSelectedRow
+            Styles.Selection = dmMain.GridStyleSelectedRow
             object tvDescriptionsColumn1: TcxGridDBColumn
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
               DataBinding.FieldName = 'ProdDescription'
               PropertiesClassName = 'TcxTextEditProperties'
               Properties.HideSelection = False
               Properties.ValidateOnEnter = True
-              Properties.OnValidate = tvDescriptionsColumn1PropertiesValidate
             end
             object tvDescriptionsRecId: TcxGridDBColumn
               DataBinding.FieldName = 'RecId'
@@ -334,7 +338,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         object tbDescr: TRzToolbar
           Left = 0
           Top = 0
-          Width = 519
+          Width = 525
           Height = 29
           Images = ilRefBookActionImages
           BorderInner = fsNone
@@ -387,8 +391,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         object GridBarcode: TcxGrid
           Left = 0
           Top = 29
-          Width = 519
-          Height = 196
+          Width = 525
+          Height = 198
           Align = alClient
           PopupMenu = pmBarcode
           TabOrder = 0
@@ -399,21 +403,24 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
             OptionsData.Deleting = False
+            OptionsData.Editing = False
             OptionsData.Inserting = False
+            OptionsSelection.UnselectFocusedRecordOnExit = False
             OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
             OptionsView.ShowColumnFilterButtons = sfbAlways
+            Styles.ContentEven = dmMain.GridStyleEvenRow
+            Styles.Inactive = dmMain.GridStyleSelectedRow
+            Styles.Selection = dmMain.GridStyleSelectedRow
             object tvBarcodesColumn1: TcxGridDBColumn
               Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076#1099
               DataBinding.FieldName = 'BarCode'
               PropertiesClassName = 'TcxTextEditProperties'
-              Properties.OnValidate = tvBarcodesColumn1PropertiesValidate
             end
             object tvBarcodesColumn2: TcxGridDBColumn
               Caption = #1050#1086#1083'-'#1074#1086' '#1077#1076#1080#1085#1080#1094' '#1090#1086#1074#1072#1088#1072
               DataBinding.FieldName = 'UnitQty'
               PropertiesClassName = 'TcxTextEditProperties'
-              Properties.OnValidate = tvBarcodesColumn1PropertiesValidate
             end
           end
           object cxGridLevel1: TcxGridLevel
@@ -423,7 +430,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
         object tbBarcode: TRzToolbar
           Left = 0
           Top = 0
-          Width = 519
+          Width = 525
           Height = 29
           Images = ilRefBookActionImages
           BorderInner = fsNone
@@ -666,8 +673,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spGetReferenceFieldList (:ReferenceID)}')
     Connection = dmMain.MainConnection
-    Left = 488
-    Top = 240
+    Left = 424
+    Top = 244
     ParamData = <
       item
         DataType = ftInteger
@@ -710,7 +717,7 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
-    DesignInfo = 22544828
+    DesignInfo = 22020456
     ImageInfo = <
       item
         Image.Data = {
@@ -1048,8 +1055,8 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
   end
   object alRefBook: TActionList
     Images = ilRefBookActionImages
-    Left = 504
-    Top = 344
+    Left = 488
+    Top = 340
     object actAddDescr: TAction
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
       ImageIndex = 0

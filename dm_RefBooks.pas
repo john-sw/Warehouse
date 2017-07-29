@@ -18,7 +18,12 @@ type
     spGetGoodsForProdCat: TUniStoredProc;
     dsGetGoodsForProdCat: TUniDataSource;
     spGetReferenceFieldList: TUniStoredProc;
+    spShowRefBookClients: TUniStoredProc;
+    dsShowRefBookClients: TUniDataSource;
+    spGetClientsForGroup: TUniStoredProc;
+    dsGetClientsForGroup: TUniDataSource;
     procedure spShowRefBookGoodsAfterScroll(DataSet: TDataSet);
+    procedure spShowRefBookClientsAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -120,6 +125,13 @@ begin
       if Result = nil then
         Result := TWinControl(AControl.Controls[i]);
 
+end;
+
+procedure TdmRefBooks.spShowRefBookClientsAfterScroll(DataSet: TDataSet);
+begin
+  spGetClientsForGroup.Close;
+  spGetClientsForGroup.ParamByName('ClientFolderID').AsInteger := spShowRefBookClients.FieldByName('ClientFolderID').AsInteger;
+  spGetClientsForGroup.Open;
 end;
 
 procedure TdmRefBooks.spShowRefBookGoodsAfterScroll(DataSet: TDataSet);

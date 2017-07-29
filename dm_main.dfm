@@ -102,13 +102,6 @@ object dmMain: TdmMain
     Left = 44
     Top = 92
   end
-  object cxLookAndFeelController1: TcxLookAndFeelController
-    Kind = lfOffice11
-    NativeStyle = True
-    SkinName = 'Office2010Blue'
-    Left = 176
-    Top = 92
-  end
   object AdvMenuOfficeStyler1: TAdvMenuOfficeStyler
     AntiAlias = aaNone
     AutoThemeAdapt = False
@@ -194,7 +187,7 @@ object dmMain: TdmMain
     NotesFont.Style = []
     MenuBorderColor = 9841920
     Left = 340
-    Top = 176
+    Top = 204
   end
   object AdvMenuFantasyStyler1: TAdvMenuFantasyStyler
     AntiAlias = aaNone
@@ -261,5 +254,24 @@ object dmMain: TdmMain
   object cxLocalizer: TcxLocalizer
     Left = 48
     Top = 208
+  end
+  object GridStyleRepository: TcxStyleRepository
+    Left = 284
+    Top = 92
+    PixelsPerInch = 96
+    object GridStyleSelectedRow: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSkyBlue
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWindowText
+    end
+    object GridStyleEvenRow: TcxStyle
+      AssignedValues = [svColor]
+      Color = 13828095
+    end
   end
 end
