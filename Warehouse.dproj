@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>Warehouse.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -39,6 +39,12 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
@@ -70,6 +76,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_MapFile>3</DCC_MapFile>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -77,6 +84,11 @@
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>false</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <DCC_DebugInformation>true</DCC_DebugInformation>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_MapFile>3</DCC_MapFile>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -96,8 +108,8 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="fm_ShowRefBooks.pas">
-            <Form>fmShowRefBook</Form>
+        <DCCReference Include="fm_ShowInvoiceRegister.pas">
+            <Form>fmShowInvoiceRegister</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="fm_AddEditRefBook.pas">
@@ -124,6 +136,12 @@
         </DCCReference>
         <DCCReference Include="fm_ShowRefBookClients.pas">
             <Form>fmShowRefBookClients</Form>
+        </DCCReference>
+        <DCCReference Include="fm_ShowRefBooks.pas">
+            <Form>fmShowRefBook</Form>
+        </DCCReference>
+        <DCCReference Include="fm_AddEditInvoice.pas">
+            <Form>fmAddEditInvoice</Form>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -198,6 +216,26 @@
 [Exception Log]
 EurekaLog Version=7007
 Activate=0
+atVCL=1
+boCallRTLExceptionEvent=1
+boCatchHandledExceptions=1
+boHandleSafeCallExceptions=1
+boUseMainModuleOptions=1
+cfoReduceFileSize=0
+Debug=1
 DeleteMapAfterCompile=0
+Dialog Class="TEurekaLogDialog"
+dpJCL=1
+dpMadExcept=1
+dpMap=1
+dpMicrosoft=1
+dpTD32=1
 Encrypt Password=""
+Freeze Activate=1
+Freeze Debugger Disable=0
+idEurekaLog=1
+idEurekaLogDetailed=1
+idStepsToReproduce=1
+NestedExceptionMessage=1
+ProjectID="{55AD2870-76C4-4E2D-8150-F5E5B3170749}"
 EurekaLog Last Line -->

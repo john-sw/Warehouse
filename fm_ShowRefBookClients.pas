@@ -114,13 +114,16 @@ type
     RzToolButton4: TRzToolButton;
     RzToolButton10: TRzToolButton;
     RzSpacer9: TRzSpacer;
-    RzToolButton11: TRzToolButton;
     tlGridClientsGroups: TcxDBTreeList;
     cxDBTreeList1ClientFolderName: TcxDBTreeListColumn;
     actCopyCellClientsGroups: TAction;
     AdvPanel1: TAdvPanel;
     edtSearchString: TcxButtonEdit;
     cxLabel5: TcxLabel;
+    actSelect: TAction;
+    RzToolButton12: TRzToolButton;
+    RzSpacer10: TRzSpacer;
+    RzToolButton11: TRzToolButton;
     procedure FormShow(Sender: TObject);
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
@@ -139,6 +142,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure actCopyCellClientsGroupsExecute(Sender: TObject);
     procedure alRefBookUpdate(Action: TBasicAction; var Handled: Boolean);
+    procedure actSelectExecute(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -206,7 +210,10 @@ end;
 
 procedure TfmShowRefBookClients.actCloseExecute(Sender: TObject);
 begin
-  Close;
+  if FormStyle = fsMDIChild then
+    Close
+  else
+    ModalResult := mrCancel;
 end;
 
 procedure TfmShowRefBookClients.actCopyCellExecute(Sender: TObject);
@@ -338,6 +345,11 @@ begin
   dmRefBooks.spShowRefBookClients.Open;
 end;
 
+procedure TfmShowRefBookClients.actSelectExecute(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
 procedure TfmShowRefBookClients.actViewExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditRefBookClients, fmAddEditRefBookClients);
@@ -389,7 +401,8 @@ end;
 
 procedure TfmShowRefBookClients.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0);
+  if FormStyle = fsMDIChild then
+    PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0)
 end;
 
 procedure TfmShowRefBookClients.FormShow(Sender: TObject);

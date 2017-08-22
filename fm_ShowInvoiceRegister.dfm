@@ -1,9 +1,9 @@
-object fmShowRefBookClients: TfmShowRefBookClients
+object fmShowInvoiceRegister: TfmShowInvoiceRegister
   Left = 0
   Top = 0
-  Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082' - '#1050#1086#1085#1090#1088#1072#1075#1077#1085#1090#1099
-  ClientHeight = 539
-  ClientWidth = 968
+  Caption = #1046#1091#1088#1085#1072#1083' - '
+  ClientHeight = 545
+  ClientWidth = 886
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,34 +12,198 @@ object fmShowRefBookClients: TfmShowRefBookClients
   Font.Style = []
   FormStyle = fsMDIChild
   OldCreateOrder = False
-  Position = poMainFormCenter
+  Position = poOwnerFormCenter
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object pnlClient: TAdvPanel
+  object GridRefBook: TcxGrid
+    Left = 0
+    Top = 31
+    Width = 886
+    Height = 485
+    Align = alClient
+    PopupMenu = pmDefaultPopupMenu
+    TabOrder = 0
+    object tvRefBook: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = dsShowRefBook
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsSelection.UnselectFocusedRecordOnExit = False
+      OptionsView.ShowColumnFilterButtons = sfbAlways
+      Styles.ContentEven = dmMain.GridStyleEvenRow
+      Styles.Inactive = dmMain.GridStyleSelectedRow
+      Styles.Selection = dmMain.GridStyleSelectedRow
+    end
+    object GridRefBookLevel1: TcxGridLevel
+      GridView = tvRefBook
+    end
+  end
+  object RzToolbar2: TRzToolbar
+    Left = 0
+    Top = 516
+    Width = 886
+    Height = 29
+    Align = alBottom
+    Images = ilRefBookActionImages
+    BorderInner = fsNone
+    BorderOuter = fsGroove
+    BorderSides = [sdBottom]
+    BorderWidth = 0
+    GradientColorStyle = gcsMSOffice
+    TabOrder = 1
+    VisualStyle = vsGradient
+    ToolbarControls = (
+      RzToolButton6
+      RzSpacer5
+      RzToolButton7
+      RzSpacer6
+      RzToolButton8
+      RzSpacer7
+      RzToolButton9
+      RzSpacer8
+      RzToolButton10
+      RzSpacer1
+      RzToolButton1
+      RzSpacer2
+      RzToolButton2
+      RzSpacer9
+      RzToolButton11)
+    object RzToolButton6: TRzToolButton
+      Left = 4
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actAdd
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object RzSpacer5: TRzSpacer
+      Left = 94
+      Top = 2
+    end
+    object RzToolButton7: TRzToolButton
+      Left = 102
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actEdit
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object RzSpacer6: TRzSpacer
+      Left = 192
+      Top = 2
+    end
+    object RzToolButton8: TRzToolButton
+      Left = 200
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actView
+    end
+    object RzSpacer7: TRzSpacer
+      Left = 290
+      Top = 2
+    end
+    object RzToolButton9: TRzToolButton
+      Left = 298
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actDelete
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object RzSpacer8: TRzSpacer
+      Left = 388
+      Top = 2
+    end
+    object RzToolButton10: TRzToolButton
+      Left = 396
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actRefresh
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object RzSpacer1: TRzSpacer
+      Left = 486
+      Top = 2
+    end
+    object RzToolButton1: TRzToolButton
+      Left = 494
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actPrint
+    end
+    object RzSpacer2: TRzSpacer
+      Left = 584
+      Top = 2
+    end
+    object RzToolButton2: TRzToolButton
+      Left = 592
+      Top = 2
+      Width = 106
+      DropDownMenu = pmApproveDisapprove
+      ShowCaption = True
+      UseToolbarShowCaption = False
+      ToolStyle = tsDropDown
+      Caption = #1044#1086#1087#1086#1083#1085#1080#1090#1077#1083#1100#1085#1086
+    end
+    object RzSpacer9: TRzSpacer
+      Left = 698
+      Top = 2
+    end
+    object RzToolButton11: TRzToolButton
+      Left = 706
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actClose
+      ParentShowHint = False
+      ShowHint = True
+    end
+  end
+  object AdvPanel1: TAdvPanel
     Left = 0
     Top = 0
-    Width = 968
-    Height = 539
-    Align = alClient
+    Width = 886
+    Height = 31
+    Align = alTop
     BevelOuter = bvNone
     Color = 16643823
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 0
+    TabOrder = 2
     UseDockManager = True
     Version = '2.3.0.8'
     BorderColor = 13087391
     Caption.Color = 16643823
     Caption.ColorTo = 15784647
     Caption.Font.Charset = DEFAULT_CHARSET
-    Caption.Font.Color = 5978398
+    Caption.Font.Color = clWindowText
     Caption.Font.Height = -11
     Caption.Font.Name = 'Tahoma'
     Caption.Font.Style = []
@@ -63,367 +227,440 @@ object fmShowRefBookClients: TfmShowRefBookClients
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    FullHeight = 200
-    object cxGroupBox1: TcxGroupBox
-      Left = 0
-      Top = 0
-      Align = alLeft
-      Caption = ' '#1043#1088#1091#1087#1087#1099' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1086#1074
+    FullHeight = 50
+    object edtDocNumber: TcxButtonEdit
+      Left = 102
+      Top = 5
+      Properties.Buttons = <>
+      Properties.Images = ilRefBookActionImages
+      Style.BorderStyle = ebsOffice11
+      Style.ButtonStyle = btsOffice11
       TabOrder = 0
-      Transparent = True
-      Height = 539
-      Width = 251
-      object RzToolbar1: TRzToolbar
-        Left = 2
-        Top = 508
-        Width = 247
-        Height = 29
-        Align = alBottom
-        Images = ilRefBookActionImages
-        BorderInner = fsNone
-        BorderOuter = fsGroove
-        BorderSides = [sdBottom]
-        BorderWidth = 0
-        GradientColorStyle = gcsMSOffice
-        TabOrder = 0
-        VisualStyle = vsGradient
-        ToolbarControls = (
-          RzToolButton1
-          RzSpacer1
-          RzToolButton2
-          RzSpacer2
-          RzToolButton5
-          RzSpacer4
-          RzToolButton3
-          RzSpacer3
-          RzToolButton4)
-        object RzToolButton1: TRzToolButton
-          Left = 4
-          Top = 2
-          Width = 39
-          DropDownMenu = pmAddClientsGroup
-          ToolStyle = tsDropDown
-          Action = actAddGroup
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer1: TRzSpacer
-          Left = 43
-          Top = 2
-        end
-        object RzToolButton2: TRzToolButton
-          Left = 51
-          Top = 2
-          Action = actEditGroup
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer2: TRzSpacer
-          Left = 76
-          Top = 2
-        end
-        object RzToolButton5: TRzToolButton
-          Left = 84
-          Top = 2
-          Action = actViewGroup
-        end
-        object RzSpacer4: TRzSpacer
-          Left = 109
-          Top = 2
-        end
-        object RzToolButton3: TRzToolButton
-          Left = 117
-          Top = 2
-          Action = actDeleteGroup
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer3: TRzSpacer
-          Left = 142
-          Top = 2
-        end
-        object RzToolButton4: TRzToolButton
-          Left = 150
-          Top = 2
-          Action = actRefreshGroup
-          ParentShowHint = False
-          ShowHint = True
-        end
-      end
-      object tlGridClientsGroups: TcxDBTreeList
-        Left = 2
-        Top = 18
-        Width = 247
-        Height = 490
-        Align = alClient
-        Bands = <
-          item
-          end>
-        DataController.DataSource = dmRefBooks.dsShowRefBookClients
-        DataController.ParentField = 'ParentFolderID'
-        DataController.KeyField = 'ClientFolderID'
-        DefaultLayout = True
-        Navigator.Buttons.CustomButtons = <>
-        OptionsSelection.CellSelect = False
-        OptionsSelection.InvertSelect = False
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.Headers = False
-        PopupMenu = pmClientsGroups
-        RootValue = -1
-        Styles.Selection = dmMain.GridStyleSelectedRow
-        TabOrder = 1
-        object cxDBTreeList1ClientFolderName: TcxDBTreeListColumn
-          Caption.AlignVert = vaTop
-          DataBinding.FieldName = 'ClientFolderName'
-          Options.ShowEditButtons = eisbNever
-          Width = 100
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-          Position.BandIndex = 0
-          Summary.FooterSummaryItems = <>
-          Summary.GroupFooterSummaryItems = <>
-        end
-      end
+      Width = 159
     end
-    object cxSplitter1: TcxSplitter
-      Left = 251
-      Top = 0
-      Width = 8
-      Height = 539
-      HotZoneClassName = 'TcxSimpleStyle'
-    end
-    object cxGroupBox2: TcxGroupBox
-      Left = 259
-      Top = 0
-      Align = alClient
-      Caption = ' '#1050#1086#1090#1088#1072#1075#1077#1085#1090#1099' '
-      TabOrder = 2
+    object cxLabel5: TcxLabel
+      Left = 10
+      Top = 7
+      Caption = #8470' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
       Transparent = True
-      Height = 539
-      Width = 709
-      object GridRefBook: TcxGrid
-        Left = 2
-        Top = 49
-        Width = 705
-        Height = 459
-        Align = alClient
-        PopupMenu = pmDefaultPopupMenu
-        TabOrder = 0
-        object tvRefBook: TcxGridDBTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmRefBooks.dsGetClientsForGroup
-          DataController.KeyFieldNames = 'ClientID'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.ImmediateEditor = False
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.UnselectFocusedRecordOnExit = False
-          OptionsView.ShowColumnFilterButtons = sfbAlways
-          Styles.ContentEven = dmMain.GridStyleEvenRow
-          Styles.Inactive = dmMain.GridStyleSelectedRow
-          Styles.Selection = dmMain.GridStyleSelectedRow
-        end
-        object GridRefBookLevel1: TcxGridLevel
-          GridView = tvRefBook
-        end
+    end
+    object cxLabel1: TcxLabel
+      Left = 274
+      Top = 7
+      Caption = #1055#1077#1088#1080#1086#1076' '#1089
+      Transparent = True
+    end
+    object deDate1: TcxDateEdit
+      Left = 330
+      Top = 5
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000020000
+        000A000000100000001100000011000000110000001200000012000000120000
+        0012000000120000001300000013000000120000000C000000030000000A8159
+        4CC2B47C69FFB37B69FFB37B68FFB37A68FFB37A68FFB27A68FFB37968FFB279
+        68FFB27967FFB27867FFB17867FFB17866FF7F5649C30000000B0000000EB77F
+        6EFFFBF7F4FFF8EEE9FFF8EEE8FFF7EFE8FFFAF4F0FFFBF7F4FFFBF6F3FFFAF4
+        EFFFF6EDE6FFF6ECE6FFF6ECE6FFF6ECE5FFB47B69FF000000110000000EB984
+        72FFFBF8F5FFF8F0EAFFF7EFE9FFF8EFE9FF806B62FF543B31FF543B30FF7F6A
+        61FFF7EDE7FFF7ECE7FFF6ECE6FFF7EDE7FFB77F6EFF000000110000000EBC89
+        78FFFCF9F7FFF9F1EDFFF8F0ECFFF8F0EBFFF9F0EBFF98877EFF816E64FFF8EF
+        EAFFF7EFE9FFF8EEE9FFF7EEE8FFF8EEE9FFB98472FF000000100000000DC08E
+        7DFFFCFAF8FFFAF3EFFFF9F2EEFFF9F2EEFFF9F2EDFF9A887FFF837066FFF9F1
+        ECFFF8F1EBFFF9F0EBFFF8EFEAFFF8F1EBFFBC8977FF000000100000000CC394
+        82FFFCFBF9FFFBF5F2FFFBF4F1FFFAF4F1FFFAF3F0FF9B8981FF847268FFFAF2
+        EEFFF9F2EEFFF9F2EDFFF9F2EDFFF9F2EEFFC08E7CFF0000000F0000000BC798
+        87FFFDFCFAFFFBF7F4FFFBF6F4FFFBF6F2FFFCF9F7FF9D8C84FF877368FFFAF5
+        F1FFFAF4F1FFFAF3F0FFFAF3F0FFFAF4F0FFC49381FF0000000E0000000BC99D
+        8CFFFDFCFBFFFCF8F6FFFCF7F5FFFCF7F5FF89746AFF5F4538FF88746AFFFBF6
+        F3FFFBF6F2FFFBF6F2FFFAF5F2FFFAF6F2FFC69886FF0000000D0000000ACDA1
+        90FFFEFDFCFFFCF9F8FFFCF8F7FFFCF9F7FFFCF8F7FFBEB1AAFF8B756BFFFCF7
+        F6FFFCF7F6FFFCF7F5FFFBF6F5FFFBF7F5FFC99D8BFF0000000D00000009CFA5
+        94FFFEFDFDFFFDFAF9FFFDF9F9FFFDFAF8FFFDF9F8FFFDFAF8FFFCF9F7FFFCF9
+        F7FFFCF9F7FFFDF8F7FFFCF9F7FFFCF9F7FFCCA290FF0000000C000000084B53
+        C3FF8D9EECFF687CE3FF6678E2FF6476E1FF6172E0FF5F70DFFF5D6CDEFF5B69
+        DCFF5966DBFF5664DAFF5462D9FF616DDCFF3337AAFF0000000B000000084C55
+        C4FF93A4EEFF6C80E6FF6A7EE4FF687BE4FF6678E2FF6375E1FF6172E0FF5E6F
+        DEFF5C6CDDFF5A69DCFF5766DAFF6472DDFF3538ABFF0000000A000000074D56
+        C6FF96A7EFFF95A6EFFF93A4EDFF90A2EDFF8F9FEDFF8B9BEBFF8898EAFF8595
+        EAFF8291E7FF7F8DE7FF7D89E5FF7987E5FF3539ACFF00000009000000043A40
+        93C14D55C5FF4B53C3FF4A51C1FF484FBFFF464DBEFF444BBBFF4249B9FF4046
+        B7FF3E44B4FF3C41B3FF3A3EB0FF393CAEFF282B80C200000006000000010000
+        0004000000060000000600000006000000070000000700000007000000070000
+        0007000000070000000800000008000000070000000500000001}
+      Properties.SaveTime = False
+      Properties.ShowTime = False
+      Properties.UseNullString = True
+      TabOrder = 3
+      Width = 121
+    end
+    object deDate2: TcxDateEdit
+      Left = 479
+      Top = 5
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000020000
+        000A000000100000001100000011000000110000001200000012000000120000
+        0012000000120000001300000013000000120000000C000000030000000A8159
+        4CC2B47C69FFB37B69FFB37B68FFB37A68FFB37A68FFB27A68FFB37968FFB279
+        68FFB27967FFB27867FFB17867FFB17866FF7F5649C30000000B0000000EB77F
+        6EFFFBF7F4FFF9F0EBFFFBF5F1FFFBF7F4FFFBF7F4FFF9F3EEFFF7EDE7FFFAF4
+        EFFFFBF6F3FFFBF6F3FFF9F3EFFFF6ECE5FFB47B69FF000000110000000EB984
+        72FFFBF8F5FFDAD0C9FF776258FF563D32FF553D32FFA3948DFFF8F1ECFF806B
+        62FF543B31FF543B30FF7E6961FFF7EDE7FFB77F6EFF000000110000000EBC89
+        78FFFCF9F7FFAF9F97FF8F7B71FFF8F0EBFFD9CDC7FF573F33FFC3B5AFFFF8EF
+        EAFF97867EFF816E64FFF7EEE8FFF8EEE9FFB98472FF000000100000000DC08E
+        7DFFFCFAF8FFFAF3EFFFF9F2EEFFFCF9F7FFE7E0DBFF5A4034FFCEC3BBFFF9F1
+        ECFF99887FFF837066FFF8EFEAFFF8F1EBFFBC8977FF000000100000000CC394
+        82FFFCFBF9FFFBF5F2FFFBF4F1FF5D4336FF725A4FFFB2A39CFFFAF3EFFFFAF2
+        EEFF9B8980FF847268FFF9F2EDFFF9F2EEFFC08E7CFF0000000F0000000BC798
+        87FFFDFCFAFFFCF8F5FFFDFAF9FFFBF6F2FFBDB0A9FF7F685EFFFAF4F1FFFCF9
+        F6FF9D8C84FF877268FFFAF3F0FFFAF4F0FFC49381FF0000000E0000000BC99D
+        8CFFFDFCFBFFD3C9C4FF6D5346FFFEFBFAFFBFB3ADFF614639FFF1EAE7FF8974
+        6AFF5F4538FF88746AFFFAF5F2FFFAF6F2FFC69886FF0000000D0000000ACDA1
+        90FFFEFDFCFFFCF9F8FF8C786DFF65493AFF63483BFFA18E85FFFCF7F6FFFCF7
+        F6FFBEB1AAFF8B756AFFFBF6F5FFFBF7F5FFC99D8BFF0000000D00000009CFA5
+        94FFFEFDFDFFFDFAF9FFFDF9F9FFFDFAF8FFFDF9F8FFFDFAF8FFFCF9F7FFFCF9
+        F7FFFCF9F7FFFDF8F7FFFCF9F7FFFCF9F7FFCCA290FF0000000C000000084B53
+        C3FF8D9EECFF687CE3FF6678E2FF6476E1FF6172E0FF5F70DFFF5D6CDEFF5B69
+        DCFF5966DBFF5664DAFF5462D9FF616DDCFF3337AAFF0000000B000000084C55
+        C4FF93A4EEFF6C80E6FF6A7EE4FF687BE4FF6678E2FF6375E1FF6172E0FF5E6F
+        DEFF5C6CDDFF5A69DCFF5766DAFF6472DDFF3538ABFF0000000A000000074D56
+        C6FF96A7EFFF95A6EFFF93A4EDFF90A2EDFF8F9FEDFF8B9BEBFF8898EAFF8595
+        EAFF8291E7FF7F8DE7FF7D89E5FF7987E5FF3539ACFF00000009000000043A40
+        93C14D55C5FF4B53C3FF4A51C1FF484FBFFF464DBEFF444BBBFF4249B9FF4046
+        B7FF3E44B4FF3C41B3FF3A3EB0FF393CAEFF282B80C200000006000000010000
+        0004000000060000000600000006000000070000000700000007000000070000
+        0007000000070000000800000008000000070000000500000001}
+      Properties.SaveTime = False
+      Properties.ShowTime = False
+      TabOrder = 4
+      Width = 121
+    end
+    object cxLabel2: TcxLabel
+      Left = 457
+      Top = 7
+      Caption = #1087#1086
+      Transparent = True
+    end
+    object btnFilter: TcxButton
+      Left = 620
+      Top = 3
+      Width = 90
+      Height = 25
+      Caption = #1060#1080#1083#1100#1090#1088
+      LookAndFeel.Kind = lfOffice11
+      OptionsImage.Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000100000009041225510D33
+        69BD114389EB114489EC0D3369BD051225520000000900000002000000000000
+        0000000000000000000000000000000000010000000815204E872259A1FF629B
+        D2FF7DB7E7FF7CB6E7FF619AD2FF1F57A0FF0923478800000009000000000000
+        000000000000000000040000000D0000001112112D524E4DBAFD6687D9FFA6D4
+        F4FF8EC5F0FF8EC5F0FF8EC5F0FF85BCEAFF275EA4FD0412244D000000000000
+        0000000000000000000C4F413BBB3E32308F454396E06F77D4FF6A77DAFF698C
+        DEFFACD7F5FF94C9F1FF95C9F1FF95C9F1FF6CA1D4FF0D3872C8000000000000
+        0000000000000000000F8B756CFF62616173524FB7F7808BDFFF717DDBFF6E7B
+        DBFF7091DFFFB1D9F5FFB1D9F5FFB1D9F5FFABD3F1FF114690F5000000000000
+        0000000000000000000E877169FF605E5D725654BAF78B95E2FF7B88DFFF7481
+        DCFF5F6BD4FFE5C89DFFDEB782FFDEB783FFDEB786FFA57250F2000000000000
+        0000000000010000000E846E67FF7C7877905757A7DF868DDDFF8B97E3FF7C88
+        DFFF6471D5FFEDD6B3FFE6C99EFFE7CA9FFFD9B891FF896345C6000000000000
+        0001000000061A151449836C64FFA49E9BC0524E6694686ACCFD9AA4E7FF959E
+        E6FF727FDAFFEEDBBBFFE9D2AAFFEAD2AEFFC49772FC2D211845000000010000
+        0006292220637E6861FB96837BFFB1A29BFC4F4541864F4C7BB46A6CD0FF8E95
+        E1FF8D97E1FFEFDEC6FFE2C6A5FFC99E73FF5C46327F00000004000000042922
+        1F5E86716AFFA89890FFD9D1CCFFCBBEB7FFA4968DEF554C46884E495E935756
+        9DD45D5FBBEAB58E66E68D6D4FB532271C450000000300000001050404137462
+        5CE8AC9A92FFD5CDC7FFF0EDEAFFD7CFC9FFC0B5AEFFA5948BFC827269C0584C
+        4791302826660202020C00000003000000010000000000000000322A276A9481
+        7AFFC2B6AEFFEEEBE8FFFBFAF9FFE0DBD7FFD2C9C3FFB1A29BFFAD998CFFA693
+        87FF8B766FFF3027256C000000040000000000000000000000005A4B47B2B5A7
+        9FFFE4DFD9FFF9F8F6FFF8F8F5FFF8F8F5FFF8F8F5FFF6F6F3FFE7E3DEFFD5CC
+        C4FFA6958DFF564844B300000006000000000000000000000000816E67F4EEEC
+        E8FFCCC4C0FFAB9D98FF79635CFF77615AFF77615AFF79635CFFAB9D98FFCCC4
+        C0FFEBE8E4FF7A665FEF00000006000000000000000000000000433A3773A997
+        91F9D8D1CBFFEDEBE7FFF5F5F2FFF8F8F5FFF8F8F5FFF5F4F1FFEAE7E3FFD2CA
+        C4FF9E8E86F93D3331740000000300000000000000000000000000000003110E
+        0E214A403C7E71625DBE7F6E68D598847DFF97837BFF7C6A64D56C5D58BF453C
+        387F110F0E250000000300000001000000000000000000000000}
+      TabOrder = 6
+      OnClick = btnFilterClick
+    end
+    object btnClearFilter: TcxButton
+      Left = 716
+      Top = 3
+      Width = 90
+      Height = 25
+      Caption = #1054#1095#1080#1089#1090#1080#1090#1100
+      LookAndFeel.Kind = lfOffice11
+      OptionsImage.Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000001000000040D0B24462420
+        66B82F2883E92E2880E6241F63B60C0A22430000000300000001000000000000
+        000000000000000000000000000000000000000000041B184D8A3A369CFF4152
+        C1FF425BD1FF425BD0FF3E4EBFFF36329AFF1916468100000004000000000000
+        000000000000000000040000000D0000000F110F305D3E3DA4FF4F69D6FF3A50
+        CAFFD1D2EAFFDCDCEBFFA0AAE3FF556AD3FF3736A1FF0F0E2C52000000000000
+        0000000000000000000C4F413BBB43353395342E7FDE5D6DCEFF5C76DDFF4967
+        DAFF495FCFFFEBEAF0FFF9F5F1FFA1ACE4FF4152C3FF292473C4000000000000
+        0000000000000000000F8B756CFF6A68687839339EFC6F89E4FFD5D9F0FF6C83
+        E0FF4D6ADBFF4C62D2FFEDEAF1FFDEDFEEFF4964D6FF362F94F4000000000000
+        0000000000000000000E877169FF676563783A34A1FC718CE5FFE3E6F5FFEFED
+        F5FF6E86E2FF506DDDFF4E66D5FFD3D7EFFF4C68D9FF353097F1000000000000
+        0000000000010000000E846E67FF827E7C953E3990DE6375D4FFBBC8F2FFFDFB
+        FAFFEFF0F7FF7189E4FF5271DFFF435CD4FF4B5DCDFF2C287EC7000000000000
+        0001000000061A151449836C64FFA29C99BE474166A04546B4FF8299E8FFBDC9
+        F3FFE5E9F8FFD7DEF5FF6783E5FF5D79E0FF4444B2FF11103152000000010000
+        0006292220637E6861FB96837BFFA79993EE5A4F4A993C3676C14341B3FF6576
+        D6FF738CE5FF728BE4FF6374D5FF4141B2FF201E5C9000000004000000042922
+        1F5E86716AFFA89890FFD9D1CCFFCBBEB7FF978A81DD5F544E99413A5FA03935
+        89D93935A2F138349FEC2B287CBC131237580000000400000001050404137462
+        5CE8AC9A92FFD5CDC7FFF0EDEAFFD7CFC9FFC0B5AEFF9C8C84EE7F7167BE594D
+        4895332A276D0202020E00000005000000020000000000000000322A276A9481
+        7AFFC2B6AEFFEEEBE8FFFBFAF9FFE0DBD7FFD2C9C3FFB1A29BFFAD998CFFA693
+        87FF8B766FFF3027256C000000040000000000000000000000005A4B47B2B5A7
+        9FFFE4DFD9FFF9F8F6FFF8F8F5FFF8F8F5FFF8F8F5FFF6F6F3FFE7E3DEFFD5CC
+        C4FFA6958DFF564844B300000006000000000000000000000000816E67F4EEEC
+        E8FFCCC4C0FFAB9D98FF79635CFF77615AFF77615AFF79635CFFAB9D98FFCCC4
+        C0FFEBE8E4FF7A665FEF00000006000000000000000000000000433A3773A997
+        91F9D8D1CBFFEDEBE7FFF5F5F2FFF8F8F5FFF8F8F5FFF5F4F1FFEAE7E3FFD2CA
+        C4FF9E8E86F93D3331740000000300000000000000000000000000000003110E
+        0E214A403C7E71625DBE7F6E68D598847DFF97837BFF7C6A64D56C5D58BF453C
+        387F110F0E250000000300000001000000000000000000000000}
+      TabOrder = 7
+      OnClick = btnClearFilterClick
+    end
+  end
+  object spShowInvoiceRegister: TUniStoredProc
+    StoredProcName = 'br_aspInvoice;1'
+    SQL.Strings = (
+      
+        '{:RETURN_VALUE = CALL br_aspInvoice;1 (:DocNumber, :Date1, :Date' +
+        '2)}')
+    Connection = dmMain.MainConnection
+    AfterOpen = spShowInvoiceRegisterAfterOpen
+    Left = 48
+    Top = 88
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
       end
-      object RzToolbar2: TRzToolbar
-        Left = 2
-        Top = 508
-        Width = 705
-        Height = 29
-        Align = alBottom
-        Images = ilRefBookActionImages
-        BorderInner = fsNone
-        BorderOuter = fsGroove
-        BorderSides = [sdBottom]
-        BorderWidth = 0
-        GradientColorStyle = gcsMSOffice
-        TabOrder = 1
-        VisualStyle = vsGradient
-        ToolbarControls = (
-          RzToolButton6
-          RzSpacer5
-          RzToolButton7
-          RzSpacer6
-          RzToolButton8
-          RzSpacer7
-          RzToolButton9
-          RzSpacer8
-          RzToolButton10
-          RzSpacer9
-          RzToolButton12
-          RzSpacer10
-          RzToolButton11)
-        object RzToolButton6: TRzToolButton
-          Left = 4
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actAdd
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer5: TRzSpacer
-          Left = 94
-          Top = 2
-        end
-        object RzToolButton7: TRzToolButton
-          Left = 102
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actEdit
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer6: TRzSpacer
-          Left = 192
-          Top = 2
-        end
-        object RzToolButton8: TRzToolButton
-          Left = 200
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actView
-        end
-        object RzSpacer7: TRzSpacer
-          Left = 290
-          Top = 2
-        end
-        object RzToolButton9: TRzToolButton
-          Left = 298
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actDelete
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer8: TRzSpacer
-          Left = 388
-          Top = 2
-        end
-        object RzToolButton10: TRzToolButton
-          Left = 396
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actRefresh
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer9: TRzSpacer
-          Left = 486
-          Top = 2
-        end
-        object RzToolButton12: TRzToolButton
-          Left = 494
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actSelect
-        end
-        object RzSpacer10: TRzSpacer
-          Left = 584
-          Top = 2
-        end
-        object RzToolButton11: TRzToolButton
-          Left = 592
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actClose
-          Align = alRight
-          ParentShowHint = False
-          ShowHint = True
-        end
+      item
+        DataType = ftWideString
+        Name = 'DocNumber'
+        ParamType = ptInput
+        Size = 100
+        Value = nil
       end
-      object AdvPanel1: TAdvPanel
-        Left = 2
-        Top = 18
-        Width = 705
-        Height = 31
-        Align = alTop
-        BevelOuter = bvNone
-        Color = 16643823
-        TabOrder = 2
-        UseDockManager = True
-        Version = '2.3.0.8'
-        BorderColor = 13087391
-        Caption.Color = 16643823
-        Caption.ColorTo = 15784647
-        Caption.Font.Charset = DEFAULT_CHARSET
-        Caption.Font.Color = clBlack
-        Caption.Font.Height = -11
-        Caption.Font.Name = 'Tahoma'
-        Caption.Font.Style = []
-        Caption.GradientDirection = gdVertical
-        Caption.Indent = 2
-        Caption.ShadeLight = 255
-        CollapsColor = clNone
-        CollapsDelay = 0
-        ColorTo = 15784647
-        ShadowColor = clBlack
-        ShadowOffset = 0
-        StatusBar.BorderColor = 16643823
-        StatusBar.BorderStyle = bsSingle
-        StatusBar.Font.Charset = DEFAULT_CHARSET
-        StatusBar.Font.Color = 5978398
-        StatusBar.Font.Height = -11
-        StatusBar.Font.Name = 'Tahoma'
-        StatusBar.Font.Style = []
-        StatusBar.Color = 16643823
-        StatusBar.ColorTo = 15784647
-        StatusBar.GradientDirection = gdVertical
-        Styler = dmMain.AdvPanelStyler1
-        Text = ''
-        FullHeight = 50
-        object edtSearchString: TcxButtonEdit
-          Left = 50
-          Top = 0
-          Properties.Buttons = <
-            item
-              Action = actRefresh
-              Default = True
-              Kind = bkGlyph
-            end>
-          Properties.Images = ilRefBookActionImages
-          Style.BorderStyle = ebsOffice11
-          Style.ButtonStyle = btsOffice11
-          TabOrder = 0
-          Width = 643
-        end
-        object cxLabel5: TcxLabel
-          Left = 10
-          Top = 3
-          Caption = #1060#1080#1083#1100#1090#1088
-          Transparent = True
-        end
+      item
+        DataType = ftDateTime
+        Name = 'Date1'
+        ParamType = ptInput
+        Value = nil
       end
+      item
+        DataType = ftDateTime
+        Name = 'Date2'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'br_aspInvoice;1'
+  end
+  object dsShowRefBook: TUniDataSource
+    DataSet = spShowInvoiceRegister
+    Left = 152
+    Top = 88
+  end
+  object pmDefaultPopupMenu: TAdvPopupMenu
+    MenuStyler = dmMain.AdvMenuFantasyStyler1
+    Version = '2.5.7.0'
+    Left = 540
+    Top = 204
+    object N14: TMenuItem
+      Action = actRefresh
+    end
+    object N6: TMenuItem
+      Caption = '-'
+    end
+    object N1: TMenuItem
+      Action = actAdd
+    end
+    object N2: TMenuItem
+      Action = actEdit
+    end
+    object N3: TMenuItem
+      Action = actView
+    end
+    object N4: TMenuItem
+      Action = actDelete
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object N7: TMenuItem
+      Action = actCopyCell
+    end
+    object N10: TMenuItem
+      Caption = '-'
+    end
+    object miExportToExcel: TMenuItem
+      Action = actExport
+    end
+    object miPrint: TMenuItem
+      Action = actPrint
+    end
+    object N8: TMenuItem
+      Caption = '-'
+    end
+    object N9: TMenuItem
+      Caption = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+      OnClick = N9Click
+    end
+  end
+  object spRefBookFieldsBrowse: TUniStoredProc
+    StoredProcName = 'spGetReferenceBrowser;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 256
+    Top = 88
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceBrowser;1'
+  end
+  object qSprRef: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprReference'
+      'where ReferenceID = :ID')
+    Left = 52
+    Top = 156
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        Value = nil
+      end>
+  end
+  object ExportToExcelSaveDialog: TSaveDialog
+    DefaultExt = 'xlsx'
+    Filter = 'Excel 2007 (*.xlsx)|*.xlsx|Excel XP files (*.xls)|*.xls'
+    Left = 492
+    Top = 92
+  end
+  object prnStyleManager: TdxPrintStyleManager
+    Version = 0
+    Left = 620
+    Top = 92
+  end
+  object prnRefBook: TdxComponentPrinter
+    CurrentLink = prnRefBookLink1
+    Version = 0
+    Left = 712
+    Top = 92
+    object prnRefBookLink1: TdxGridReportLink
+      Active = True
+      Component = GridRefBook
+      PageNumberFormat = pnfNumeral
+      PrinterPage.DMPaper = 1
+      PrinterPage.Footer = 6350
+      PrinterPage.Header = 6350
+      PrinterPage.Margins.Bottom = 12700
+      PrinterPage.Margins.Left = 12700
+      PrinterPage.Margins.Right = 12700
+      PrinterPage.Margins.Top = 12700
+      PrinterPage.PageSize.X = 215900
+      PrinterPage.PageSize.Y = 279400
+      PrinterPage._dxMeasurementUnits_ = 0
+      PrinterPage._dxLastMU_ = 2
+      ReportDocument.CreationDate = 42964.938606863420000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      BuiltInReportLink = True
+    end
+  end
+  object alRefBook: TActionList
+    Images = ilRefBookActionImages
+    Left = 188
+    Top = 196
+    object actAdd: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+      ImageIndex = 0
+      ShortCut = 45
+      OnExecute = actAddExecute
+    end
+    object actEdit: TAction
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+      ImageIndex = 1
+      OnExecute = actEditExecute
+    end
+    object actView: TAction
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      ImageIndex = 2
+      OnExecute = actViewExecute
+    end
+    object actDelete: TAction
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      ImageIndex = 3
+      OnExecute = actDeleteExecute
+    end
+    object actRefresh: TAction
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+      ImageIndex = 4
+      ShortCut = 116
+      OnExecute = actRefreshExecute
+    end
+    object actExport: TAction
+      Caption = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
+      ImageIndex = 5
+      OnExecute = actExportExecute
+    end
+    object actPrint: TAction
+      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
+      ImageIndex = 6
+      OnExecute = actPrintExecute
+    end
+    object actClose: TAction
+      Caption = #1047#1072#1082#1088#1099#1090#1100
+      ImageIndex = 7
+      OnExecute = actCloseExecute
+    end
+    object actCopyCell: TAction
+      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      ImageIndex = 8
+      ShortCut = 16451
+      OnExecute = actCopyCellExecute
+    end
+    object actApprove: TAction
+      Caption = #1059#1090#1074#1077#1088#1076#1080#1090#1100
+      ImageIndex = 11
+      OnExecute = actApproveExecute
+    end
+    object actDisApprove: TAction
+      Caption = #1056#1072#1079#1091#1090#1074#1077#1088#1076#1080#1090#1100
+      ImageIndex = 10
+      OnExecute = actDisApproveExecute
     end
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
-    DesignInfo = 3670112
+    DesignInfo = 16253112
     ImageInfo = <
       item
         Image.Data = {
@@ -757,351 +994,17 @@ object fmShowRefBookClients: TfmShowRefBookClients
           FEFFFEFEFDFFFEFDFDFFFEFDFDFFFEFDFCFFCA9D8DFF00000009000000000000
           00000000000000000000000000039A7B6FC0CEA495FFCFA494FFCDA494FFCCA3
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
-      end
-      item
-        Image.Data = {
-          36040000424D3604000000000000360000002800000010000000100000000100
-          2000000000000004000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000023232394353535E01A1A1A7000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000001E1E1E813C3C3CFF3C3C3CFF353535E000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          00001E1E1E813C3C3CFF3C3C3CFF3C3C3CFF2323239400000000000000000000
-          0000000000000000000000000000000000000000000000000000000000001E1E
-          1E813C3C3CFF3C3C3CFF3C3C3CFF1E1E1E7E0000000000000000000000000000
-          0000000000011616165C282828AB363636E6363636E6282828AB292929AE3C3C
-          3CFF3C3C3CFF3C3C3CFF1E1E1E7E000000000000000000000000000000000000
-          00011E1E1E803C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
-          3CFF3C3C3CFF1E1E1E7E00000000000000000000000000000000000000001616
-          165C3C3C3CFF363636E51E1E1E7F0A0A0A2A0A0A0A2A1E1E1E7F3C3C3CFF3C3C
-          3CFF292929AD0000000000000000000000000000000000000000000000002828
-          28AB3C3C3CFF1E1E1E7F000000000000000000000000000000001E1E1E7F3C3C
-          3CFF282828AB0000000000000000000000000000000000000000000000003636
-          36E63C3C3CFF0A0A0A2A000000000000000000000000000000000A0A0A2A3C3C
-          3CFF363636E60000000000000000000000000000000000000000000000003636
-          36E63C3C3CFF0A0A0A2A000000000000000000000000000000000A0A0A2A3C3C
-          3CFF363636E60000000000000000000000000000000000000000000000002828
-          28AB3C3C3CFF1E1E1E7F000000000000000000000000000000001E1E1E7F3C3C
-          3CFF282828AB0000000000000000000000000000000000000000000000001616
-          165C3C3C3CFF363636E51E1E1E7F0A0A0A2A0A0A0A2A1E1E1E7F363636E53C3C
-          3CFF1616165C0000000000000000000000000000000000000000000000000000
-          00011E1E1E803C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF1E1E
-          1E80000000010000000000000000000000000000000000000000000000000000
-          0000000000011616165C282828AB363636E6363636E6282828AB1616165C0000
-          0001000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000}
-      end
-      item
-        Image.Data = {
-          36040000424D3604000000000000360000002800000010000000100000000100
-          2000000000000004000000000000000000000000000000000000000000000000
-          00000000000000000002000000070000000C0000001000000012000000110000
-          000E000000080000000200000000000000000000000000000000000000000000
-          000100000004000101120D2A1D79184E36C6216B4BFF216B4BFF216C4BFF1A53
-          3AD20F2F21840001011500000005000000010000000000000000000000000000
-          0005050F0A351C5B40DC24805CFF29AC7EFF2CC592FF2DC894FF2DC693FF2AAE
-          80FF258560FF1A563DD405110C3D00000007000000010000000000000003040E
-          0A31206548ED299D74FF2FC896FF2EC996FF56D4ACFF68DAB5FF3BCD9DFF30C9
-          96FF32CA99FF2BA479FF227050F805110C3D00000005000000000000000A1A57
-          3DD02EA57CFF33CA99FF2EC896FF4CD2A8FF20835CFF00673BFF45BE96FF31CB
-          99FF31CB98FF34CC9CFF31AD83FF1B5C41D300010113000000020B23185E2E8A
-          66FF3BCD9EFF30CA97FF4BD3A9FF349571FF87AF9DFFB1CFC1FF238A60FF45D3
-          A8FF36CF9FFF33CD9BFF3ED0A3FF319470FF0F32237F00000007184D37B63DB3
-          8CFF39CD9FFF4BD5A9FF43A382FF699782FFF8F1EEFFF9F3EEFF357F5DFF56C4
-          A1FF43D5A8FF3ED3A4FF3CD1A4FF41BC95FF1B5C43CD0000000B1C6446DF4BCA
-          A4FF44D2A8FF4FB392FF4E826AFFF0E9E6FFC0C3B5FFEFE3DDFFCEDDD4FF1B75
-          4FFF60DCB8FF48D8ACFF47D6AAFF51D4ACFF247A58F80000000E217050F266D9
-          B8FF46D3A8FF0B6741FFD2D2CBFF6A8F77FF116B43FF73967EFFF1E8E3FF72A2
-          8BFF46A685FF5EDFBAFF4CD9AFFF6BE2C2FF278460FF020604191E684ADC78D9
-          BEFF52DAB1FF3DBA92FF096941FF2F9C76FF57DEB8FF2D9973FF73967EFFF0EA
-          E7FF4F886CFF5ABB9AFF5BDEB9FF7FE2C7FF27835FF80000000C19523BAB77C8
-          B0FF62E0BCFF56DDB7FF59DFBAFF5CE1BDFF5EE2BEFF5FE4C1FF288C67FF698E
-          76FFE6E1DCFF176B47FF5FD8B4FF83D5BDFF1E674CC60000000909201747439C
-          7BFF95ECD6FF5ADFBAFF5EE2BDFF61E4BFFF64E6C1FF67E6C5FF67E8C7FF39A1
-          7EFF1F6D4AFF288B64FF98EFD9FF4DAC8CFF1036286D00000004000000041C5F
-          46B578C6ADFF9AEED9FF65E5C0FF64E7C3FF69E7C6FF6BE8C8FF6CE9C9FF6BEA
-          C9FF5ED6B6FF97EDD7FF86D3BBFF237759D20102010C0000000100000001030A
-          0718247B5BDA70C1A8FFB5F2E3FF98F0DAFF85EDD4FF75EBCEFF88EFD6FF9CF2
-          DDFFBAF4E7FF78CDB3FF2A906DEA0615102E0000000200000000000000000000
-          0001030A07171E694FB844AB87FF85D2BBFFA8E6D6FFC5F4EBFFABE9D8FF89D8
-          C1FF4BB692FF237F60CB05130E27000000030000000000000000000000000000
-          000000000001000000030A241B411B60489D258464CF2C9D77EE258867CF1F71
-          56B00E3226560000000600000002000000000000000000000000}
       end>
   end
-  object spRefBookFieldsBrowse: TUniStoredProc
-    StoredProcName = 'spGetReferenceBrowser;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
-    Connection = dmMain.MainConnection
-    Left = 308
-    Top = 108
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = nil
-      end
-      item
-        DataType = ftInteger
-        Name = 'ReferenceID'
-        ParamType = ptInput
-        Value = nil
-      end>
-    CommandStoredProcName = 'spGetReferenceBrowser;1'
-  end
-  object qSprRef: TUniQuery
-    Connection = dmMain.MainConnection
-    SQL.Strings = (
-      'select * from sprReference'
-      'where ReferenceID = :ID')
-    Left = 816
-    Top = 124
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'ID'
-        Value = nil
-      end>
-  end
-  object ExportToExcelSaveDialog: TSaveDialog
-    DefaultExt = 'xlsx'
-    Filter = 'Excel 2007 (*.xlsx)|*.xlsx|Excel XP files (*.xls)|*.xls'
-    Left = 492
-    Top = 92
-  end
-  object prnRefBook: TdxComponentPrinter
-    CurrentLink = prnRefBookLink1
-    Version = 0
-    Left = 712
-    Top = 92
-    object prnRefBookLink1: TdxGridReportLink
-      Active = True
-      Component = GridRefBook
-      PrinterPage.DMPaper = 1
-      PrinterPage.Footer = 6350
-      PrinterPage.Header = 6350
-      PrinterPage.Margins.Bottom = 12700
-      PrinterPage.Margins.Left = 12700
-      PrinterPage.Margins.Right = 12700
-      PrinterPage.Margins.Top = 12700
-      PrinterPage.PageSize.X = 215900
-      PrinterPage.PageSize.Y = 279400
-      PrinterPage._dxMeasurementUnits_ = 0
-      PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42966.594330578700000000
-      BuiltInReportLink = True
-    end
-  end
-  object prnStyleManager: TdxPrintStyleManager
-    Version = 0
-    Left = 620
-    Top = 92
-  end
-  object alRefBook: TActionList
-    Images = ilRefBookActionImages
-    OnUpdate = alRefBookUpdate
-    Left = 728
-    Top = 196
-    object actAdd: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      Hint = #1044#1086#1073#1072#1074#1080#1090#1100
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddExecute
-    end
-    object actEdit: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditExecute
-    end
-    object actView: TAction
-      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      Hint = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      ImageIndex = 2
-      OnExecute = actViewExecute
-    end
-    object actDelete: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      Hint = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      OnExecute = actDeleteExecute
-    end
-    object actRefresh: TAction
-      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
-      Hint = #1054#1073#1085#1086#1074#1080#1090#1100
-      ImageIndex = 4
-      ShortCut = 116
-      OnExecute = actRefreshExecute
-    end
-    object actExport: TAction
-      Caption = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
-      Hint = #1069#1082#1089#1087#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1074' Excel'
-      ImageIndex = 5
-      OnExecute = actExportExecute
-    end
-    object actPrint: TAction
-      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
-      Hint = #1055#1077#1095#1072#1090#1072#1090#1100
-      ImageIndex = 6
-      OnExecute = actPrintExecute
-    end
-    object actClose: TAction
-      Caption = #1047#1072#1082#1088#1099#1090#1100
-      Hint = #1047#1072#1082#1088#1099#1090#1100
-      ImageIndex = 7
-      OnExecute = actCloseExecute
-    end
-    object actCopyCell: TAction
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      ImageIndex = 8
-      ShortCut = 16451
-      OnExecute = actCopyCellExecute
-    end
-    object actAddGroupSub: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1086#1076#1095#1080#1085#1077#1085#1085#1091#1102' '#1075#1088#1091#1087#1087#1091
-      ImageIndex = 0
-      OnExecute = actAddGroupExecute
-    end
-    object actAddGroup: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1075#1088#1091#1087#1087#1091
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddGroupExecute
-    end
-    object actEditGroup: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditGroupExecute
-    end
-    object actViewGroup: TAction
-      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      Hint = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      ImageIndex = 2
-      OnExecute = actViewGroupExecute
-    end
-    object actDeleteGroup: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      Hint = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      OnExecute = actDeleteGroupExecute
-    end
-    object actRefreshGroup: TAction
-      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
-      Hint = #1054#1073#1085#1086#1074#1080#1090#1100
-      ImageIndex = 4
-      ShortCut = 116
-      OnExecute = actRefreshGroupExecute
-    end
-    object actCopyCellClientsGroups: TAction
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      ImageIndex = 8
-      ShortCut = 16451
-      OnExecute = actCopyCellClientsGroupsExecute
-    end
-    object actSelect: TAction
-      Caption = #1042#1099#1073#1088#1072#1090#1100
-      ImageIndex = 10
-      Visible = False
-      OnExecute = actSelectExecute
-    end
-  end
-  object pmDefaultPopupMenu: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
+  object pmApproveDisapprove: TAdvPopupMenu
     Version = '2.5.7.0'
-    Left = 540
-    Top = 204
-    object N14: TMenuItem
-      Action = actRefresh
+    Left = 672
+    Top = 332
+    object miApprove: TMenuItem
+      Action = actApprove
     end
-    object N6: TMenuItem
-      Caption = '-'
-    end
-    object N1: TMenuItem
-      Action = actAdd
-    end
-    object N2: TMenuItem
-      Action = actEdit
-    end
-    object N3: TMenuItem
-      Action = actView
-    end
-    object N4: TMenuItem
-      Action = actDelete
-    end
-    object N5: TMenuItem
-      Caption = '-'
-    end
-    object N7: TMenuItem
-      Action = actCopyCell
-    end
-    object N10: TMenuItem
-      Caption = '-'
-    end
-    object miExportToExcel: TMenuItem
-      Action = actExport
-    end
-    object miPrint: TMenuItem
-      Action = actPrint
-    end
-    object N8: TMenuItem
-      Caption = '-'
-    end
-    object N9: TMenuItem
-      Caption = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
-    end
-  end
-  object pmAddClientsGroup: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
-    Version = '2.5.7.0'
-    Left = 172
-    Top = 96
-    object miAddProdCat: TMenuItem
-      Action = actAddGroup
-      Default = True
-    end
-    object miAddProdCatSub: TMenuItem
-      Action = actAddGroupSub
-    end
-  end
-  object pmClientsGroups: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
-    Version = '2.5.7.0'
-    Left = 116
-    Top = 144
-    object MenuItem1: TMenuItem
-      Action = actRefreshGroup
-    end
-    object MenuItem2: TMenuItem
-      Caption = '-'
-    end
-    object MenuItem3: TMenuItem
-      Action = actAddGroup
-    end
-    object MenuItem4: TMenuItem
-      Action = actEditGroup
-    end
-    object MenuItem5: TMenuItem
-      Action = actViewGroup
-    end
-    object MenuItem6: TMenuItem
-      Action = actDeleteGroup
-    end
-    object MenuItem7: TMenuItem
-      Caption = '-'
-    end
-    object MenuItem8: TMenuItem
-      Action = actCopyCellClientsGroups
+    object miDisapprove: TMenuItem
+      Action = actDisApprove
     end
   end
 end

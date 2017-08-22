@@ -42,9 +42,14 @@ type
     dxBarManager1Bar1: TdxBar;
     btnShowRefBookGoods: TdxBarLargeButton;
     btnShowClients: TdxBarLargeButton;
+    dxBarLargeButton1: TdxBarLargeButton;
+    dxBarLargeButton2: TdxBarLargeButton;
+    N1: TMenuItem;
+    N2: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure btnShowRefBookGoodsClick(Sender: TObject);
     procedure btnShowClientsClick(Sender: TObject);
+    procedure dxBarLargeButton1Click(Sender: TObject);
   private
     { Private declarations }
     procedure CreateMainMenu;
@@ -63,7 +68,7 @@ var
 implementation
 
 uses
-  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients;
+  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients, fm_ShowInvoiceRegister;
 
 {$R *.dfm}
 
@@ -89,12 +94,13 @@ begin
 
   if mi <> nil then
     Exit;
-
+  AdvMainMenu1.BeginUpdate;
   mi := TMenuItem.Create(Nil);
   mi.Caption := AForm.Caption;
   mi.Tag := UIntPtr(AForm);
   mi.OnClick := miWindowClick;
   miWindow.Add(mi);
+  AdvMainMenu1.EndUpdate;
 end;
 
 procedure TMainForm.CreateMainMenu;
@@ -112,6 +118,20 @@ begin
     mi.OnClick := miRefBookClick;
     miRefBooks.Add(mi);
     dmRefBooks.qSprRefForMainMenu.Next;
+  end;
+end;
+
+procedure TMainForm.dxBarLargeButton1Click(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  mi := FindFormInMainMenu('Журнал - Приходные документы');
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
+  begin
+    Application.CreateForm(TfmShowInvoiceRegister, fmShowInvoiceRegister);
+    AddFormToMainMenu(fmShowInvoiceRegister);
   end;
 end;
 

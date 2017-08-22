@@ -1,4 +1,4 @@
-unit fm_ShowRefBooks;
+unit fm_ShowInvoiceRegister;
 
 interface
 
@@ -30,11 +30,12 @@ uses
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
-  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton;
+  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton, Vcl.ComCtrls, dxCore,
+  cxDateUtils, cxDropDownEdit, cxLabel, cxTextEdit, cxButtonEdit;
 
 type
-  TfmShowRefBook = class(TForm)
-    spShowRefBook: TUniStoredProc;
+  TfmShowInvoiceRegister = class(TForm)
+    spShowInvoiceRegister: TUniStoredProc;
     dsShowRefBook: TUniDataSource;
     tvRefBook: TcxGridDBTableView;
     GridRefBookLevel1: TcxGridLevel;
@@ -80,8 +81,26 @@ type
     RzToolButton9: TRzToolButton;
     RzSpacer8: TRzSpacer;
     RzToolButton10: TRzToolButton;
+    RzSpacer1: TRzSpacer;
+    RzToolButton1: TRzToolButton;
+    RzSpacer2: TRzSpacer;
+    RzToolButton2: TRzToolButton;
+    actApprove: TAction;
+    actDisApprove: TAction;
+    pmApproveDisapprove: TAdvPopupMenu;
+    miApprove: TMenuItem;
+    miDisapprove: TMenuItem;
     RzSpacer9: TRzSpacer;
     RzToolButton11: TRzToolButton;
+    AdvPanel1: TAdvPanel;
+    edtDocNumber: TcxButtonEdit;
+    cxLabel5: TcxLabel;
+    cxLabel1: TcxLabel;
+    deDate1: TcxDateEdit;
+    deDate2: TcxDateEdit;
+    cxLabel2: TcxLabel;
+    btnFilter: TcxButton;
+    btnClearFilter: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -95,7 +114,11 @@ type
     procedure actPrintExecute(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
     procedure actCopyCellExecute(Sender: TObject);
-    procedure spShowRefBookAfterOpen(DataSet: TDataSet);
+    procedure spShowInvoiceRegisterAfterOpen(DataSet: TDataSet);
+    procedure actApproveExecute(Sender: TObject);
+    procedure actDisApproveExecute(Sender: TObject);
+    procedure btnFilterClick(Sender: TObject);
+    procedure btnClearFilterClick(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -105,43 +128,48 @@ type
   end;
 
 var
-  fmShowRefBook: TfmShowRefBook;
+  fmShowInvoiceRegister: TfmShowInvoiceRegister;
 
 implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
+uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, fm_AddEditInvoice;
 
-procedure TfmShowRefBook.actAddExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actAddExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  Application.CreateForm(TfmAddEditInvoice, fmAddEditInvoice);
   try
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditInvoice.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;
+    fmAddEditInvoice.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
-    if fmAddEditRefBook.ShowModal = mrOk then
+    if fmAddEditInvoice.ShowModal = mrOk then
     begin
-      spShowRefBook.Refresh;
-      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+      spShowInvoiceRegister.Refresh;
+      spShowInvoiceRegister.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditInvoice.CurrentID,[]);
     end;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditInvoice);
   end;
 end;
 
-procedure TfmShowRefBook.actCloseExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actApproveExecute(Sender: TObject);
+begin
+ ShowMessage('q');
+end;
+
+procedure TfmShowInvoiceRegister.actCloseExecute(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TfmShowRefBook.actCopyCellExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actCopyCellExecute(Sender: TObject);
 begin
   ClipBoard.AsText := tvRefBook.Controller.FocusedRecord.Values[tvRefBook.Controller.FocusedColumn.Index];
 end;
 
-procedure TfmShowRefBook.actDeleteExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
@@ -149,36 +177,41 @@ begin
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
-    ParamByName('ID').Value := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    ParamByName('ID').Value := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     Execute;
-    spShowRefBook.Refresh;
+    spShowInvoiceRegister.Refresh;
   finally
     EnableControls;
   end;
 end;
 
-procedure TfmShowRefBook.actEditExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actDisApproveExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  ShowMessage('rrr');
+end;
+
+procedure TfmShowInvoiceRegister.actEditExecute(Sender: TObject);
+begin
+  Application.CreateForm(TfmAddEditInvoice, fmAddEditInvoice);
   try
-    fmAddEditRefBook.FormMode := fmEdit;
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBook.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    fmAddEditInvoice.FormMode := fmEdit;
+    fmAddEditInvoice.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;
+    fmAddEditInvoice.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditInvoice.CurrentID := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
-    if fmAddEditRefBook.ShowModal = mrOk then
+    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditInvoice.CurrentID;
+    if fmAddEditInvoice.ShowModal = mrOk then
     begin
-      spShowRefBook.Refresh;
-      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+      spShowInvoiceRegister.Refresh;
+      spShowInvoiceRegister.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditInvoice.CurrentID,[]);
     end;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditInvoice);
   end;
 end;
 
-procedure TfmShowRefBook.actExportExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actExportExecute(Sender: TObject);
 begin
   if ExportToExcelSaveDialog.Execute(Self.Handle) then
     if AnsiLowerCase(ExtractFileExt(ExportToExcelSaveDialog.FileName)) = '.xls' then
@@ -187,39 +220,65 @@ begin
       ExportGridToXLSX(ExportToExcelSaveDialog.FileName, GridRefBook, True, True, True, '');
 end;
 
-procedure TfmShowRefBook.actPrintExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actPrintExecute(Sender: TObject);
 begin
   prnRefBook.Preview();
 end;
 
-procedure TfmShowRefBook.actRefreshExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actRefreshExecute(Sender: TObject);
 begin
-  spShowRefBook.Close;
-  spShowRefBook.Open;
+  spShowInvoiceRegister.Close;
+  spShowInvoiceRegister.Open;
 end;
 
-procedure TfmShowRefBook.actViewExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actViewExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  Application.CreateForm(TfmAddEditInvoice, fmAddEditInvoice);
   try
-    fmAddEditRefBook.FormMode := fmView;
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBook.ShowModal;
+    fmAddEditInvoice.FormMode := fmView;
+    fmAddEditInvoice.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;
+    fmAddEditInvoice.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditInvoice.ShowModal;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditInvoice);
   end;
 end;
 
-procedure TfmShowRefBook.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfmShowInvoiceRegister.btnFilterClick(Sender: TObject);
+begin
+  spShowInvoiceRegister.Close;
+  if edtDocNumber.Text <> '' then
+    spShowInvoiceRegister.ParamByName('DocNumber').Value := edtDocNumber.Text
+  else
+    spShowInvoiceRegister.ParamByName('DocNumber').Clear;
+  if deDate1.Text <> '' then
+    spShowInvoiceRegister.ParamByName('Date1').Value := deDate1.Date
+  else
+    spShowInvoiceRegister.ParamByName('Date1').Clear;
+  if deDate2.Text <> '' then
+    spShowInvoiceRegister.ParamByName('Date2').Value := deDate2.Date
+  else
+    spShowInvoiceRegister.ParamByName('Date2').Clear;
+  spShowInvoiceRegister.Open;
+end;
+
+procedure TfmShowInvoiceRegister.btnClearFilterClick(Sender: TObject);
+begin
+  edtDocNumber.Text := '';
+  deDate1.Clear;
+  deDate2.Clear;
+  btnFilterClick(Nil);
+end;
+
+procedure TfmShowInvoiceRegister.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   tvRefBook.StoreToRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
   FreeAndNil(OriginalSettings);
   PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0);
 end;
 
-procedure TfmShowRefBook.FormCreate(Sender: TObject);
+procedure TfmShowInvoiceRegister.FormCreate(Sender: TObject);
 begin
 {  Localizer.Active=true;
   Localizer
@@ -227,15 +286,15 @@ begin
   OriginalSettings := TMemoryStream.Create;
 end;
 
-procedure TfmShowRefBook.FormShow(Sender: TObject);
+procedure TfmShowInvoiceRegister.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  qSprRef.ParamByName('ID').AsInteger := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
+  qSprRef.ParamByName('ID').AsInteger := 15; // код справочника!
   qSprRef.Open;
-  Caption := 'Справочник - ' + qSprRef.FieldByName('ReferenceRUSName').AsString;
-  spShowRefBook.StoredProcName := qSprRef.FieldByName('BrowserProcName').AsString;
-  spShowRefBook.Open;
+  Caption := 'Журнал - ' + qSprRef.FieldByName('ReferenceRUSName').AsString;
+  spShowInvoiceRegister.StoredProcName := qSprRef.FieldByName('BrowserProcName').AsString;
+  spShowInvoiceRegister.Open;
   tvRefBook.DataController.CreateAllItems;
   spRefBookFieldsBrowse.Close;
   spRefBookFieldsBrowse.ParamByName('ReferenceID').AsInteger := qSprRef.FieldByName('ReferenceID').AsInteger;
@@ -284,15 +343,15 @@ begin
   tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 end;
 
-procedure TfmShowRefBook.N9Click(Sender: TObject);
+procedure TfmShowInvoiceRegister.N9Click(Sender: TObject);
 begin
   OriginalSettings.Position := 0;
   tvRefBook.RestoreFromStream(OriginalSettings, True, True, [], '');
 end;
 
-procedure TfmShowRefBook.spShowRefBookAfterOpen(DataSet: TDataSet);
+procedure TfmShowInvoiceRegister.spShowInvoiceRegisterAfterOpen(DataSet: TDataSet);
 begin
-  actEdit.Enabled := (not spShowRefBook.Eof);
+  actEdit.Enabled := (not spShowInvoiceRegister.Eof);
   actView.Enabled := actEdit.Enabled;
   actDelete.Enabled := actEdit.Enabled;
   actExport.Enabled := actEdit.Enabled;
