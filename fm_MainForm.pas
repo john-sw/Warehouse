@@ -144,7 +144,8 @@ begin
     TCustomForm(mi.Tag).BringToFront
   else
   begin
-    Application.CreateForm(TfmShowRefBookClients, fmShowRefBookClients);
+    //Application.CreateForm(TfmShowRefBookClients, fmShowRefBookClients);
+    fmShowRefBookClients := TfmShowRefBookClients.CreateMDI(Application);
     AddFormToMainMenu(fmShowRefBookClients);
   end;
 end;

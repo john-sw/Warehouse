@@ -31,7 +31,8 @@ uses
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton, Vcl.ComCtrls, dxCore,
-  cxDateUtils, cxDropDownEdit, cxLabel, cxTextEdit, cxButtonEdit;
+  cxDateUtils, cxDropDownEdit, cxLabel, cxTextEdit, cxButtonEdit,
+  dxSkinsdxRibbonPainter;
 
 type
   TfmShowInvoiceRegister = class(TForm)
@@ -139,6 +140,7 @@ uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd,
 procedure TfmShowInvoiceRegister.actAddExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditInvoice, fmAddEditInvoice);
+
   try
     fmAddEditInvoice.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
     fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;

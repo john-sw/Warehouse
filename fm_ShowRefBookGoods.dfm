@@ -191,6 +191,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Width = 8
       Height = 539
       HotZoneClassName = 'TcxSimpleStyle'
+      Control = cxGroupBox1
     end
     object cxGroupBox2: TcxGroupBox
       Left = 259
@@ -731,6 +732,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -742,7 +744,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42946.085529328700000000
+      ReportDocument.CreationDate = 42969.077982164350000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

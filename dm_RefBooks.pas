@@ -107,7 +107,6 @@ begin
   Result := CheckControl(AControl, AspCheck, AControl.Name);
 end;
 
-
 function CheckReqControls(AControl: TWinControl; AspCheck: TUniStoredProc): TWinControl;
 var
    i: Integer;
@@ -124,7 +123,6 @@ begin
     if (AControl.Controls[i] is TcxCustomEdit) and not CheckControl(TcxCustomEdit(AControl.Controls[i]), AspCheck) then
       if Result = nil then
         Result := TWinControl(AControl.Controls[i]);
-
 end;
 
 procedure TdmRefBooks.spShowRefBookClientsAfterScroll(DataSet: TDataSet);

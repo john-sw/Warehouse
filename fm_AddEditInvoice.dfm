@@ -64,55 +64,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
     Styler = dmMain.AdvPanelStyler1
     Text = ''
     FullHeight = 200
-    object RzToolButton1: TRzToolButton
-      Left = 228
-      Top = 33
-      Width = 21
-      Height = 21
-      ImageIndex = 0
-      Images = ilRefBookActionImages
-      UseToolbarButtonSize = False
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = RzToolButton1Click
-    end
-    object RzToolButton2: TRzToolButton
-      Left = 952
-      Top = 33
-      Width = 21
-      Height = 21
-      ImageIndex = 0
-      Images = ilRefBookActionImages
-      UseToolbarButtonSize = False
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object RzToolButton3: TRzToolButton
-      Left = 472
-      Top = 56
-      Width = 21
-      Height = 21
-      ImageIndex = 0
-      Images = ilRefBookActionImages
-      UseToolbarButtonSize = False
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object RzToolButton7: TRzToolButton
-      Left = 952
-      Top = 58
-      Width = 21
-      Height = 21
-      ImageIndex = 0
-      Images = ilRefBookActionImages
-      UseToolbarButtonSize = False
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ParentShowHint = False
-      ShowHint = True
-    end
     object cxLabel1: TcxLabel
       Left = 247
       Top = 10
@@ -124,52 +75,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Top = 35
       Caption = #1043#1088#1091#1079#1086#1087#1086#1083#1091#1095#1072#1090#1077#1083#1100
       Transparent = True
-    end
-    object lcCountry: TcxLookupComboBox
-      Tag = 6
-      Left = 600
-      Top = 33
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'Name'
-        end>
-      Properties.ListOptions.ShowHeader = False
-      Properties.ListSource = dsConsignee
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebsSingle
-      Style.LookAndFeel.Kind = lfUltraFlat
-      Style.LookAndFeel.NativeStyle = False
-      Style.ButtonStyle = btsOffice11
-      StyleDisabled.LookAndFeel.Kind = lfUltraFlat
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.Kind = lfUltraFlat
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.Kind = lfUltraFlat
-      StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 1
-      Width = 350
-    end
-    object lcThermoType: TcxLookupComboBox
-      Tag = 6
-      Left = 120
-      Top = 33
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'Name'
-        end>
-      Properties.ListOptions.ShowHeader = False
-      Properties.ListSource = dsShipper
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebsSingle
-      Style.LookAndFeel.NativeStyle = False
-      Style.ButtonStyle = btsOffice11
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 2
-      Width = 109
     end
     object cxLabel3: TcxLabel
       Left = 10
@@ -207,7 +112,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Height = 293
       Align = alBottom
       Caption = ' '#1055#1086#1079#1080#1094#1080#1080' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '
-      TabOrder = 7
+      TabOrder = 5
       object GridInvoiceList: TcxGrid
         Left = 2
         Top = 45
@@ -301,7 +206,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Left = 284
       Top = 8
       Style.ButtonStyle = btsOffice11
-      TabOrder = 8
+      TabOrder = 6
       Width = 121
     end
     object cxLabel2: TcxLabel
@@ -310,56 +215,14 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Caption = #1055#1086#1089#1090#1072#1074#1097#1080#1082
       Transparent = True
     end
-    object cxLookupComboBox1: TcxLookupComboBox
-      Tag = 6
-      Left = 120
-      Top = 56
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'Name'
-        end>
-      Properties.ListOptions.ShowHeader = False
-      Properties.ListSource = dsSupplier
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebsSingle
-      Style.LookAndFeel.NativeStyle = False
-      Style.ButtonStyle = btsOffice11
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 10
-      Width = 350
-    end
     object cxLabel6: TcxLabel
       Left = 502
       Top = 58
       Caption = #1055#1083#1072#1090#1077#1083#1100#1097#1080#1082
       Transparent = True
     end
-    object cxLookupComboBox2: TcxLookupComboBox
-      Tag = 6
-      Left = 600
-      Top = 58
-      Properties.KeyFieldNames = 'ID'
-      Properties.ListColumns = <
-        item
-          FieldName = 'Name'
-        end>
-      Properties.ListOptions.ShowHeader = False
-      Properties.ListSource = dsPayer
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebsSingle
-      Style.LookAndFeel.NativeStyle = False
-      Style.ButtonStyle = btsOffice11
-      StyleDisabled.LookAndFeel.NativeStyle = False
-      StyleFocused.LookAndFeel.NativeStyle = False
-      StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 12
-      Width = 350
-    end
     object cxLabel9: TcxLabel
-      Left = 12
+      Left = 10
       Top = 82
       Caption = #1055#1088#1086#1094#1077#1085#1090' '#1085#1072#1094#1077#1085#1082#1080
       Transparent = True
@@ -380,22 +243,96 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 14
+      TabOrder = 10
       Width = 121
     end
     object cxButtonEdit1: TcxButtonEdit
-      Left = 340
-      Top = 35
+      Left = 120
+      Top = 33
       Properties.Buttons = <
         item
           Default = True
           Kind = bkEllipsis
         end>
       Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
+      Style.BorderStyle = ebsOffice11
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
       Style.ButtonStyle = btsOffice11
-      TabOrder = 15
-      Text = 'cxButtonEdit1'
-      Width = 121
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 11
+      Width = 350
+    end
+    object cxButtonEdit2: TcxButtonEdit
+      Left = 600
+      Top = 32
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end>
+      Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
+      Style.BorderStyle = ebsOffice11
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 12
+      Width = 350
+    end
+    object cxButtonEdit3: TcxButtonEdit
+      Left = 120
+      Top = 56
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end>
+      Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
+      Style.BorderStyle = ebsOffice11
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 13
+      Width = 350
+    end
+    object cxButtonEdit4: TcxButtonEdit
+      Left = 600
+      Top = 56
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end>
+      Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
+      Style.BorderStyle = ebsOffice11
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 14
+      Width = 350
     end
   end
   object pnlBottom: TAdvPanel
@@ -558,11 +495,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
         ParamType = ptInput
         Value = 1
       end>
-  end
-  object dsConsignee: TUniDataSource
-    DataSet = spConsignee
-    Left = 684
-    Top = 20
   end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
@@ -998,11 +930,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Action = actDeleteInvoiceLine
     end
   end
-  object dsShipper: TUniDataSource
-    DataSet = spShipper
-    Left = 200
-    Top = 28
-  end
   object mdBarcode: TdxMemData
     Indexes = <>
     SortOptions = []
@@ -1018,79 +945,5 @@ object fmAddEditInvoice: TfmAddEditInvoice
     object mdBarcodeUnitQty: TIntegerField
       FieldName = 'UnitQty'
     end
-  end
-  object spShipper: TUniStoredProc
-    StoredProcName = 'spFirm;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spFirm;1}')
-    Connection = dmMain.MainConnection
-    Left = 140
-    Top = 28
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = 0
-      end>
-    CommandStoredProcName = 'spFirm;1'
-  end
-  object spConsignee: TUniStoredProc
-    StoredProcName = 'spFirm;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spFirm;1}')
-    Connection = dmMain.MainConnection
-    Left = 616
-    Top = 20
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = 0
-      end>
-    CommandStoredProcName = 'spFirm;1'
-  end
-  object spSupplier: TUniStoredProc
-    StoredProcName = 'spFirm;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spFirm;1}')
-    Connection = dmMain.MainConnection
-    Left = 324
-    Top = 60
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = 0
-      end>
-    CommandStoredProcName = 'spFirm;1'
-  end
-  object spPayer: TUniStoredProc
-    StoredProcName = 'spFirm;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spFirm;1}')
-    Connection = dmMain.MainConnection
-    Left = 820
-    Top = 60
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = 0
-      end>
-    CommandStoredProcName = 'spFirm;1'
-  end
-  object dsSupplier: TUniDataSource
-    DataSet = spSupplier
-    Left = 392
-    Top = 60
-  end
-  object dsPayer: TUniDataSource
-    DataSet = spPayer
-    Left = 860
-    Top = 60
   end
 end

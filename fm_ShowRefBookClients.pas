@@ -33,7 +33,8 @@ uses
   dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk,
   dxPScxGridLayoutViewLnk, dxPScxEditorProducers, dxPScxExtEditorProducers,
-  dxSkinsdxBarPainter, dxPgsDlg, dxPSCore, dxPScxCommon, AdvMenus, cxButtonEdit;
+  dxSkinsdxBarPainter, dxPgsDlg, dxPSCore, dxPScxCommon, AdvMenus, cxButtonEdit,
+  dxSkinsdxRibbonPainter, AdvToolBtn;
 
 type
   TfmShowRefBookClients = class(TForm)
@@ -119,11 +120,13 @@ type
     actCopyCellClientsGroups: TAction;
     AdvPanel1: TAdvPanel;
     edtSearchString: TcxButtonEdit;
-    cxLabel5: TcxLabel;
     actSelect: TAction;
     RzToolButton12: TRzToolButton;
     RzSpacer10: TRzSpacer;
     RzToolButton11: TRzToolButton;
+    actClearFilter: TAction;
+    actShowGrouped: TAction;
+    tbShowGrouped: TAdvToolButton;
     procedure FormShow(Sender: TObject);
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
@@ -143,11 +146,19 @@ type
     procedure actCopyCellClientsGroupsExecute(Sender: TObject);
     procedure alRefBookUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure actSelectExecute(Sender: TObject);
+    procedure actClearFilterExecute(Sender: TObject);
+    procedure actShowGroupedExecute(Sender: TObject);
+    procedure tvRefBookFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+    procedure edtSearchStringPropertiesChange(Sender: TObject);
+    procedure tvRefBookDblClick(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
+    OldAfterScroll: TDataSetNotifyEvent;
   public
     { Public declarations }
+    constructor CreateMDI(AOwner: TComponent);
   end;
 
 var
@@ -159,6 +170,20 @@ implementation
 
 uses fm_AddEditRefBookGoods, Vcl.Clipbrd, cxGridExportLink, fm_AddEditGroup, fm_MainForm, dm_main,
   fm_AddEditRefBookClients;
+
+
+constructor TfmShowRefBookClients.CreateMDI(AOwner: TComponent);
+begin
+  Create(AOwner);
+  tbShowGrouped.Down := True;
+  actSelect.Visible := False;
+  FormStyle := fsMDIChild;
+end;
+
+procedure TfmShowRefBookClients.edtSearchStringPropertiesChange(Sender: TObject);
+begin
+  actRefreshExecute(Nil);
+end;
 
 procedure TfmShowRefBookClients.actAddExecute(Sender: TObject);
 begin
@@ -208,6 +233,12 @@ begin
   end;
 end;
 
+procedure TfmShowRefBookClients.actClearFilterExecute(Sender: TObject);
+begin
+  edtSearchString.Clear;
+  actRefreshExecute(Nil);
+end;
+
 procedure TfmShowRefBookClients.actCloseExecute(Sender: TObject);
 begin
   if FormStyle = fsMDIChild then
@@ -231,15 +262,12 @@ begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
   with dmRefBooks.spInsertUpdateDeleteRefBook do
-  try
-//    DisableControls;
+  begin
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
     ParamByName('ID').Value := dmRefBooks.spGetClientsForGroup.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     Execute;
-    dmRefBooks.spGetClientsForGroup.Refresh;
-  finally
-    EnableControls;
   end;
+  dmRefBooks.spGetClientsForGroup.Refresh;
 end;
 
 procedure TfmShowRefBookClients.actDeleteGroupExecute(Sender: TObject);
@@ -333,7 +361,14 @@ end;
 
 procedure TfmShowRefBookClients.actRefreshExecute(Sender: TObject);
 begin
-  dmRefBooks.spGetClientsForGroup.ParamByName('SearchString').AsString := edtSearchString.Text;
+  if tbShowGrouped.Down then
+    dmRefBooks.spGetClientsForGroup.ParamByName('ClientFolderID').AsInteger := dmRefBooks.spShowRefBookClients.FieldByName('ClientFolderID').AsInteger
+  else
+    dmRefBooks.spGetClientsForGroup.ParamByName('ClientFolderID').Clear;
+  if (Sender = nil) and (Length(edtSearchString.Text) < 4) then //nil - автовызов при вводе строки
+    dmRefBooks.spGetClientsForGroup.ParamByName('SearchString').Clear
+  else
+    dmRefBooks.spGetClientsForGroup.ParamByName('SearchString').AsString := edtSearchString.Text;
 
   dmRefBooks.spGetClientsForGroup.Close;
   dmRefBooks.spGetClientsForGroup.Open;
@@ -348,6 +383,21 @@ end;
 procedure TfmShowRefBookClients.actSelectExecute(Sender: TObject);
 begin
   ModalResult := mrOk;
+end;
+
+procedure TfmShowRefBookClients.actShowGroupedExecute(Sender: TObject);
+begin
+  if tbShowGrouped.Down then
+  begin
+    dmRefBooks.spShowRefBookClients.AfterScroll := OldAfterScroll; //TdmRefBooks.spShowRefBookClientsAfterScroll
+    tlGridClientsGroups.Enabled := True;
+  end
+  else
+  begin
+    dmRefBooks.spShowRefBookClients.AfterScroll := nil;
+    tlGridClientsGroups.Enabled := False;
+  end;
+  actRefreshExecute(Nil);
 end;
 
 procedure TfmShowRefBookClients.actViewExecute(Sender: TObject);
@@ -396,7 +446,6 @@ begin
   actDeleteGroup.Enabled := actEditGroup.Enabled;
   actViewGroup.Enabled := actEditGroup.Enabled;
   actCopyCellClientsGroups.Enabled := actEditGroup.Enabled;
-
 end;
 
 procedure TfmShowRefBookClients.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -409,6 +458,7 @@ procedure TfmShowRefBookClients.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
+  OldAfterScroll := dmRefBooks.spShowRefBookClients.AfterScroll;
   dmRefBooks.spShowRefBookClients.Open;
 
   qSprRef.ParamByName('ID').AsInteger := 11; // код справочника!
@@ -461,8 +511,32 @@ begin
 
   tvRefBook.StoreToStream(OriginalSettings);
   tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
-//  tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 
+  actShowGroupedExecute(Nil);
+end;
+
+procedure TfmShowRefBookClients.tvRefBookDblClick(Sender: TObject);
+begin
+  if actSelect.Visible then
+    actSelectExecute(nil)
+  else
+    actViewExecute(nil);
+end;
+
+procedure TfmShowRefBookClients.tvRefBookFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+var
+  i: TcxDBTreeListNode;
+begin
+  if tbShowGrouped.Down then
+    Exit;
+  i := tlGridClientsGroups.FindNodeByKeyValue(dmRefBooks.spGetClientsForGroup.FieldByName('ClientFolderID').AsInteger);
+
+  if i <> nil then
+  begin
+    i.Selected := True;
+    i.Focused := true;
+  end;
 end;
 
 end.

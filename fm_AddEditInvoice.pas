@@ -32,12 +32,10 @@ type
     pnlClient: TAdvPanel;
     cxLabel1: TcxLabel;
     cxLabel4: TcxLabel;
-    lcCountry: TcxLookupComboBox;
     pnlBottom: TAdvPanel;
     btnSave: TcxButton;
     btnCancel: TcxButton;
     spRefBookFieldsAddEditView: TUniStoredProc;
-    dsConsignee: TUniDataSource;
     ilRefBookActionImages: TcxImageList;
     alRefBook: TActionList;
     actAddInvoiceLine: TAction;
@@ -57,9 +55,7 @@ type
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
-    lcThermoType: TcxLookupComboBox;
     cxLabel3: TcxLabel;
-    dsShipper: TUniDataSource;
     cxLabel5: TcxLabel;
     edtProdName: TcxTextEdit;
     mdBarcode: TdxMemData;
@@ -80,22 +76,13 @@ type
     RzToolButton6: TRzToolButton;
     cxDateEdit1: TcxDateEdit;
     cxLabel2: TcxLabel;
-    cxLookupComboBox1: TcxLookupComboBox;
     cxLabel6: TcxLabel;
-    cxLookupComboBox2: TcxLookupComboBox;
-    RzToolButton1: TRzToolButton;
-    RzToolButton2: TRzToolButton;
-    RzToolButton3: TRzToolButton;
-    RzToolButton7: TRzToolButton;
     cxLabel9: TcxLabel;
     ceNettoWeight: TcxCalcEdit;
-    spShipper: TUniStoredProc;
-    spConsignee: TUniStoredProc;
-    spSupplier: TUniStoredProc;
-    spPayer: TUniStoredProc;
-    dsSupplier: TUniDataSource;
-    dsPayer: TUniDataSource;
     cxButtonEdit1: TcxButtonEdit;
+    cxButtonEdit2: TcxButtonEdit;
+    cxButtonEdit3: TcxButtonEdit;
+    cxButtonEdit4: TcxButtonEdit;
     procedure FormShow(Sender: TObject);
     procedure actAddInvoiceLineExecute(Sender: TObject);
     procedure actEditInvoiceLineExecute(Sender: TObject);
@@ -323,19 +310,18 @@ begin
     Result := edtProdDescr;  }
 end;
 
+
 procedure TfmAddEditInvoice.cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+var
+  frm: TfmShowRefBookClients;
 begin
   try
-    Application.CreateForm(TfmShowRefBookClients, fmShowRefBookClients);
-    fmShowRefBookClients.FormStyle := fsNormal;
-    fmShowRefBookClients.Hide;
-    fmShowRefBookClients.actSelect.Visible := True;
-    if fmShowRefBookClients.ShowModal = mrOk then
-    begin
-      TcxButtonEdit(Sender).Text := fmShowRefBookClients.tvRefBook.Controller.FocusedItem.EditValue;
-    end;
+    Application.CreateForm(TfmShowRefBookClients, frm);
+
+    if frm.ShowModal = mrOk then
+      TcxButtonEdit(Sender).Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
   finally
-    FreeAndNil(fmShowRefBookClients);
+    FreeAndNil(frm);
   end;
 end;
 
@@ -390,10 +376,6 @@ end;
 
 procedure TfmAddEditInvoice.FormShow(Sender: TObject);
 begin
-  spShipper.Open;
-  spConsignee.Open;
-  spSupplier.Open;
-  spPayer.Open;
   {qCountries.Open;
   qUnit.Open;
   qThermoType.Open;

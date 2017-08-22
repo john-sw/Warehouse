@@ -106,8 +106,8 @@ object MainForm: TMainForm
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
       'Default')
@@ -123,7 +123,7 @@ object MainForm: TMainForm
     DockControlHeights = (
       0
       0
-      88
+      90
       0)
     object dxBarManager1Bar1: TdxBar
       Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
@@ -155,7 +155,7 @@ object MainForm: TMainForm
       Caption = #1046#1091#1088#1085#1072#1083#1099
       CaptionButtons = <>
       DockedDockingStyle = dsTop
-      DockedLeft = 181
+      DockedLeft = 184
       DockedTop = 0
       DockingStyle = dsTop
       FloatLeft = 781

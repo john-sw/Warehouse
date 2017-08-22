@@ -33,7 +33,8 @@ uses
   dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk,
   dxPScxGridLayoutViewLnk, dxPScxEditorProducers, dxPScxExtEditorProducers,
-  dxSkinsdxBarPainter, dxPgsDlg, dxPSCore, dxPScxCommon, AdvMenus;
+  dxSkinsdxBarPainter, dxPgsDlg, dxPSCore, dxPScxCommon, AdvMenus,
+  dxSkinsdxRibbonPainter;
 
 type
   TfmShowRefBookGoods = class(TForm)
