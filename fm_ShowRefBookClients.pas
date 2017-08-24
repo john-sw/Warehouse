@@ -152,12 +152,14 @@ type
       AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
     procedure edtSearchStringPropertiesChange(Sender: TObject);
     procedure tvRefBookDblClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
     OldAfterScroll: TDataSetNotifyEvent;
   public
     { Public declarations }
+    CurrentID: Integer;
     constructor CreateMDI(AOwner: TComponent);
   end;
 
@@ -454,6 +456,11 @@ begin
     PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0)
 end;
 
+procedure TfmShowRefBookClients.FormCreate(Sender: TObject);
+begin
+  CurrentID := -1;
+end;
+
 procedure TfmShowRefBookClients.FormShow(Sender: TObject);
 var
   i: Integer;
@@ -513,6 +520,10 @@ begin
   tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
 
   actShowGroupedExecute(Nil);
+
+  if CurrentID <> -1 then
+    tvRefBook.DataController.FocusedRecordIndex := tvRefBook.DataController.FindRecordIndexByKey(CurrentID);
+
 end;
 
 procedure TfmShowRefBookClients.tvRefBookDblClick(Sender: TObject);

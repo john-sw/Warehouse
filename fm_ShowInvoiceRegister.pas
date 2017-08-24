@@ -338,7 +338,6 @@ begin
     end
     else
       tvRefBook.Columns[i].Visible := False;
-  actEdit.Enabled := (tvRefBook.DataController.KeyFieldNames <> '');
 
   tvRefBook.StoreToStream(OriginalSettings);
   tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
@@ -358,6 +357,9 @@ begin
   actDelete.Enabled := actEdit.Enabled;
   actExport.Enabled := actEdit.Enabled;
   actPrint.Enabled := actEdit.Enabled;
+  actCopyCell.Enabled := actEdit.Enabled;
+  actApprove.Enabled := actEdit.Enabled;
+  actDisApprove.Enabled := actEdit.Enabled;
 end;
 
 end.

@@ -4,7 +4,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
   BorderStyle = bsDialog
   Caption = 'fmAddEditInvoice'
   ClientHeight = 464
-  ClientWidth = 982
+  ClientWidth = 941
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,7 +21,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
   object pnlClient: TAdvPanel
     Left = 0
     Top = 0
-    Width = 982
+    Width = 941
     Height = 400
     Align = alClient
     BevelOuter = bvNone
@@ -63,16 +63,17 @@ object fmAddEditInvoice: TfmAddEditInvoice
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
+    ExplicitWidth = 982
     FullHeight = 200
     object cxLabel1: TcxLabel
-      Left = 247
+      Left = 303
       Top = 10
       Caption = #1044#1072#1090#1072
       Transparent = True
     end
     object cxLabel4: TcxLabel
-      Left = 502
-      Top = 35
+      Left = 486
+      Top = 34
       Caption = #1043#1088#1091#1079#1086#1087#1086#1083#1091#1095#1072#1090#1077#1083#1100
       Transparent = True
     end
@@ -88,10 +89,11 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Caption = #1053#1086#1084#1077#1088' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
       Transparent = True
     end
-    object edtProdName: TcxTextEdit
+    object edtDocNumber: TcxTextEdit
       Tag = 1
       Left = 120
       Top = 8
+      AutoSize = False
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
@@ -103,12 +105,13 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
       TabOrder = 0
-      Width = 93
+      Height = 22
+      Width = 153
     end
     object AdvGroupBox1: TAdvGroupBox
       Left = 0
       Top = 107
-      Width = 982
+      Width = 941
       Height = 293
       Align = alBottom
       Caption = ' '#1055#1086#1079#1080#1094#1080#1080' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '
@@ -116,14 +119,15 @@ object fmAddEditInvoice: TfmAddEditInvoice
       object GridInvoiceList: TcxGrid
         Left = 2
         Top = 45
-        Width = 978
+        Width = 937
         Height = 246
         Align = alClient
         PopupMenu = pmBarcode
         TabOrder = 0
+        ExplicitWidth = 978
         object tvInvoiceList: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dsBarcodes
+          DataController.DataSource = dsInvoiceList
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -137,15 +141,69 @@ object fmAddEditInvoice: TfmAddEditInvoice
           Styles.ContentEven = dmMain.GridStyleEvenRow
           Styles.Inactive = dmMain.GridStyleSelectedRow
           Styles.Selection = dmMain.GridStyleSelectedRow
-          object tvInvoiceListColumn1: TcxGridDBColumn
-            Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076#1099
-            DataBinding.FieldName = 'BarCode'
-            PropertiesClassName = 'TcxTextEditProperties'
+          object tvInvoiceListPartID: TcxGridDBColumn
+            DataBinding.FieldName = 'PartID'
+            Width = 54
           end
-          object tvInvoiceListColumn2: TcxGridDBColumn
-            Caption = #1050#1086#1083'-'#1074#1086' '#1077#1076#1080#1085#1080#1094' '#1090#1086#1074#1072#1088#1072
-            DataBinding.FieldName = 'UnitQty'
-            PropertiesClassName = 'TcxTextEditProperties'
+          object tvInvoiceListInvoiceID: TcxGridDBColumn
+            DataBinding.FieldName = 'InvoiceID'
+            Width = 64
+          end
+          object tvInvoiceListCountryCode: TcxGridDBColumn
+            DataBinding.FieldName = 'CountryCode'
+            Width = 78
+          end
+          object tvInvoiceListProdID: TcxGridDBColumn
+            DataBinding.FieldName = 'ProdID'
+            Width = 60
+          end
+          object tvInvoiceListProdDescrID: TcxGridDBColumn
+            DataBinding.FieldName = 'ProdDescrID'
+            Width = 78
+          end
+          object tvInvoiceListQty: TcxGridDBColumn
+            DataBinding.FieldName = 'Qty'
+            Width = 38
+          end
+          object tvInvoiceListContractPrice: TcxGridDBColumn
+            DataBinding.FieldName = 'ContractPrice'
+            Width = 90
+          end
+          object tvInvoiceListSalePrice: TcxGridDBColumn
+            DataBinding.FieldName = 'SalePrice'
+            Width = 67
+          end
+          object tvInvoiceListTax: TcxGridDBColumn
+            DataBinding.FieldName = 'Tax'
+            Width = 39
+          end
+          object tvInvoiceListGtdNumber: TcxGridDBColumn
+            DataBinding.FieldName = 'GtdNumber'
+            Width = 68
+          end
+          object tvInvoiceListContractSumma: TcxGridDBColumn
+            DataBinding.FieldName = 'ContractSumma'
+            Width = 72
+          end
+          object tvInvoiceListPricePercent: TcxGridDBColumn
+            DataBinding.FieldName = 'PricePercent'
+            Width = 86
+          end
+          object tvInvoiceListOrigPartID: TcxGridDBColumn
+            DataBinding.FieldName = 'OrigPartID'
+            Width = 67
+          end
+          object tvInvoiceListCountryName: TcxGridDBColumn
+            DataBinding.FieldName = 'CountryName'
+            Width = 60
+          end
+          object tvInvoiceListProdName: TcxGridDBColumn
+            DataBinding.FieldName = 'ProdName'
+            Width = 35
+          end
+          object tvInvoiceListProdDescription: TcxGridDBColumn
+            DataBinding.FieldName = 'ProdDescription'
+            Width = 20
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -155,7 +213,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       object tbInvoiceList: TRzToolbar
         Left = 2
         Top = 16
-        Width = 978
+        Width = 937
         Height = 29
         Images = ilRefBookActionImages
         BorderInner = fsNone
@@ -165,6 +223,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
         GradientColorStyle = gcsMSOffice
         TabOrder = 1
         VisualStyle = vsGradient
+        ExplicitWidth = 978
         ToolbarControls = (
           RzToolButton4
           RzSpacer5
@@ -174,7 +233,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
         object RzToolButton4: TRzToolButton
           Left = 4
           Top = 2
-          Action = actAddInvoiceLine
+          Action = actAdd
           ParentShowHint = False
           ShowHint = True
         end
@@ -185,7 +244,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
         object RzToolButton5: TRzToolButton
           Left = 37
           Top = 2
-          Action = actEditInvoiceLine
+          Action = actEdit
           ParentShowHint = False
           ShowHint = True
         end
@@ -196,17 +255,60 @@ object fmAddEditInvoice: TfmAddEditInvoice
         object RzToolButton6: TRzToolButton
           Left = 70
           Top = 2
-          Action = actDeleteInvoiceLine
+          Action = actDelete
           ParentShowHint = False
           ShowHint = True
         end
       end
     end
-    object cxDateEdit1: TcxDateEdit
-      Left = 284
+    object deDocDate: TcxDateEdit
+      Tag = 2
+      Left = 349
       Top = 8
+      AutoSize = False
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000020000
+        000A000000100000001100000011000000110000001200000012000000120000
+        0012000000120000001300000013000000120000000C000000030000000A8159
+        4CC2B47C69FFB37B69FFB37B68FFB37A68FFB37A68FFB27A68FFB37968FFB279
+        68FFB27967FFB27867FFB17867FFB17866FF7F5649C30000000B0000000EB77F
+        6EFFFBF7F4FFF8EEE9FFF8EEE8FFF7EFE8FFFAF4F0FFFBF7F4FFFBF6F3FFFAF4
+        EFFFF6EDE6FFF6ECE6FFF6ECE6FFF6ECE5FFB47B69FF000000110000000EB984
+        72FFFBF8F5FFF8F0EAFFF7EFE9FFF8EFE9FF806B62FF543B31FF543B30FF7F6A
+        61FFF7EDE7FFF7ECE7FFF6ECE6FFF7EDE7FFB77F6EFF000000110000000EBC89
+        78FFFCF9F7FFF9F1EDFFF8F0ECFFF8F0EBFFF9F0EBFF98877EFF816E64FFF8EF
+        EAFFF7EFE9FFF8EEE9FFF7EEE8FFF8EEE9FFB98472FF000000100000000DC08E
+        7DFFFCFAF8FFFAF3EFFFF9F2EEFFF9F2EEFFF9F2EDFF9A887FFF837066FFF9F1
+        ECFFF8F1EBFFF9F0EBFFF8EFEAFFF8F1EBFFBC8977FF000000100000000CC394
+        82FFFCFBF9FFFBF5F2FFFBF4F1FFFAF4F1FFFAF3F0FF9B8981FF847268FFFAF2
+        EEFFF9F2EEFFF9F2EDFFF9F2EDFFF9F2EEFFC08E7CFF0000000F0000000BC798
+        87FFFDFCFAFFFBF7F4FFFBF6F4FFFBF6F2FFFCF9F7FF9D8C84FF877368FFFAF5
+        F1FFFAF4F1FFFAF3F0FFFAF3F0FFFAF4F0FFC49381FF0000000E0000000BC99D
+        8CFFFDFCFBFFFCF8F6FFFCF7F5FFFCF7F5FF89746AFF5F4538FF88746AFFFBF6
+        F3FFFBF6F2FFFBF6F2FFFAF5F2FFFAF6F2FFC69886FF0000000D0000000ACDA1
+        90FFFEFDFCFFFCF9F8FFFCF8F7FFFCF9F7FFFCF8F7FFBEB1AAFF8B756BFFFCF7
+        F6FFFCF7F6FFFCF7F5FFFBF6F5FFFBF7F5FFC99D8BFF0000000D00000009CFA5
+        94FFFEFDFDFFFDFAF9FFFDF9F9FFFDFAF8FFFDF9F8FFFDFAF8FFFCF9F7FFFCF9
+        F7FFFCF9F7FFFDF8F7FFFCF9F7FFFCF9F7FFCCA290FF0000000C000000084B53
+        C3FF8D9EECFF687CE3FF6678E2FF6476E1FF6172E0FF5F70DFFF5D6CDEFF5B69
+        DCFF5966DBFF5664DAFF5462D9FF616DDCFF3337AAFF0000000B000000084C55
+        C4FF93A4EEFF6C80E6FF6A7EE4FF687BE4FF6678E2FF6375E1FF6172E0FF5E6F
+        DEFF5C6CDDFF5A69DCFF5766DAFF6472DDFF3538ABFF0000000A000000074D56
+        C6FF96A7EFFF95A6EFFF93A4EDFF90A2EDFF8F9FEDFF8B9BEBFF8898EAFF8595
+        EAFF8291E7FF7F8DE7FF7D89E5FF7987E5FF3539ACFF00000009000000043A40
+        93C14D55C5FF4B53C3FF4A51C1FF484FBFFF464DBEFF444BBBFF4249B9FF4046
+        B7FF3E44B4FF3C41B3FF3A3EB0FF393CAEFF282B80C200000006000000010000
+        0004000000060000000600000006000000070000000700000007000000070000
+        0007000000070000000800000008000000070000000500000001}
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
       Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.Kind = lfOffice11
       TabOrder = 6
+      Height = 21
       Width = 121
     end
     object cxLabel2: TcxLabel
@@ -216,8 +318,8 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Transparent = True
     end
     object cxLabel6: TcxLabel
-      Left = 502
-      Top = 58
+      Left = 486
+      Top = 57
       Caption = #1055#1083#1072#1090#1077#1083#1100#1097#1080#1082
       Transparent = True
     end
@@ -227,11 +329,47 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Caption = #1055#1088#1086#1094#1077#1085#1090' '#1085#1072#1094#1077#1085#1082#1080
       Transparent = True
     end
-    object ceNettoWeight: TcxCalcEdit
+    object cePercent: TcxCalcEdit
       Tag = 6
       Left = 120
       Top = 80
+      AutoSize = False
       EditValue = 0.000000000000000000
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000000000005252
+        5157F1F0ECFFECEBE7FFD7D4CFFFE3E1DCFFF1F0ECFFDBD8D3FFDBD8D3FFF1F0
+        ECFFE3E1DCFFD7D4CFFFECEBE7FFF1F0ECFF5252515700000000000000005353
+        5158F1F0ECFFE0DED9FFC7C3BDFFD0CDC7FFEDECE8FFC7C3BDFFC7C3BDFFEDEC
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFEDECE7FFD8D6D1FFE4E2DDFFF1F0ECFFDCDAD5FFDCDAD5FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1EFEBFFE4E2DEFFECEBE6FFF1F0ECFFE8E6E2FFE8E6E2FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE1DFDAFFC7C3BDFFD1CEC9FFEEEDE8FFC7C3BDFFC7C3BDFFEEED
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE7E6E1FFCBC8C2FFD9D7D2FFF0EEEAFFCFCCC6FFCFCCC6FFF0EE
+        EAFFD9D7D2FFCBC8C2FFE7E6E1FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE6E4E0FFC7C3BDFFD6D4CEFFEFEEEAFFCBC7C2FFCBC7C2FFEFEE
+        EAFFD6D4CEFFC7C3BDFFE6E4E0FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE2E0DCFFC7C3BDFFD3CFCAFFEEEDE9FFC8C4BEFFC8C4BEFFEEED
+        E9FFD3CFCAFFC7C3BDFFE2E0DCFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFE8E7E2FFEEEDE8FFF1F0ECFFEBE9E5FFEBE9E5FFF1F0
+        ECFFEEEDE8FFE8E7E2FFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1ECE4FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DC
+        C3FFF0DCC3FFF0DCC3FFF1ECE4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005252
+        5157F1F0ECFFF1EDE5FFF0DEC7FFF0DEC6FFF0DEC6FFF0DEC6FFF0DEC6FFF0DE
+        C6FFF0DEC6FFF0DEC7FFF1EDE5FFF1F0ECFF5252515700000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000}
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
@@ -244,18 +382,25 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
       TabOrder = 10
+      Height = 22
       Width = 121
     end
-    object cxButtonEdit1: TcxButtonEdit
+    object edtConsignor: TcxButtonEdit
+      Tag = 1
       Left = 120
       Top = 33
       Properties.Buttons = <
         item
           Default = True
           Kind = bkEllipsis
+        end
+        item
+          ImageIndex = 9
+          Kind = bkGlyph
         end>
+      Properties.Images = ilRefBookActionImages
       Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
-      Style.BorderStyle = ebsOffice11
+      Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
       Style.LookAndFeel.NativeStyle = False
       Style.ButtonStyle = btsOffice11
@@ -268,16 +413,22 @@ object fmAddEditInvoice: TfmAddEditInvoice
       TabOrder = 11
       Width = 350
     end
-    object cxButtonEdit2: TcxButtonEdit
-      Left = 600
-      Top = 32
+    object edtConsignee: TcxButtonEdit
+      Tag = 1
+      Left = 584
+      Top = 31
       Properties.Buttons = <
         item
           Default = True
           Kind = bkEllipsis
+        end
+        item
+          ImageIndex = 9
+          Kind = bkGlyph
         end>
+      Properties.Images = ilRefBookActionImages
       Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
-      Style.BorderStyle = ebsOffice11
+      Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
       Style.LookAndFeel.NativeStyle = False
       Style.ButtonStyle = btsOffice11
@@ -290,16 +441,22 @@ object fmAddEditInvoice: TfmAddEditInvoice
       TabOrder = 12
       Width = 350
     end
-    object cxButtonEdit3: TcxButtonEdit
+    object edtSupplier: TcxButtonEdit
+      Tag = 1
       Left = 120
       Top = 56
       Properties.Buttons = <
         item
           Default = True
           Kind = bkEllipsis
+        end
+        item
+          ImageIndex = 9
+          Kind = bkGlyph
         end>
+      Properties.Images = ilRefBookActionImages
       Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
-      Style.BorderStyle = ebsOffice11
+      Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
       Style.LookAndFeel.NativeStyle = False
       Style.ButtonStyle = btsOffice11
@@ -312,16 +469,22 @@ object fmAddEditInvoice: TfmAddEditInvoice
       TabOrder = 13
       Width = 350
     end
-    object cxButtonEdit4: TcxButtonEdit
-      Left = 600
-      Top = 56
+    object edtPayer: TcxButtonEdit
+      Tag = 1
+      Left = 584
+      Top = 55
       Properties.Buttons = <
         item
           Default = True
           Kind = bkEllipsis
+        end
+        item
+          ImageIndex = 9
+          Kind = bkGlyph
         end>
+      Properties.Images = ilRefBookActionImages
       Properties.OnButtonClick = cxButtonEdit1PropertiesButtonClick
-      Style.BorderStyle = ebsOffice11
+      Style.BorderStyle = ebsSingle
       Style.LookAndFeel.Kind = lfOffice11
       Style.LookAndFeel.NativeStyle = False
       Style.ButtonStyle = btsOffice11
@@ -334,11 +497,37 @@ object fmAddEditInvoice: TfmAddEditInvoice
       TabOrder = 14
       Width = 350
     end
+    object cxLabel7: TcxLabel
+      Left = 486
+      Top = 8
+      Caption = #1057#1082#1083#1072#1076
+      Transparent = True
+    end
+    object lcWarehouse: TcxLookupComboBox
+      Tag = 6
+      Left = 584
+      Top = 8
+      Properties.KeyFieldNames = 'WhouseID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'WhouseName'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsWarehouse
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 16
+      Width = 350
+    end
   end
   object pnlBottom: TAdvPanel
     Left = 0
     Top = 400
-    Width = 982
+    Width = 941
     Height = 64
     Align = alBottom
     BevelOuter = bvNone
@@ -380,12 +569,13 @@ object fmAddEditInvoice: TfmAddEditInvoice
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
+    ExplicitWidth = 982
     DesignSize = (
-      982
+      941
       64)
     FullHeight = 200
     object btnSave: TcxButton
-      Left = 752
+      Left = 711
       Top = 20
       Width = 100
       Height = 25
@@ -428,9 +618,10 @@ object fmAddEditInvoice: TfmAddEditInvoice
         56B00E3226560000000600000002000000000000000000000000}
       TabOrder = 0
       OnClick = btnSaveClick
+      ExplicitLeft = 752
     end
     object btnCancel: TcxButton
-      Left = 872
+      Left = 831
       Top = 20
       Width = 100
       Height = 25
@@ -473,6 +664,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
         B5D040437D951212223000000004000000010000000000000000}
       TabOrder = 1
       OnClick = btnCancelClick
+      ExplicitLeft = 872
     end
   end
   object spRefBookFieldsAddEditView: TUniStoredProc
@@ -832,40 +1024,78 @@ object fmAddEditInvoice: TfmAddEditInvoice
           FEFFFEFEFDFFFEFDFDFFFEFDFDFFFEFDFCFFCA9D8DFF00000009000000000000
           00000000000000000000000000039A7B6FC0CEA495FFCFA494FFCDA494FFCCA3
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
+      end
+      item
+        Image.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          2000000000000004000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000001000000030000
+          0007000000060000000300000006000000080000000400000001000000000000
+          00000000000000000000000000000000000000000000000000030B082C4D2619
+          99EA110A58A2010003160F0855A3160C7EEA0603244F00000004000000000000
+          0001000000060000000A0000000B0000000B0000000B000000112E23A2EA6F85
+          EAFF4150CBFF1F1689E63B48C9FF5C74E4FF180E82E700000007000000000000
+          000680574CBDB37B69FFB37A68FFB37A68FFB27968FFDCC6BEFF756BC0FF7780
+          DDFF6D8BEFFF5872E5FF6381EDFF6972D8FF1A13659F00000005000000000000
+          0008B57D6BFFFBF7F3FFFBF6F3FFFBF6F3FFFBF5F2FFFAF5F3FFEFECEFFF4D46
+          BDFF6A85EBFF7494F2FF6079E7FF262094E40101041300000002000000000000
+          0008B67F6DFFFCF8F5FFF8EFECFFF7EEEAFFF7EEEAFFF9F5F3FF807DD4FF6B7E
+          E2FF93B0F6FFA0B3F2FF8AA6F4FF5D6EDBFF1C186AA000000004000000000000
+          0008B8826FFFFCF9F6FFF8F0ECFFF8F0ECFFF7EFECFFFAF8F7FF6261D8FFB1C3
+          F6FF8D99EAFF5F5DD2FF8995E7FFA6B8F3FF3B35AEE300000004000000000000
+          0007BA8473FFFDF9F8FFF8F1EEFFF8F0EDFFF8F0ECFFFAF5F3FFCECDEEFF6564
+          DEFF9291E2FFF2F1F3FF8982D3FF4340BCE71212334600000002000000000000
+          0007BB8776FFFDFBF9FFF9F1EFFFF9F2EEFFF8F1EEFFF8F0EDFFFAF5F3FFFAF8
+          F7FFFAF7F6FFFCF9F8FFE3CFC9FF0000000C0000000200000000000000000000
+          0006BD8A78FFFDFBFAFFF9F2F0FFF9F2F0FFF8F2EFFFF9F1EFFFF8F1EEFFF9F1
+          EEFFF8F0EDFFFDFAF8FFBB8675FF000000080000000000000000000000000000
+          0006BF8D7BFFFEFCFBFFFAF4F1FFFAF4F1FFFAF2F1FFFAF2F0FFF9F2EFFFF9F2
+          EEFFF8F1EEFFFDFBF9FFBD8978FF000000080000000000000000000000000000
+          0005C39381FFFEFDFDFFFBF6F4FFFBF5F4FFFBF4F2FFFAF4F2FFFAF4F1FFF9F3
+          F1FFFAF3F1FFFEFCFBFFC18F7EFF000000070000000000000000000000000000
+          0004C69887FFFFFEFEFFFBF7F6FFFCF6F6FFFBF6F5FFFBF6F4FFFBF5F4FFFAF5
+          F3FFFAF5F3FFFEFDFDFFC59684FF000000060000000000000000000000000000
+          0003C99B8AFFFFFEFEFFFBF7F6FFFCF7F6FFFCF6F5FFFBF6F5FFFCF6F5FFFBF5
+          F5FFFBF6F4FFFFFEFEFFC79887FF000000050000000000000000000000000000
+          0003CA9E8DFFFFFFFFFFFFFFFFFFFFFFFEFFFFFEFEFFFFFEFEFFFFFEFEFFFFFE
+          FEFFFFFEFEFFFFFEFEFFC99B8AFF000000040000000000000000000000000000
+          00029B7F74BFD0AB9CFFD0AB9CFFD0AA9CFFCFA99BFFCFA99AFFCFA999FFCFA8
+          99FFCEA899FFCFA898FF997B71C0000000030000000000000000}
       end>
   end
   object alRefBook: TActionList
     Images = ilRefBookActionImages
     Left = 828
     Top = 248
-    object actAddInvoiceLine: TAction
+    object actAdd: TAction
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
       ImageIndex = 0
-      OnExecute = actAddInvoiceLineExecute
+      OnExecute = actAddExecute
     end
-    object actEditInvoiceLine: TAction
+    object actEdit: TAction
       Caption = #1048#1079#1084#1077#1085#1080#1090#1100
       Hint = #1048#1079#1084#1077#1085#1080#1090#1100
       ImageIndex = 1
-      OnExecute = actEditInvoiceLineExecute
+      OnExecute = actEditExecute
     end
-    object actDeleteInvoiceLine: TAction
+    object actDelete: TAction
       Caption = #1059#1076#1072#1083#1080#1090#1100
       Hint = #1059#1076#1072#1083#1080#1090#1100
       ImageIndex = 3
-      OnExecute = actDeleteInvoiceLineExecute
+      OnExecute = actDeleteExecute
     end
   end
-  object dsBarcodes: TUniDataSource
-    DataSet = mdBarcode
+  object dsInvoiceList: TUniDataSource
+    DataSet = mdInvoiceList
     Left = 48
     Top = 324
   end
-  object spBarcodes: TUniStoredProc
-    StoredProcName = 'br_aspBarCode;1'
+  object spInvoiceList: TUniStoredProc
+    StoredProcName = 'br_aspInvoiceLine;1'
     SQL.Strings = (
-      '{:RETURN_VALUE = CALL br_aspBarCode;1 (:ProdID)}')
+      '{:RETURN_VALUE = CALL br_aspInvoiceLine;1 (:InvoiceID)}')
     Connection = dmMain.MainConnection
+    Active = True
     Left = 48
     Top = 216
     ParamData = <
@@ -873,15 +1103,17 @@ object fmAddEditInvoice: TfmAddEditInvoice
         DataType = ftInteger
         Name = 'RETURN_VALUE'
         ParamType = ptResult
+        Size = 538970637
         Value = 0
       end
       item
         DataType = ftInteger
-        Name = 'ProdID'
+        Name = 'InvoiceID'
         ParamType = ptInput
+        Size = 1953450098
         Value = nil
       end>
-    CommandStoredProcName = 'br_aspBarCode;1'
+    CommandStoredProcName = 'br_aspInvoiceLine;1'
   end
   object pmDescr: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
@@ -915,35 +1147,75 @@ object fmAddEditInvoice: TfmAddEditInvoice
     Left = 228
     Top = 280
     object MenuItem9: TMenuItem
-      Action = actAddInvoiceLine
+      Action = actAdd
     end
     object MenuItem10: TMenuItem
       Caption = '-'
     end
     object MenuItem11: TMenuItem
-      Action = actEditInvoiceLine
+      Action = actEdit
     end
     object MenuItem12: TMenuItem
       Caption = '-'
     end
     object MenuItem13: TMenuItem
-      Action = actDeleteInvoiceLine
+      Action = actDelete
     end
   end
-  object mdBarcode: TdxMemData
+  object mdInvoiceList: TdxMemData
     Indexes = <>
     SortOptions = []
     AfterPost = mdDescrAfterPost
     Left = 48
     Top = 268
-    object mdBarcodeBarCodeID: TIntegerField
-      FieldName = 'BarCodeID'
-    end
-    object mdBarcodeBarCode: TStringField
-      FieldName = 'BarCode'
-    end
-    object mdBarcodeUnitQty: TIntegerField
-      FieldName = 'UnitQty'
-    end
+  end
+  object qSprRef: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprReference'
+      'where ReferenceID = :ID')
+    Left = 52
+    Top = 156
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        Value = nil
+      end>
+  end
+  object spRefBookFieldsBrowse: TUniStoredProc
+    StoredProcName = 'spGetReferenceBrowser;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 256
+    Top = 88
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceBrowser;1'
+  end
+  object qWarehouse: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprWhouse'
+      'order by WhouseName')
+    Left = 602
+    Top = 4
+  end
+  object dsWarehouse: TUniDataSource
+    DataSet = qWarehouse
+    Left = 652
+    Top = 4
   end
 end

@@ -38,11 +38,11 @@ type
     spRefBookFieldsAddEditView: TUniStoredProc;
     ilRefBookActionImages: TcxImageList;
     alRefBook: TActionList;
-    actAddInvoiceLine: TAction;
-    actEditInvoiceLine: TAction;
-    actDeleteInvoiceLine: TAction;
-    dsBarcodes: TUniDataSource;
-    spBarcodes: TUniStoredProc;
+    actAdd: TAction;
+    actEdit: TAction;
+    actDelete: TAction;
+    dsInvoiceList: TUniDataSource;
+    spInvoiceList: TUniStoredProc;
     pmDescr: TAdvPopupMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -57,16 +57,11 @@ type
     MenuItem13: TMenuItem;
     cxLabel3: TcxLabel;
     cxLabel5: TcxLabel;
-    edtProdName: TcxTextEdit;
-    mdBarcode: TdxMemData;
-    mdBarcodeBarCodeID: TIntegerField;
-    mdBarcodeBarCode: TStringField;
-    mdBarcodeUnitQty: TIntegerField;
+    edtDocNumber: TcxTextEdit;
+    mdInvoiceList: TdxMemData;
     AdvGroupBox1: TAdvGroupBox;
     GridInvoiceList: TcxGrid;
     tvInvoiceList: TcxGridDBTableView;
-    tvInvoiceListColumn1: TcxGridDBColumn;
-    tvInvoiceListColumn2: TcxGridDBColumn;
     cxGridLevel1: TcxGridLevel;
     tbInvoiceList: TRzToolbar;
     RzToolButton4: TRzToolButton;
@@ -74,19 +69,41 @@ type
     RzToolButton5: TRzToolButton;
     RzSpacer6: TRzSpacer;
     RzToolButton6: TRzToolButton;
-    cxDateEdit1: TcxDateEdit;
+    deDocDate: TcxDateEdit;
     cxLabel2: TcxLabel;
     cxLabel6: TcxLabel;
     cxLabel9: TcxLabel;
-    ceNettoWeight: TcxCalcEdit;
-    cxButtonEdit1: TcxButtonEdit;
-    cxButtonEdit2: TcxButtonEdit;
-    cxButtonEdit3: TcxButtonEdit;
-    cxButtonEdit4: TcxButtonEdit;
+    cePercent: TcxCalcEdit;
+    edtConsignor: TcxButtonEdit;
+    edtConsignee: TcxButtonEdit;
+    edtSupplier: TcxButtonEdit;
+    edtPayer: TcxButtonEdit;
+    tvInvoiceListPartID: TcxGridDBColumn;
+    tvInvoiceListInvoiceID: TcxGridDBColumn;
+    tvInvoiceListCountryCode: TcxGridDBColumn;
+    tvInvoiceListProdID: TcxGridDBColumn;
+    tvInvoiceListProdDescrID: TcxGridDBColumn;
+    tvInvoiceListQty: TcxGridDBColumn;
+    tvInvoiceListContractPrice: TcxGridDBColumn;
+    tvInvoiceListSalePrice: TcxGridDBColumn;
+    tvInvoiceListTax: TcxGridDBColumn;
+    tvInvoiceListGtdNumber: TcxGridDBColumn;
+    tvInvoiceListContractSumma: TcxGridDBColumn;
+    tvInvoiceListPricePercent: TcxGridDBColumn;
+    tvInvoiceListOrigPartID: TcxGridDBColumn;
+    tvInvoiceListCountryName: TcxGridDBColumn;
+    tvInvoiceListProdName: TcxGridDBColumn;
+    tvInvoiceListProdDescription: TcxGridDBColumn;
+    qSprRef: TUniQuery;
+    spRefBookFieldsBrowse: TUniStoredProc;
+    cxLabel7: TcxLabel;
+    qWarehouse: TUniQuery;
+    dsWarehouse: TUniDataSource;
+    lcWarehouse: TcxLookupComboBox;
     procedure FormShow(Sender: TObject);
-    procedure actAddInvoiceLineExecute(Sender: TObject);
-    procedure actEditInvoiceLineExecute(Sender: TObject);
-    procedure actDeleteInvoiceLineExecute(Sender: TObject);
+    procedure actAddExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure actDeleteExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnCancelClick(Sender: TObject);
@@ -117,26 +134,26 @@ implementation
 
 uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookClients;
 
-procedure TfmAddEditInvoice.actAddInvoiceLineExecute(Sender: TObject);
+procedure TfmAddEditInvoice.actAddExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
   try
-    fmAddEditLinkedRefBook.RefBookName := 'Штрих-коды товара';
+    fmAddEditLinkedRefBook.RefBookName := 'позиция документа';
     fmAddEditLinkedRefBook.FormMode := fmAdd;
-    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 9; //barcodes
-    fmAddEditLinkedRefBook.rsRefBookDataSet := mdBarcode;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //barcodes
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdInvoiceList;
 
     if fmAddEditLinkedRefBook.ShowModal = mrOk then
     begin
       GridInvoiceList.SetFocus;
-      tvInvoiceListColumn1.FocusWithSelection;
+      tvInvoiceListPartID.FocusWithSelection;
     end;
   finally
     FreeAndNil(fmAddEditLinkedRefBook);
   end;
 end;
 
-procedure TfmAddEditInvoice.actDeleteInvoiceLineExecute(Sender: TObject);
+procedure TfmAddEditInvoice.actDeleteExecute(Sender: TObject);
 begin
   if tvInvoiceList.Controller.FocusedRow = nil then
     Exit;
@@ -146,18 +163,18 @@ begin
   IsModified := True;
 end;
 
-procedure TfmAddEditInvoice.actEditInvoiceLineExecute(Sender: TObject);
+procedure TfmAddEditInvoice.actEditExecute(Sender: TObject);
 begin
   Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
   try
-    fmAddEditLinkedRefBook.RefBookName := 'Штрих-коды товара';
+    fmAddEditLinkedRefBook.RefBookName := 'позиция документа';
     fmAddEditLinkedRefBook.FormMode := fmEdit;
-    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 9; //barcodes
-    fmAddEditLinkedRefBook.rsRefBookDataSet := mdBarcode;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //barcodes
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdInvoiceList;
     if fmAddEditLinkedRefBook.ShowModal = mrOk then
     begin
       GridInvoiceList.SetFocus;
-      tvInvoiceListColumn1.FocusWithSelection;
+      tvInvoiceListPartID.FocusWithSelection;
     end
   finally
     FreeAndNil(fmAddEditLinkedRefBook);
@@ -173,23 +190,40 @@ procedure TfmAddEditInvoice.SetParamsAndExecStoredProc(sp: TUniStoredProc);
 var
   sp1: TUniStoredProc;
 begin
-  {try
+  try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('ProdCatID').Value := ParentID;
-    sp.ParamByName('ProdName').Value := edtProdName.Text;
-    sp.ParamByName('ProdDescription').Value := edtProdDescr.Text;
-    sp.ParamByName('ArticleNumber').Value := edtArticleNumber.Text;
-    sp.ParamByName('CountryID').Value := lcCountry.EditValue;
-    sp.ParamByName('UnitID').Value := lcUnit.EditValue;
-    sp.ParamByName('ThermoTypeID').Value := lcThermoType.EditValue;
-    sp.ParamByName('OnlyIntSales').Value := Integer(cbOnlyIntSales.Checked);
-    sp.ParamByName('NettoWeight').Value := ceNettoWeight.Value;
-    sp.ParamByName('BruttoWeight').Value := ceBruttoWeight.Value;
-    sp.ParamByName('ProdVolume').Value := ceProdVolume.Value;
-    sp.ParamByName('Comment').Value := edtComment.Text;
-    sp.ParamByName('IsVisible').Value := 1;
+    sp.ParamByName('DocNumber').Value := edtDocNumber.Text;
+    sp.ParamByName('DocDate').Value := deDocDate.Date;
+    if edtConsignor.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Consignor').Clear
+    else
+      sp.ParamByName('Consignor').Value := edtConsignor.Properties.Buttons.Items[0].Tag;
+    if edtConsignee.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Consignee').Clear
+    else
+      sp.ParamByName('Consignee').Value := edtConsignee.Properties.Buttons.Items[0].Tag;
+    if edtSupplier.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Supplier').Clear
+    else
+      sp.ParamByName('Supplier').Value := edtSupplier.Properties.Buttons.Items[0].Tag;
+    if edtPayer.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Payer').Clear
+    else
+      sp.ParamByName('Payer').Value := edtPayer.Properties.Buttons.Items[0].Tag;
+    sp.ParamByName('WhouseID').Value := lcWarehouse.EditValue;
+    sp.ParamByName('PricePercent').Value := cePercent.Value;
+    sp.ParamByName('IsAccept').Value := 0;
+    sp.ParamByName('InvoiceTypeID').Value := 1;
 
+    ;
+{ @SumTotal NUMERIC(18, 2) = NULL,
+  @TaxSumTotal NUMERIC(18, 2) = NULL,
+  @SumTotalWithTax NUMERIC(18, 2) = NULL,
+  @TotalLine INT = NULL,
+  @TotalQty NUMERIC(14, 2) = NULL,
+  @Comment VARCHAR(64) = NULL,
+ }
     if (FormMode = fmAdd) then
     begin
       sp.Open;
@@ -205,124 +239,100 @@ begin
 
       if (FormMode = fmEdit) then
       begin
-        sp1.CreateProcCall('delProdDescription');
-        spDescriptions.First;
-        while not spDescriptions.Eof do
+        sp1.CreateProcCall('delInvoiceLine');
+        spInvoiceList.First;
+        while not spInvoiceList.Eof do
         begin
-          if not mdDescr.Locate('ProdDescrID', spDescriptions.FieldByName('ProdDescrID').AsInteger, []) then
+          if not mdInvoiceList.Locate('PartID', spInvoiceList.FieldByName('PartID').AsInteger, []) then
           begin
-            sp1.ParamByName('ID').AsInteger := spDescriptions.FieldByName('ProdDescrID').AsInteger;
+            sp1.ParamByName('ID').AsInteger := spInvoiceList.FieldByName('PartID').AsInteger;
             sp1.Execute;
           end;
-          spDescriptions.Next;
-        end;
-        sp1.CreateProcCall('delBarCode');
-        spBarcodes.First;
-        while not spBarcodes.Eof do
-        begin
-          if not mdBarcode.Locate('BarCodeID', spBarcodes.FieldByName('BarCodeID').AsInteger, []) then
-          begin
-            sp1.ParamByName('ID').AsInteger := spBarcodes.FieldByName('BarCodeID').AsInteger;
-            sp1.Execute;
-          end;
-          spBarcodes.Next;
+          spInvoiceList.Next;
         end;
       end;
-      mdDescr.First;
-      while not mdDescr.Eof do
+      mdInvoiceList.First;
+      while not mdInvoiceList.Eof do
       begin
-        if mdDescr.FieldByName('ProdDescrID').IsNull then
-          sp1.CreateProcCall('insProdDescription')
+        if mdInvoiceList.FieldByName('PartID').IsNull then
+          sp1.CreateProcCall('insInvoiceLine')
         else
         begin
-          sp1.CreateProcCall('updProdDescription');
-          sp1.ParamByName('ID').AsInteger := mdDescr.FieldByName('ProdDescrID').AsInteger;
+          sp1.CreateProcCall('updInvoiceLine');
+          sp1.ParamByName('ID').AsInteger := mdInvoiceList.FieldByName('PartID').AsInteger;
         end;
-        sp1.ParamByName('ProdID').AsInteger := CurrentID;
-        sp1.ParamByName('ProdDescription').AsString := mdDescr.FieldByName('ProdDescription').AsString;
+        sp1.ParamByName('PartID').AsInteger := CurrentID;
+        sp1.ParamByName('ProdDescription').AsString := mdInvoiceList.FieldByName('ProdDescription').AsString;
         sp1.ParamByName('IsReadOnly').AsInteger := 0;
         sp1.Execute;
-        mdDescr.Next;
+        mdInvoiceList.Next;
       end;
-
-      mdBarcode.First;
-      while not mdBarcode.Eof do
-      begin
-        if mdBarcode.FieldByName('BarCodeID').IsNull then
-          sp1.CreateProcCall('insBarCode')
-        else
-        begin
-          sp1.CreateProcCall('updBarCode');
-          sp1.ParamByName('ID').AsInteger := mdBarcode.FieldByName('BarCodeID').AsInteger;
-        end;
-        sp1.ParamByName('ProdID').AsInteger := CurrentID;
-        sp1.ParamByName('BarCode').AsString := mdBarcode.FieldByName('BarCode').AsString;
-        sp1.ParamByName('UnitQty').AsInteger := mdBarcode.FieldByName('UnitQty').AsInteger;
-        sp1.Execute;
-        mdBarcode.Next;
-      end;
-
+      dmMain.MainConnection.Commit;
     finally
       FreeAndNil(sp1);
     end;
   except
     if dmMain.MainConnection.InTransaction then
       dmMain.MainConnection.Rollback;
-  end;   }
+  end;
 end;
 
 function TfmAddEditInvoice.CheckReqControls: TWinControl;
 begin
   Result := nil;
 
-  {dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 7; //prod
+  dmRefBooks.spGetReferenceFieldList.Close;
+  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 15; //prod
   dmRefBooks.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtComment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
-    Result := edtComment;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(cePercent), dmRefBooks.spGetReferenceFieldList, 'PricePercent') then
+    Result := cePercent;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcUnit), dmRefBooks.spGetReferenceFieldList, 'UnitID') then
-    Result := lcUnit;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtPayer), dmRefBooks.spGetReferenceFieldList, 'Payer') then
+    Result := edtPayer;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceProdVolume), dmRefBooks.spGetReferenceFieldList, 'ProdVolume') then
-    Result := ceProdVolume;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtSupplier), dmRefBooks.spGetReferenceFieldList, 'Supplier') then
+    Result := edtSupplier;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceBruttoWeight), dmRefBooks.spGetReferenceFieldList, 'BruttoWeight') then
-    Result := ceBruttoWeight;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtConsignee), dmRefBooks.spGetReferenceFieldList, 'Consignee') then
+    Result := edtConsignee;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceNettoWeight), dmRefBooks.spGetReferenceFieldList, 'NettoWeight') then
-    Result := ceNettoWeight;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtConsignor), dmRefBooks.spGetReferenceFieldList, 'Consignor') then
+    Result := edtConsignor;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcThermoType), dmRefBooks.spGetReferenceFieldList, 'ThermoTypeID') then
-    Result := lcThermoType;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcWarehouse), dmRefBooks.spGetReferenceFieldList, 'WhouseID') then
+    Result := lcWarehouse;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcCountry), dmRefBooks.spGetReferenceFieldList, 'CountryID') then
-    Result := lcCountry;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(deDocDate), dmRefBooks.spGetReferenceFieldList, 'DocDate') then
+    Result := deDocDate;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtArticleNumber), dmRefBooks.spGetReferenceFieldList, 'ArticleNumber') then
-    Result := edtArticleNumber;
-
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtProdName), dmRefBooks.spGetReferenceFieldList, 'ProdName') then
-    Result := edtProdName;
-
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtProdDescr), dmRefBooks.spGetReferenceFieldList, 'ProdDescription') then
-    Result := edtProdDescr;  }
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtDocNumber), dmRefBooks.spGetReferenceFieldList, 'DocNumber') then
+    Result := edtDocNumber;
 end;
-
 
 procedure TfmAddEditInvoice.cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 var
   frm: TfmShowRefBookClients;
 begin
-  try
-    Application.CreateForm(TfmShowRefBookClients, frm);
-
-    if frm.ShowModal = mrOk then
-      TcxButtonEdit(Sender).Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
-  finally
-    FreeAndNil(frm);
-  end;
+  if AButtonIndex = 0 then
+    try
+      Application.CreateForm(TfmShowRefBookClients, frm);
+      frm.CurrentID := TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag;
+      if frm.ShowModal = mrOk then
+      begin
+        TcxButtonEdit(Sender).Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
+        TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag := frm.tvRefBook.Controller.FocusedRow.Values[0];
+        IsModified := True;
+      end;
+    finally
+      FreeAndNil(frm);
+    end
+  else
+    begin
+      TcxButtonEdit(Sender).Text := '';
+      TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag := 0;
+      IsModified := True;
+    end;
 end;
 
 procedure TfmAddEditInvoice.btnSaveClick(Sender: TObject);
@@ -375,59 +385,42 @@ begin
 end;
 
 procedure TfmAddEditInvoice.FormShow(Sender: TObject);
+var
+  i: Integer;
 begin
-  {qCountries.Open;
-  qUnit.Open;
-  qThermoType.Open;
+  qWarehouse.Open;
+  qSprRef.ParamByName('ID').AsInteger := 16; // код справочника!
+  qSprRef.Open;
+
   if FormMode in [fmEdit, fmView] then
-    with dmRefBooks.spGetGoodsForProdCat do
+    with spParentRefBook do
     begin
-      edtProdName.Text := FieldByName('ProdName').AsString;
-      edtProdDescr.Text := FieldByName('ProdDescription').AsString;
-      edtArticleNumber.Text := FieldByName('ArticleNumber').AsString;
-      lcCountry.EditValue := FieldByName('CountryID').AsInteger;
-      lcUnit.EditValue := FieldByName('UnitID').AsInteger;
-      lcThermoType.EditValue := FieldByName('ThermoTypeID').AsInteger;
-      cbOnlyIntSales.Checked := Boolean(FieldByName('OnlyIntSales').AsInteger);
-      ceNettoWeight.Value := FieldByName('NettoWeight').AsFloat;
-      ceBruttoWeight.Value := FieldByName('BruttoWeight').AsFloat;
-      ceProdVolume.Value := FieldByName('ProdVolume').AsFloat;
-      edtComment.Text := FieldByName('Comment').AsString;
-      spDescriptions.ParamByName('ProdID').Value := FieldByName('ProdID').AsInteger;
-      spDescriptions.Open;
-      spBarcodes.ParamByName('ProdID').Value := FieldByName('ProdID').AsInteger;
-      spBarcodes.Open;
+      edtDocNumber.Text := FieldByName('DocNumber').AsString;
+      deDocDate.Date := FieldByName('DocDate').AsDatetime;
+
+      edtConsignor.Properties.Buttons.Items[0].Tag := FieldByName('Consignor').AsInteger;
+      edtConsignor.Text := FieldByName('ConsignorName').AsString;
+      edtConsignee.Properties.Buttons.Items[0].Tag := FieldByName('Consignee').AsInteger;
+      edtConsignee.Text := FieldByName('ConsigneeName').AsString;
+      edtSupplier.Properties.Buttons.Items[0].Tag := FieldByName('Supplier').AsInteger;
+      edtSupplier.Text := FieldByName('SupplierName').AsString;
+      edtPayer.Properties.Buttons.Items[0].Tag := FieldByName('Payer').AsInteger;
+      edtPayer.Text := FieldByName('PayerName').AsString;
+
+      lcWarehouse.EditValue := FieldByName('WhouseID').AsInteger;
+      cePercent.Value := FieldByName('PricePercent').AsFloat;
+
+      spInvoiceList.ParamByName('InvoiceID').Value := FieldByName('InvoiceID').AsInteger;
+      spInvoiceList.Open;
     end
   else
   begin
-    spDescriptions.ParamByName('ProdID').Value := 0;
-    spDescriptions.Open;
-    spBarcodes.ParamByName('ProdID').Value := 0;
-    spBarcodes.Open;
-  end;
-  mdDescr.FieldByName('ProdDescription').Size := spDescriptions.FieldByName('ProdDescription').Size;
-  mdDescr.Open;
-  while not spDescriptions.Eof do
-  begin
-    mdDescr.Insert;
-    mdDescr.FieldByName('ProdDescrID').AsString := spDescriptions.FieldByName('ProdDescrID').AsString;
-    mdDescr.FieldByName('ProdDescription').AsString := spDescriptions.FieldByName('ProdDescription').AsString;
-    mdDescr.Post;
-    spDescriptions.Next;
+    spInvoiceList.ParamByName('InvoiceID').Value := 0;
+    spInvoiceList.Open;
   end;
 
-  mdBarcode.FieldByName('BarCode').Size := spBarcodes.FieldByName('BarCode').Size;
-  mdBarcode.Open;
-  while not spBarcodes.Eof do
-  begin
-    mdBarcode.Insert;
-    mdBarcode.FieldByName('BarCodeID').AsString := spBarcodes.FieldByName('BarCodeID').AsString;
-    mdBarcode.FieldByName('BarCode').AsString := spBarcodes.FieldByName('BarCode').AsString;
-    mdBarcode.FieldByName('UnitQty').AsInteger := spBarcodes.FieldByName('UnitQty').AsInteger;
-    mdBarcode.Post;
-    spBarcodes.Next;
-  end;
-  }
+  mdInvoiceList.CopyFromDataSet(spInvoiceList);
+  mdInvoiceList.Open;
   case FormMode of
     fmAdd: Caption := 'Добавление документа';
     fmEdit: Caption := 'Изменение документа';
@@ -441,6 +434,50 @@ begin
         btnCancel.Caption := 'Закрыть';
       end;
   end;
+  tvInvoiceList.ClearItems;
+  tvInvoiceList.DataController.CreateAllItems;
+  spRefBookFieldsBrowse.Close;
+  spRefBookFieldsBrowse.ParamByName('ReferenceID').AsInteger := qSprRef.FieldByName('ReferenceID').AsInteger;
+  spRefBookFieldsBrowse.Open;
+  for i := 0 to tvInvoiceList.ColumnCount - 1 do
+    if (spRefBookFieldsBrowse.Locate('BrowserFieldName', tvInvoiceList.Columns[i].Caption, [loCaseInsensitive])) then
+    begin
+      if (spRefBookFieldsBrowse.FieldByName('IsVisible').AsInteger = 0) then
+        tvInvoiceList.Columns[i].Visible := False;
+
+      tvInvoiceList.Columns[i].Caption := spRefBookFieldsBrowse.FieldByName('BrowserFieldRUSName').AsString;
+      if spRefBookFieldsBrowse.FieldByName('IsKeyField').AsInteger = 1 then
+        tvInvoiceList.DataController.KeyFieldNames := spRefBookFieldsBrowse.FieldByName('BrowserFieldName').AsString;
+      if spRefBookFieldsBrowse.FieldByName('ColumnTypeID').AsInteger = 5 then
+      begin
+        tvInvoiceList.Columns[i].PropertiesClass := TcxCheckBoxProperties;
+        with tvInvoiceList.Columns[i].Properties as TcxCheckBoxProperties do
+        begin
+          AllowGrayed := False;
+          ValueChecked := 1;
+          ValueUnchecked := 0;
+        end;
+      end;
+      if spRefBookFieldsBrowse.FieldByName('HaveFilter').AsInteger = 0 then
+        tvInvoiceList.Columns[i].Options.Filtering := False;
+      if spRefBookFieldsBrowse.FieldByName('HaveSummary').AsInteger = 1 then
+      begin
+        tvInvoiceList.Columns[i].Summary.FooterKind := TcxSummaryKind(spRefBookFieldsBrowse.FieldByName('FooterType').AsInteger);
+        tvInvoiceList.Columns[i].Summary.FooterFormat := spRefBookFieldsBrowse.FieldByName('FooterFormat').AsString;
+        with TcxGridDBTableSummaryItem(tvInvoiceList.DataController.Summary.FooterSummaryItems.Add) do
+        begin
+          Kind := TcxSummaryKind(spRefBookFieldsBrowse.FieldByName('FooterType').AsInteger);
+          Column := tvInvoiceList.Columns[i];
+          FieldName := spRefBookFieldsBrowse.FieldByName('BrowserFieldName').AsString;
+        end;
+      end;
+
+      tvInvoiceList.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
+    end
+    else
+      tvInvoiceList.Columns[i].Visible := False;
+  actEdit.Enabled := (tvInvoiceList.DataController.KeyFieldNames <> '');
+
   IsModified := False;
 end;
 

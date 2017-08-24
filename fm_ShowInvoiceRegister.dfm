@@ -442,6 +442,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
         '2)}')
     Connection = dmMain.MainConnection
     AfterOpen = spShowInvoiceRegisterAfterOpen
+    AfterRefresh = spShowInvoiceRegisterAfterOpen
     Left = 48
     Top = 88
     ParamData = <

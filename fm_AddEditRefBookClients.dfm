@@ -1656,28 +1656,6 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
       end>
   end
-  object spRefBookFieldsBrowse: TUniStoredProc
-    StoredProcName = 'spGetReferenceBrowser;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
-    Connection = dmMain.MainConnection
-    Left = 276
-    Top = 108
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = nil
-      end
-      item
-        DataType = ftInteger
-        Name = 'ReferenceID'
-        ParamType = ptInput
-        Value = nil
-      end>
-    CommandStoredProcName = 'spGetReferenceBrowser;1'
-  end
   object pmContacts: TAdvPopupMenu
     MenuStyler = dmMain.AdvMenuFantasyStyler1
     Version = '2.5.7.0'
@@ -1847,5 +1825,27 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
       ShortCut = 16451
       OnExecute = actCopyCellBankAccountsExecute
     end
+  end
+  object spRefBookFieldsBrowse: TUniStoredProc
+    StoredProcName = 'spGetReferenceBrowser;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
+    Connection = dmMain.MainConnection
+    Left = 276
+    Top = 108
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceBrowser;1'
   end
 end

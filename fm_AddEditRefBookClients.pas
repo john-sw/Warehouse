@@ -68,7 +68,6 @@ type
     edtClientSecondPhone: TcxTextEdit;
     cxLabel12: TcxLabel;
     edtClientSite: TcxTextEdit;
-    spRefBookFieldsBrowse: TUniStoredProc;
     pmContacts: TAdvPopupMenu;
     N1: TMenuItem;
     N2: TMenuItem;
@@ -167,6 +166,7 @@ type
     actEditBankAccount: TAction;
     actDeleteBankAccount: TAction;
     actCopyCellBankAccounts: TAction;
+    spRefBookFieldsBrowse: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure actAddContactExecute(Sender: TObject);
     procedure actEditContactExecute(Sender: TObject);

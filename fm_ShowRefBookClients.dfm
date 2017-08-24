@@ -13,6 +13,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
   OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -208,8 +209,6 @@ object fmShowRefBookClients: TfmShowRefBookClients
         Align = alClient
         PopupMenu = pmDefaultPopupMenu
         TabOrder = 0
-        ExplicitTop = 49
-        ExplicitHeight = 459
         object tvRefBook: TcxGridDBTableView
           OnDblClick = tvRefBookDblClick
           Navigator.Buttons.CustomButtons = <>
@@ -993,7 +992,6 @@ object fmShowRefBookClients: TfmShowRefBookClients
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1005,8 +1003,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42969.899839178250000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42971.905590451390000000
       BuiltInReportLink = True
     end
   end

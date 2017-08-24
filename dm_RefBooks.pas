@@ -88,8 +88,8 @@ begin
   if AspCheck.Locate('RefFieldName', AFieldName, [loCaseInsensitive]) and
      (AspCheck.FieldByName('IsRequired').AsInteger = 1) then
     case AControl.Tag of
-      1: Result := (AControl as TcxTextEdit).Text <> ''; // DBTextEdit
-      2: Result := (AControl as TcxDateEdit).Date = 0; // DBDateEdit
+      1: Result := (AControl as TcxCustomTextEdit).Text <> ''; // DBTextEdit
+      2: Result := (AControl as TcxDateEdit).Date <> NullDate; // DBDateEdit
   //          3	DBCalcEdit
   //          4	DBMaskEdit
       5: Result := not (AControl as TcxCheckBox).Checked; // DBCheckBox
