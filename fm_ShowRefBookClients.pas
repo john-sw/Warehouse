@@ -127,7 +127,10 @@ type
     actClearFilter: TAction;
     actShowGrouped: TAction;
     tbShowGrouped: TAdvToolButton;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
     procedure actViewExecute(Sender: TObject);
@@ -142,9 +145,9 @@ type
     procedure actEditGroupExecute(Sender: TObject);
     procedure actViewGroupExecute(Sender: TObject);
     procedure actDeleteGroupExecute(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure actCopyCellClientsGroupsExecute(Sender: TObject);
     procedure alRefBookUpdate(Action: TBasicAction; var Handled: Boolean);
+
     procedure actSelectExecute(Sender: TObject);
     procedure actClearFilterExecute(Sender: TObject);
     procedure actShowGroupedExecute(Sender: TObject);
@@ -152,7 +155,6 @@ type
       AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
     procedure edtSearchStringPropertiesChange(Sender: TObject);
     procedure tvRefBookDblClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;

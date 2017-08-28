@@ -34,7 +34,7 @@ uses
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk,
   dxPScxGridLayoutViewLnk, dxPScxEditorProducers, dxPScxExtEditorProducers,
   dxSkinsdxBarPainter, dxPgsDlg, dxPSCore, dxPScxCommon, AdvMenus,
-  dxSkinsdxRibbonPainter;
+  dxSkinsdxRibbonPainter, cxButtonEdit, AdvToolBtn;
 
 type
   TfmShowRefBookGoods = class(TForm)
@@ -119,7 +119,19 @@ type
     RzSpacer9: TRzSpacer;
     RzToolButton11: TRzToolButton;
     actCopyCellProdCat: TAction;
+    actShowGrouped: TAction;
+    AdvPanel1: TAdvPanel;
+    tbShowGrouped: TAdvToolButton;
+    edtSearchString: TcxButtonEdit;
+    actClearFilter: TAction;
+    actSelect: TAction;
+    RzSpacer10: TRzSpacer;
+    RzToolButton12: TRzToolButton;
+
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
     procedure actViewExecute(Sender: TObject);
@@ -134,13 +146,22 @@ type
     procedure actEditProdCatExecute(Sender: TObject);
     procedure actViewProdCatExecute(Sender: TObject);
     procedure actDeleteProdCatExecute(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure actCopyCellProdCatExecute(Sender: TObject);
+    procedure actShowGroupedExecute(Sender: TObject);
+    procedure edtSearchStringPropertiesChange(Sender: TObject);
+    procedure actClearFilterExecute(Sender: TObject);
+    procedure actSelectExecute(Sender: TObject);
+    procedure tvRefBookDblClick(Sender: TObject);
+    procedure tvRefBookFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
+    OldAfterScroll: TDataSetNotifyEvent;
   public
     { Public declarations }
+    CurrentID: Integer;
+    constructor CreateMDI(AOwner: TComponent);
   end;
 
 var
@@ -151,6 +172,14 @@ implementation
 {$R *.dfm}
 
 uses fm_AddEditRefBookGoods, Vcl.Clipbrd, cxGridExportLink, fm_AddEditGroup, fm_MainForm, dm_main;
+
+constructor TfmShowRefBookGoods.CreateMDI(AOwner: TComponent);
+begin
+  Create(AOwner);
+  tbShowGrouped.Down := True;
+  actSelect.Visible := False;
+  FormStyle := fsMDIChild;
+end;
 
 procedure TfmShowRefBookGoods.actAddExecute(Sender: TObject);
 begin
@@ -200,9 +229,18 @@ begin
   end;
 end;
 
+procedure TfmShowRefBookGoods.actClearFilterExecute(Sender: TObject);
+begin
+  edtSearchString.Clear;
+  actRefreshExecute(Nil);
+end;
+
 procedure TfmShowRefBookGoods.actCloseExecute(Sender: TObject);
 begin
-  Close;
+  if FormStyle = fsMDIChild then
+    Close
+  else
+    ModalResult := mrCancel;
 end;
 
 procedure TfmShowRefBookGoods.actCopyCellExecute(Sender: TObject);
@@ -213,6 +251,26 @@ end;
 procedure TfmShowRefBookGoods.actCopyCellProdCatExecute(Sender: TObject);
 begin
   tlGridProdCat.CopySelectedToClipboard;
+end;
+
+procedure TfmShowRefBookGoods.actSelectExecute(Sender: TObject);
+begin
+  ModalResult := mrOk;
+end;
+
+procedure TfmShowRefBookGoods.actShowGroupedExecute(Sender: TObject);
+begin
+  if tbShowGrouped.Down then
+  begin
+    dmRefBooks.spShowRefBookGoods.AfterScroll := OldAfterScroll; //TdmRefBooks.spShowRefBookClientsAfterScroll
+    tlGridProdCat.Enabled := True;
+  end
+  else
+  begin
+    dmRefBooks.spShowRefBookGoods.AfterScroll := nil;
+    tlGridProdCat.Enabled := False;
+  end;
+  actRefreshExecute(Nil);
 end;
 
 procedure TfmShowRefBookGoods.actDeleteExecute(Sender: TObject);
@@ -322,6 +380,15 @@ end;
 
 procedure TfmShowRefBookGoods.actRefreshExecute(Sender: TObject);
 begin
+  if tbShowGrouped.Down then
+    dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger
+  else
+    dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').Clear;
+  if (Sender = nil) and (Length(edtSearchString.Text) < 4) then //nil - автовызов при вводе строки
+    dmRefBooks.spGetGoodsForProdCat.ParamByName('SearchString').Clear
+  else
+    dmRefBooks.spGetGoodsForProdCat.ParamByName('SearchString').AsString := edtSearchString.Text;
+
   dmRefBooks.spGetGoodsForProdCat.Close;
   dmRefBooks.spGetGoodsForProdCat.Open;
 end;
@@ -367,15 +434,27 @@ begin
   end;
 end;
 
+procedure TfmShowRefBookGoods.edtSearchStringPropertiesChange(Sender: TObject);
+begin
+  actRefreshExecute(Nil);
+end;
+
 procedure TfmShowRefBookGoods.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0);
+  if FormStyle = fsMDIChild then
+    PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0)
+end;
+
+procedure TfmShowRefBookGoods.FormCreate(Sender: TObject);
+begin
+  CurrentID := -1;
 end;
 
 procedure TfmShowRefBookGoods.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
+  OldAfterScroll := dmRefBooks.spShowRefBookGoods.AfterScroll;
   dmRefBooks.spShowRefBookGoods.Open;
 
   qSprRef.ParamByName('ID').AsInteger := 7; // код справочника!
@@ -428,8 +507,35 @@ begin
 
   tvRefBook.StoreToStream(OriginalSettings);
   tvRefBook.RestoreFromRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
-//  tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 
+  actShowGroupedExecute(Nil);
+
+  if CurrentID <> -1 then
+    tvRefBook.DataController.FocusedRecordIndex := tvRefBook.DataController.FindRecordIndexByKey(CurrentID);
+end;
+
+procedure TfmShowRefBookGoods.tvRefBookDblClick(Sender: TObject);
+begin
+  if actSelect.Visible then
+    actSelectExecute(nil)
+  else
+    actViewExecute(nil);
+end;
+
+procedure TfmShowRefBookGoods.tvRefBookFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+var
+  i: TcxDBTreeListNode;
+begin
+  if tbShowGrouped.Down then
+    Exit;
+  i := tlGridProdCat.FindNodeByKeyValue(dmRefBooks.spGetGoodsForProdCat.FieldByName('ProdCatID').AsInteger);
+
+  if i <> nil then
+  begin
+    i.Selected := True;
+    i.Focused := true;
+  end;
 end;
 
 end.

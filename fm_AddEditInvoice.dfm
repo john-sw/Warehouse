@@ -63,36 +63,109 @@ object fmAddEditInvoice: TfmAddEditInvoice
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitWidth = 982
     FullHeight = 200
-    object cxLabel1: TcxLabel
-      Left = 303
+    object lblLabel1: THTMLabel
+      Left = 300
       Top = 10
-      Caption = #1044#1072#1090#1072
+      Width = 40
+      Height = 17
+      FocusControl = DocDate
+      HTMLText.Strings = (
+        #1044#1072#1090#1072)
       Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
     end
-    object cxLabel4: TcxLabel
+    object lblLabel4: THTMLabel
       Left = 486
       Top = 34
-      Caption = #1043#1088#1091#1079#1086#1087#1086#1083#1091#1095#1072#1090#1077#1083#1100
+      Width = 100
+      Height = 17
+      FocusControl = Consignee
+      HTMLText.Strings = (
+        #1043#1088#1091#1079#1086#1087#1086#1083#1091#1095#1072#1090#1077#1083#1100)
       Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
     end
-    object cxLabel3: TcxLabel
+    object lblLabel3: THTMLabel
       Left = 10
       Top = 35
-      Caption = #1043#1088#1091#1079#1086#1086#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100
+      Width = 110
+      Height = 17
+      FocusControl = Consignor
+      HTMLText.Strings = (
+        #1043#1088#1091#1079#1086#1086#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100)
       Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
     end
-    object cxLabel5: TcxLabel
+    object lblLabel5: THTMLabel
       Left = 10
       Top = 10
-      Caption = #1053#1086#1084#1077#1088' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+      Width = 115
+      Height = 17
+      AutoSizeType = asBoth
+      FocusControl = DocNumber
+      HTMLText.Strings = (
+        #1053#1086#1084#1077#1088' '#1076#1086#1082#1091#1084#1077#1085#1090#1072)
       Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
     end
-    object edtDocNumber: TcxTextEdit
+    object lblLabel2: THTMLabel
+      Left = 10
+      Top = 58
+      Width = 105
+      Height = 17
+      FocusControl = Supplier
+      HTMLText.Strings = (
+        #1055#1086#1089#1090#1072#1074#1097#1080#1082)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel6: THTMLabel
+      Left = 486
+      Top = 57
+      Width = 80
+      Height = 17
+      FocusControl = Payer
+      HTMLText.Strings = (
+        #1055#1083#1072#1090#1077#1083#1100#1097#1080#1082)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel9: THTMLabel
+      Left = 10
+      Top = 82
+      Width = 105
+      Height = 17
+      FocusControl = PricePercent
+      HTMLText.Strings = (
+        #1055#1088#1086#1094#1077#1085#1090' '#1085#1072#1094#1077#1085#1082#1080)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel7: THTMLabel
+      Left = 486
+      Top = 10
+      Width = 50
+      Height = 17
+      AutoSizeType = asHorizontal
+      FocusControl = WhouseID
+      HTMLText.Strings = (
+        #1057#1082#1083#1072#1076)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object DocNumber: TcxTextEdit
       Tag = 1
       Left = 120
-      Top = 8
+      Top = 7
       AutoSize = False
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
@@ -115,7 +188,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Height = 293
       Align = alBottom
       Caption = ' '#1055#1086#1079#1080#1094#1080#1080' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '
-      TabOrder = 5
+      TabOrder = 8
       object GridInvoiceList: TcxGrid
         Left = 2
         Top = 45
@@ -124,7 +197,8 @@ object fmAddEditInvoice: TfmAddEditInvoice
         Align = alClient
         PopupMenu = pmBarcode
         TabOrder = 0
-        ExplicitWidth = 978
+        ExplicitLeft = -94
+        ExplicitTop = -27
         object tvInvoiceList: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsInvoiceList
@@ -223,7 +297,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
         GradientColorStyle = gcsMSOffice
         TabOrder = 1
         VisualStyle = vsGradient
-        ExplicitWidth = 978
         ToolbarControls = (
           RzToolButton4
           RzSpacer5
@@ -261,7 +334,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
         end
       end
     end
-    object deDocDate: TcxDateEdit
+    object DocDate: TcxDateEdit
       Tag = 2
       Left = 349
       Top = 8
@@ -307,32 +380,14 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleDisabled.LookAndFeel.Kind = lfOffice11
       StyleFocused.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.Kind = lfOffice11
-      TabOrder = 6
+      TabOrder = 1
       Height = 21
       Width = 121
     end
-    object cxLabel2: TcxLabel
-      Left = 10
-      Top = 58
-      Caption = #1055#1086#1089#1090#1072#1074#1097#1080#1082
-      Transparent = True
-    end
-    object cxLabel6: TcxLabel
-      Left = 486
-      Top = 57
-      Caption = #1055#1083#1072#1090#1077#1083#1100#1097#1080#1082
-      Transparent = True
-    end
-    object cxLabel9: TcxLabel
-      Left = 10
-      Top = 82
-      Caption = #1055#1088#1086#1094#1077#1085#1090' '#1085#1072#1094#1077#1085#1082#1080
-      Transparent = True
-    end
-    object cePercent: TcxCalcEdit
+    object PricePercent: TcxCalcEdit
       Tag = 6
       Left = 120
-      Top = 80
+      Top = 79
       AutoSize = False
       EditValue = 0.000000000000000000
       Properties.ButtonGlyph.Data = {
@@ -381,11 +436,11 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 10
+      TabOrder = 7
       Height = 22
       Width = 121
     end
-    object edtConsignor: TcxButtonEdit
+    object Consignor: TcxButtonEdit
       Tag = 1
       Left = 120
       Top = 33
@@ -410,10 +465,10 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 11
+      TabOrder = 3
       Width = 350
     end
-    object edtConsignee: TcxButtonEdit
+    object Consignee: TcxButtonEdit
       Tag = 1
       Left = 584
       Top = 31
@@ -438,10 +493,10 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 12
+      TabOrder = 4
       Width = 350
     end
-    object edtSupplier: TcxButtonEdit
+    object Supplier: TcxButtonEdit
       Tag = 1
       Left = 120
       Top = 56
@@ -466,10 +521,10 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 13
+      TabOrder = 5
       Width = 350
     end
-    object edtPayer: TcxButtonEdit
+    object Payer: TcxButtonEdit
       Tag = 1
       Left = 584
       Top = 55
@@ -494,16 +549,10 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.Kind = lfOffice11
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 14
+      TabOrder = 6
       Width = 350
     end
-    object cxLabel7: TcxLabel
-      Left = 486
-      Top = 8
-      Caption = #1057#1082#1083#1072#1076
-      Transparent = True
-    end
-    object lcWarehouse: TcxLookupComboBox
+    object WhouseID: TcxLookupComboBox
       Tag = 6
       Left = 584
       Top = 8
@@ -520,7 +569,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       StyleDisabled.LookAndFeel.NativeStyle = False
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.NativeStyle = False
-      TabOrder = 16
+      TabOrder = 2
       Width = 350
     end
   end
@@ -569,7 +618,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitWidth = 982
     DesignSize = (
       941
       64)
@@ -618,7 +666,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
         56B00E3226560000000600000002000000000000000000000000}
       TabOrder = 0
       OnClick = btnSaveClick
-      ExplicitLeft = 752
     end
     object btnCancel: TcxButton
       Left = 831
@@ -664,7 +711,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
         B5D040437D951212223000000004000000010000000000000000}
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 872
     end
   end
   object spRefBookFieldsAddEditView: TUniStoredProc
@@ -1095,7 +1141,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspInvoiceLine;1 (:InvoiceID)}')
     Connection = dmMain.MainConnection
-    Active = True
     Left = 48
     Top = 216
     ParamData = <
@@ -1188,8 +1233,8 @@ object fmAddEditInvoice: TfmAddEditInvoice
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
     Connection = dmMain.MainConnection
-    Left = 256
-    Top = 88
+    Left = 464
+    Top = 256
     ParamData = <
       item
         DataType = ftInteger
@@ -1210,12 +1255,12 @@ object fmAddEditInvoice: TfmAddEditInvoice
     SQL.Strings = (
       'select * from sprWhouse'
       'order by WhouseName')
-    Left = 602
+    Left = 762
     Top = 4
   end
   object dsWarehouse: TUniDataSource
     DataSet = qWarehouse
-    Left = 652
+    Left = 820
     Top = 4
   end
 end

@@ -14,7 +14,8 @@ uses
   fm_AddEditRefBookClients in 'fm_AddEditRefBookClients.pas' {fmAddEditRefBookClients},
   fm_ShowRefBookClients in 'fm_ShowRefBookClients.pas' {fmShowRefBookClients},
   fm_ShowRefBooks in 'fm_ShowRefBooks.pas' {fmShowRefBook},
-  fm_AddEditInvoice in 'fm_AddEditInvoice.pas' {fmAddEditInvoice};
+  fm_AddEditInvoice in 'fm_AddEditInvoice.pas' {fmAddEditInvoice},
+  fm_AddEditInvoiceLine in 'fm_AddEditInvoiceLine.pas' {fmAddEditInvoiceLine};
 
 {$R *.res}
 
@@ -24,6 +25,5 @@ begin
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TdmMain, dmMain);
   Application.CreateForm(TdmRefBooks, dmRefBooks);
-  Application.CreateForm(TfmAddEditInvoice, fmAddEditInvoice);
   Application.Run;
 end.

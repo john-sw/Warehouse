@@ -28,7 +28,7 @@ uses
   cxSpinEdit, cxDBNavigator, dxPSGlbl, dxPSUtl, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSEngn, dxPSCompsProvider,
   dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk, dxPScxEditorProducers,
-  dxPScxExtEditorProducers, dxSkinsdxBarPainter, dxPSCore, dxPScxCommon, dxPgsDlg, AdvSmoothTabPager;
+  dxPScxExtEditorProducers, dxSkinsdxBarPainter, dxPSCore, dxPScxCommon, dxPgsDlg, AdvSmoothTabPager, HTMLabel;
 
 type
   TfmAddEditRefBookClients = class(TForm)
@@ -43,72 +43,25 @@ type
     cxTabSheet1: TcxTabSheet;
     cxTabSheet4: TcxTabSheet;
     cxTabSheet5: TcxTabSheet;
-    cxLabel1: TcxLabel;
-    cxLabel2: TcxLabel;
-    cxLabel7: TcxLabel;
-    edtShortClientName: TcxTextEdit;
-    lcClientType: TcxLookupComboBox;
-    edtClientINN: TcxTextEdit;
-    edtComment: TcxTextEdit;
-    cxLabel5: TcxLabel;
-    edtFullClientName: TcxTextEdit;
-    edtClientLegalAddress: TcxTextEdit;
-    cxLabel3: TcxLabel;
-    edtClientPostAddress: TcxTextEdit;
-    cxLabel4: TcxLabel;
-    edtClientKPP: TcxTextEdit;
-    cxLabel6: TcxLabel;
-    edtClientCity: TcxTextEdit;
-    cxLabel8: TcxLabel;
-    cxLabel9: TcxLabel;
-    edtClientMainPhone: TcxTextEdit;
-    cxLabel10: TcxLabel;
-    edtClientEmail: TcxTextEdit;
-    cxLabel11: TcxLabel;
-    edtClientSecondPhone: TcxTextEdit;
-    cxLabel12: TcxLabel;
-    edtClientSite: TcxTextEdit;
+    ClientShortName: TcxTextEdit;
+    ClientTypeID: TcxLookupComboBox;
+    ClientINN: TcxTextEdit;
+    Comment: TcxTextEdit;
+    ClientFullName: TcxTextEdit;
+    ClientLegalAddress: TcxTextEdit;
+    ClientPostAddress: TcxTextEdit;
+    ClientKPP: TcxTextEdit;
+    ClientCity: TcxTextEdit;
+    ClientMainPhone: TcxTextEdit;
+    ClientEmail: TcxTextEdit;
+    ClientSecondPhone: TcxTextEdit;
+    ClientSite: TcxTextEdit;
     pmContacts: TAdvPopupMenu;
     N1: TMenuItem;
     N2: TMenuItem;
     N4: TMenuItem;
     N5: TMenuItem;
     N7: TMenuItem;
-    cxTabSheet2: TcxTabSheet;
-    AdvSmoothTabPager1: TAdvSmoothTabPager;
-    AdvSmoothTabPage1: TAdvSmoothTabPage;
-    AdvSmoothTabPage2: TAdvSmoothTabPage;
-    AdvSmoothTabPage3: TAdvSmoothTabPage;
-    cxLabel13: TcxLabel;
-    cxLabel14: TcxLabel;
-    cxLabel15: TcxLabel;
-    cxTextEdit9: TcxTextEdit;
-    cxLookupComboBox1: TcxLookupComboBox;
-    cxTextEdit10: TcxTextEdit;
-    cxTextEdit11: TcxTextEdit;
-    cxLabel16: TcxLabel;
-    cxTextEdit12: TcxTextEdit;
-    cxTextEdit13: TcxTextEdit;
-    cxLabel17: TcxLabel;
-    cxTextEdit14: TcxTextEdit;
-    cxLabel18: TcxLabel;
-    cxTextEdit15: TcxTextEdit;
-    cxLabel19: TcxLabel;
-    cxTextEdit16: TcxTextEdit;
-    cxLabel20: TcxLabel;
-    cxLabel21: TcxLabel;
-    cxTextEdit17: TcxTextEdit;
-    cxLabel22: TcxLabel;
-    cxTextEdit18: TcxTextEdit;
-    cxLabel23: TcxLabel;
-    cxTextEdit19: TcxTextEdit;
-    cxLabel24: TcxLabel;
-    cxTextEdit20: TcxTextEdit;
-    cxTabSheet3: TcxTabSheet;
-    cxPageControl2: TcxPageControl;
-    cxTabSheet6: TcxTabSheet;
-    cxTabSheet7: TcxTabSheet;
-    cxTabSheet8: TcxTabSheet;
     mdBankAccounts: TdxMemData;
     mdContacts: TdxMemData;
     GridContacts: TcxGrid;
@@ -120,15 +73,6 @@ type
     RzToolButton5: TRzToolButton;
     RzSpacer4: TRzSpacer;
     RzToolButton6: TRzToolButton;
-    cxGrid1: TcxGrid;
-    cxGridDBTableView1: TcxGridDBTableView;
-    cxGridLevel2: TcxGridLevel;
-    RzToolbar1: TRzToolbar;
-    RzToolButton7: TRzToolButton;
-    RzSpacer5: TRzSpacer;
-    RzToolButton8: TRzToolButton;
-    RzSpacer6: TRzSpacer;
-    RzToolButton9: TRzToolButton;
     GridBankAccounts: TcxGrid;
     tvBankAccounts: TcxGridDBTableView;
     cxGridLevel1: TcxGridLevel;
@@ -138,15 +82,6 @@ type
     RzToolButton2: TRzToolButton;
     RzSpacer2: TRzSpacer;
     RzToolButton4: TRzToolButton;
-    cxGrid2: TcxGrid;
-    cxGridDBTableView2: TcxGridDBTableView;
-    cxGridLevel3: TcxGridLevel;
-    RzToolbar2: TRzToolbar;
-    RzToolButton10: TRzToolButton;
-    RzSpacer7: TRzSpacer;
-    RzToolButton11: TRzToolButton;
-    RzSpacer8: TRzSpacer;
-    RzToolButton12: TRzToolButton;
     pmBankAccounts: TAdvPopupMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -167,6 +102,18 @@ type
     actDeleteBankAccount: TAction;
     actCopyCellBankAccounts: TAction;
     spRefBookFieldsBrowse: TUniStoredProc;
+    lblLabel1: THTMLabel;
+    lblLabel2: THTMLabel;
+    lblLabel7: THTMLabel;
+    lblLabel5: THTMLabel;
+    lblLabel3: THTMLabel;
+    lblLabel4: THTMLabel;
+    lblLabel6: THTMLabel;
+    lblLabel8: THTMLabel;
+    lblLabel9: THTMLabel;
+    lblLabel10: THTMLabel;
+    lblLabel11: THTMLabel;
+    lblLabel12: THTMLabel;
     procedure FormShow(Sender: TObject);
     procedure actAddContactExecute(Sender: TObject);
     procedure actEditContactExecute(Sender: TObject);
@@ -320,19 +267,19 @@ begin
     dmMain.MainConnection.StartTransaction;
 
     sp.ParamByName('ClientFolderID').Value := ParentID;
-    sp.ParamByName('ClientFullName').Value := edtFullClientName.Text;
-    sp.ParamByName('ClientShortName').Value := edtShortClientName.Text;
-    sp.ParamByName('ClientINN').Value := edtClientINN.Text;
-    sp.ParamByName('ClientKPP').Value := edtClientKPP.EditValue;
-    sp.ParamByName('ClientTypeID').Value := lcClientType.EditValue;
-    sp.ParamByName('ClientCity').Value := edtClientKPP.EditValue;
-    sp.ParamByName('PostAddress').Value := edtClientPostAddress.EditValue;
-    sp.ParamByName('LegalAddress').Value := edtClientLegalAddress.EditValue;
-    sp.ParamByName('ClientMainPhone').Value := edtClientMainPhone.EditValue;
-    sp.ParamByName('ClientSecondPhone').Value := edtClientSecondPhone.EditValue;
-    sp.ParamByName('ClientMainEMail').Value := edtClientEmail.EditValue;
-    sp.ParamByName('ClientSite').Value := edtClientSite.EditValue;
-    sp.ParamByName('Comment').Value := edtComment.Text;
+    sp.ParamByName('ClientFullName').Value := ClientFullName.Text;
+    sp.ParamByName('ClientShortName').Value := ClientShortName.Text;
+    sp.ParamByName('ClientINN').Value := ClientINN.Text;
+    sp.ParamByName('ClientKPP').Value := ClientKPP.EditValue;
+    sp.ParamByName('ClientTypeID').Value := ClientTypeID.EditValue;
+    sp.ParamByName('ClientCity').Value := ClientKPP.EditValue;
+    sp.ParamByName('PostAddress').Value := ClientPostAddress.EditValue;
+    sp.ParamByName('LegalAddress').Value := ClientLegalAddress.EditValue;
+    sp.ParamByName('ClientMainPhone').Value := ClientMainPhone.EditValue;
+    sp.ParamByName('ClientSecondPhone').Value := ClientSecondPhone.EditValue;
+    sp.ParamByName('ClientMainEMail').Value := ClientEmail.EditValue;
+    sp.ParamByName('ClientSite').Value := ClientSite.EditValue;
+    sp.ParamByName('Comment').Value := Comment.Text;
     sp.ParamByName('IsActive').Value := 1;
 
     if (FormMode = fmAdd) then
@@ -438,44 +385,44 @@ begin
   dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 11; // clients
   dmRefBooks.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtComment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
-    Result := edtComment;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Comment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
+    Result := Comment;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientSite), dmRefBooks.spGetReferenceFieldList, 'ClientSite') then
-    Result := edtClientSite;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientSite), dmRefBooks.spGetReferenceFieldList, 'ClientSite') then
+    Result := ClientSite;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientEmail), dmRefBooks.spGetReferenceFieldList, 'ClientEmail') then
-    Result := edtClientEmail;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientEmail), dmRefBooks.spGetReferenceFieldList, 'ClientEmail') then
+    Result := ClientEmail;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientSecondPhone), dmRefBooks.spGetReferenceFieldList, 'ClientSecondPhone') then
-    Result := edtClientSecondPhone;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientSecondPhone), dmRefBooks.spGetReferenceFieldList, 'ClientSecondPhone') then
+    Result := ClientSecondPhone;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientMainPhone), dmRefBooks.spGetReferenceFieldList, 'ClientMainPhone') then
-    Result := edtClientMainPhone;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientMainPhone), dmRefBooks.spGetReferenceFieldList, 'ClientMainPhone') then
+    Result := ClientMainPhone;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientLegalAddress), dmRefBooks.spGetReferenceFieldList, 'ClientLegalAddress') then
-    Result := edtClientLegalAddress;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientLegalAddress), dmRefBooks.spGetReferenceFieldList, 'ClientLegalAddress') then
+    Result := ClientLegalAddress;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientPostAddress), dmRefBooks.spGetReferenceFieldList, 'ClientPostAddress') then
-    Result := edtClientPostAddress;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientPostAddress), dmRefBooks.spGetReferenceFieldList, 'ClientPostAddress') then
+    Result := ClientPostAddress;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientCity), dmRefBooks.spGetReferenceFieldList, 'ClientCity') then
-    Result := edtClientCity;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientCity), dmRefBooks.spGetReferenceFieldList, 'ClientCity') then
+    Result := ClientCity;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcClientType), dmRefBooks.spGetReferenceFieldList, 'ClientTypeID') then
-    Result := lcClientType;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientTypeID), dmRefBooks.spGetReferenceFieldList, 'ClientTypeID') then
+    Result := ClientTypeID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientKPP), dmRefBooks.spGetReferenceFieldList, 'ClientKPP') then
-    Result := edtClientKPP;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientKPP), dmRefBooks.spGetReferenceFieldList, 'ClientKPP') then
+    Result := ClientKPP;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtClientINN), dmRefBooks.spGetReferenceFieldList, 'ClientINN') then
-    Result := edtClientINN;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientINN), dmRefBooks.spGetReferenceFieldList, 'ClientINN') then
+    Result := ClientINN;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtShortClientName), dmRefBooks.spGetReferenceFieldList, 'ClientShortName') then
-    Result := edtShortClientName;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientShortName), dmRefBooks.spGetReferenceFieldList, 'ClientShortName') then
+    Result := ClientShortName;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtFullClientName), dmRefBooks.spGetReferenceFieldList, 'ClientFullName') then
-    Result := edtFullClientName;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientFullName), dmRefBooks.spGetReferenceFieldList, 'ClientFullName') then
+    Result := ClientFullName;
 
 end;
 
@@ -536,19 +483,19 @@ begin
   if FormMode in [fmEdit, fmView] then
     with dmRefBooks.spGetClientsForGroup do
     begin
-      edtFullClientName.Text := FieldByName('ClientFullName').AsString;
-      edtShortClientName.Text := FieldByName('ClientShortName').AsString;
-      edtClientINN.Text := FieldByName('ClientINN').AsString;
-      edtClientKPP.EditValue := FieldByName('ClientKPP').AsString;
-      lcClientType.EditValue := FieldByName('ClientTypeID').AsInteger;
-      edtClientKPP.EditValue := FieldByName('ClientCity').AsString;
-      edtClientPostAddress.EditValue := FieldByName('PostAddress').AsString;
-      edtClientLegalAddress.EditValue := FieldByName('LegalAddress').AsString;
-      edtClientMainPhone.EditValue := FieldByName('ClientMainPhone').AsString;
-      edtClientSecondPhone.EditValue := FieldByName('ClientSecondPhone').AsString;
-      edtClientEmail.EditValue := FieldByName('ClientMainEMail').AsString;
-      edtClientSite.EditValue := FieldByName('ClientSite').AsString;
-      edtComment.Text := FieldByName('Comment').AsString;
+      ClientFullName.Text := FieldByName('ClientFullName').AsString;
+      ClientShortName.Text := FieldByName('ClientShortName').AsString;
+      ClientINN.Text := FieldByName('ClientINN').AsString;
+      ClientKPP.EditValue := FieldByName('ClientKPP').AsString;
+      ClientTypeID.EditValue := FieldByName('ClientTypeID').AsInteger;
+      ClientKPP.EditValue := FieldByName('ClientCity').AsString;
+      ClientPostAddress.EditValue := FieldByName('PostAddress').AsString;
+      ClientLegalAddress.EditValue := FieldByName('LegalAddress').AsString;
+      ClientMainPhone.EditValue := FieldByName('ClientMainPhone').AsString;
+      ClientSecondPhone.EditValue := FieldByName('ClientSecondPhone').AsString;
+      ClientEmail.EditValue := FieldByName('ClientMainEMail').AsString;
+      ClientSite.EditValue := FieldByName('ClientSite').AsString;
+      Comment.Text := FieldByName('Comment').AsString;
       spContacts.ParamByName('ClientID').Value := FieldByName('ClientID').AsInteger;
       spContacts.Open;
       spBankAccounts.ParamByName('ClientID').Value := FieldByName('ClientID').AsInteger;
@@ -667,6 +614,9 @@ begin
         btnCancel.Caption := 'Закрыть';
       end;
   end;
+
+  DrawRequiredAsterisks(Self, 11); // clients
+
   IsModified := False;
 end;
 

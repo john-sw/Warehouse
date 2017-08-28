@@ -52,7 +52,7 @@ object dmRefBooks: TdmRefBooks
   object spGetGoodsForProdCat: TUniStoredProc
     StoredProcName = 'br_aspProd;1'
     SQL.Strings = (
-      '{:RETURN_VALUE = CALL br_aspProd;1 (:ProdCatID)}')
+      '{:RETURN_VALUE = CALL br_aspProd;1 (:ProdCatID, :SearchString)}')
     Connection = dmMain.MainConnection
     Left = 240
     Top = 80
@@ -67,6 +67,13 @@ object dmRefBooks: TdmRefBooks
         DataType = ftInteger
         Name = 'ProdCatID'
         ParamType = ptInput
+        Value = nil
+      end
+      item
+        DataType = ftWideString
+        Name = 'SearchString'
+        ParamType = ptInput
+        Size = 100
         Value = nil
       end>
     CommandStoredProcName = 'br_aspProd;1'

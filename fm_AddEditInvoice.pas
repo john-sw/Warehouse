@@ -25,13 +25,11 @@ uses
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit;
+  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel;
 
 type
   TfmAddEditInvoice = class(TForm)
     pnlClient: TAdvPanel;
-    cxLabel1: TcxLabel;
-    cxLabel4: TcxLabel;
     pnlBottom: TAdvPanel;
     btnSave: TcxButton;
     btnCancel: TcxButton;
@@ -55,9 +53,7 @@ type
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
-    cxLabel3: TcxLabel;
-    cxLabel5: TcxLabel;
-    edtDocNumber: TcxTextEdit;
+    DocNumber: TcxTextEdit;
     mdInvoiceList: TdxMemData;
     AdvGroupBox1: TAdvGroupBox;
     GridInvoiceList: TcxGrid;
@@ -69,15 +65,12 @@ type
     RzToolButton5: TRzToolButton;
     RzSpacer6: TRzSpacer;
     RzToolButton6: TRzToolButton;
-    deDocDate: TcxDateEdit;
-    cxLabel2: TcxLabel;
-    cxLabel6: TcxLabel;
-    cxLabel9: TcxLabel;
-    cePercent: TcxCalcEdit;
-    edtConsignor: TcxButtonEdit;
-    edtConsignee: TcxButtonEdit;
-    edtSupplier: TcxButtonEdit;
-    edtPayer: TcxButtonEdit;
+    DocDate: TcxDateEdit;
+    PricePercent: TcxCalcEdit;
+    Consignor: TcxButtonEdit;
+    Consignee: TcxButtonEdit;
+    Supplier: TcxButtonEdit;
+    Payer: TcxButtonEdit;
     tvInvoiceListPartID: TcxGridDBColumn;
     tvInvoiceListInvoiceID: TcxGridDBColumn;
     tvInvoiceListCountryCode: TcxGridDBColumn;
@@ -96,16 +89,24 @@ type
     tvInvoiceListProdDescription: TcxGridDBColumn;
     qSprRef: TUniQuery;
     spRefBookFieldsBrowse: TUniStoredProc;
-    cxLabel7: TcxLabel;
     qWarehouse: TUniQuery;
     dsWarehouse: TUniDataSource;
-    lcWarehouse: TcxLookupComboBox;
+    WhouseID: TcxLookupComboBox;
+    lblLabel1: THTMLabel;
+    lblLabel4: THTMLabel;
+    lblLabel3: THTMLabel;
+    lblLabel5: THTMLabel;
+    lblLabel2: THTMLabel;
+    lblLabel6: THTMLabel;
+    lblLabel9: THTMLabel;
+    lblLabel7: THTMLabel;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+
     procedure actAddExecute(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
     procedure actDeleteExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure mdDescrAfterPost(DataSet: TDataSet);
@@ -132,24 +133,24 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookClients;
+uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookClients, fm_AddEditInvoiceLine;
 
 procedure TfmAddEditInvoice.actAddExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  Application.CreateForm(TfmAddEditInvoiceLine, fmAddEditInvoiceLine);
   try
-    fmAddEditLinkedRefBook.RefBookName := 'позиция документа';
-    fmAddEditLinkedRefBook.FormMode := fmAdd;
-    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //barcodes
-    fmAddEditLinkedRefBook.rsRefBookDataSet := mdInvoiceList;
+    fmAddEditInvoiceLine.RefBookName := 'позиция документа';
+    fmAddEditInvoiceLine.FormMode := fmAdd;
+    fmAddEditInvoiceLine.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //invoice line
+    fmAddEditInvoiceLine.rsRefBookDataSet := mdInvoiceList;
 
-    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    if fmAddEditInvoiceLine.ShowModal = mrOk then
     begin
       GridInvoiceList.SetFocus;
       tvInvoiceListPartID.FocusWithSelection;
     end;
   finally
-    FreeAndNil(fmAddEditLinkedRefBook);
+    FreeAndNil(fmAddEditInvoiceLine);
   end;
 end;
 
@@ -165,19 +166,20 @@ end;
 
 procedure TfmAddEditInvoice.actEditExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  Application.CreateForm(TfmAddEditInvoiceLine, fmAddEditInvoiceLine);
   try
-    fmAddEditLinkedRefBook.RefBookName := 'позиция документа';
-    fmAddEditLinkedRefBook.FormMode := fmEdit;
-    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //barcodes
-    fmAddEditLinkedRefBook.rsRefBookDataSet := mdInvoiceList;
-    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    fmAddEditInvoiceLine.RefBookName := 'позиция документа';
+    fmAddEditInvoiceLine.FormMode := fmEdit;
+    fmAddEditInvoiceLine.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //invoice line
+    fmAddEditInvoiceLine.rsRefBookDataSet := mdInvoiceList;
+
+    if fmAddEditInvoiceLine.ShowModal = mrOk then
     begin
       GridInvoiceList.SetFocus;
       tvInvoiceListPartID.FocusWithSelection;
-    end
+    end;
   finally
-    FreeAndNil(fmAddEditLinkedRefBook);
+    FreeAndNil(fmAddEditInvoiceLine);
   end;
 end;
 
@@ -193,26 +195,26 @@ begin
   try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('DocNumber').Value := edtDocNumber.Text;
-    sp.ParamByName('DocDate').Value := deDocDate.Date;
-    if edtConsignor.Properties.Buttons.Items[0].Tag = 0 then
+    sp.ParamByName('DocNumber').Value := DocNumber.Text;
+    sp.ParamByName('DocDate').Value := DocDate.Date;
+    if Consignor.Properties.Buttons.Items[0].Tag = 0 then
       sp.ParamByName('Consignor').Clear
     else
-      sp.ParamByName('Consignor').Value := edtConsignor.Properties.Buttons.Items[0].Tag;
-    if edtConsignee.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Consignor').Value := Consignor.Properties.Buttons.Items[0].Tag;
+    if Consignee.Properties.Buttons.Items[0].Tag = 0 then
       sp.ParamByName('Consignee').Clear
     else
-      sp.ParamByName('Consignee').Value := edtConsignee.Properties.Buttons.Items[0].Tag;
-    if edtSupplier.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Consignee').Value := Consignee.Properties.Buttons.Items[0].Tag;
+    if Supplier.Properties.Buttons.Items[0].Tag = 0 then
       sp.ParamByName('Supplier').Clear
     else
-      sp.ParamByName('Supplier').Value := edtSupplier.Properties.Buttons.Items[0].Tag;
-    if edtPayer.Properties.Buttons.Items[0].Tag = 0 then
+      sp.ParamByName('Supplier').Value := Supplier.Properties.Buttons.Items[0].Tag;
+    if Payer.Properties.Buttons.Items[0].Tag = 0 then
       sp.ParamByName('Payer').Clear
     else
-      sp.ParamByName('Payer').Value := edtPayer.Properties.Buttons.Items[0].Tag;
-    sp.ParamByName('WhouseID').Value := lcWarehouse.EditValue;
-    sp.ParamByName('PricePercent').Value := cePercent.Value;
+      sp.ParamByName('Payer').Value := Payer.Properties.Buttons.Items[0].Tag;
+    sp.ParamByName('WhouseID').Value := WhouseID.EditValue;
+    sp.ParamByName('PricePercent').Value := PricePercent.Value;
     sp.ParamByName('IsAccept').Value := 0;
     sp.ParamByName('InvoiceTypeID').Value := 1;
 
@@ -261,9 +263,19 @@ begin
           sp1.CreateProcCall('updInvoiceLine');
           sp1.ParamByName('ID').AsInteger := mdInvoiceList.FieldByName('PartID').AsInteger;
         end;
-        sp1.ParamByName('PartID').AsInteger := CurrentID;
-        sp1.ParamByName('ProdDescription').AsString := mdInvoiceList.FieldByName('ProdDescription').AsString;
-        sp1.ParamByName('IsReadOnly').AsInteger := 0;
+
+        sp1.ParamByName('InvoiceID').Value := CurrentID;
+        sp1.ParamByName('ProdID').Value := mdInvoiceList.FieldByName('ProdID').Value;
+        sp1.ParamByName('ProdDescrID').Value := mdInvoiceList.FieldByName('ProdDescrID').Value;
+        sp1.ParamByName('CountryCode').Value := mdInvoiceList.FieldByName('CountryCode').Value;
+        sp1.ParamByName('Qty').Value := mdInvoiceList.FieldByName('Qty').Value;
+        sp1.ParamByName('ContractPrice').Value := mdInvoiceList.FieldByName('ContractPrice').Value;
+        sp1.ParamByName('SalePrice').Value := mdInvoiceList.FieldByName('SalePrice').Value;
+        sp1.ParamByName('Tax').Value := mdInvoiceList.FieldByName('Tax').Value;
+        sp1.ParamByName('GtdNumber').Value := mdInvoiceList.FieldByName('GtdNumber').Value;
+        sp1.ParamByName('PricePercent').Value := mdInvoiceList.FieldByName('PricePercent').Value;
+        sp1.ParamByName('OrigPartID').Clear;
+
         sp1.Execute;
         mdInvoiceList.Next;
       end;
@@ -282,32 +294,34 @@ begin
   Result := nil;
 
   dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 15; //prod
+  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 15; //invoice
   dmRefBooks.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(cePercent), dmRefBooks.spGetReferenceFieldList, 'PricePercent') then
-    Result := cePercent;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(PricePercent), dmRefBooks.spGetReferenceFieldList, 'PricePercent') then
+    Result := PricePercent;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtPayer), dmRefBooks.spGetReferenceFieldList, 'Payer') then
-    Result := edtPayer;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Payer), dmRefBooks.spGetReferenceFieldList, 'Payer') then
+    Result := Payer;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtSupplier), dmRefBooks.spGetReferenceFieldList, 'Supplier') then
-    Result := edtSupplier;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Supplier), dmRefBooks.spGetReferenceFieldList, 'Supplier') then
+    Result := Supplier;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtConsignee), dmRefBooks.spGetReferenceFieldList, 'Consignee') then
-    Result := edtConsignee;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Consignee), dmRefBooks.spGetReferenceFieldList, 'Consignee') then
+    Result := Consignee;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtConsignor), dmRefBooks.spGetReferenceFieldList, 'Consignor') then
-    Result := edtConsignor;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Consignor), dmRefBooks.spGetReferenceFieldList, 'Consignor') then
+    Result := Consignor;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcWarehouse), dmRefBooks.spGetReferenceFieldList, 'WhouseID') then
-    Result := lcWarehouse;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(WhouseID), dmRefBooks.spGetReferenceFieldList, 'WhouseID') then
+    Result := WhouseID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(deDocDate), dmRefBooks.spGetReferenceFieldList, 'DocDate') then
-    Result := deDocDate;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(DocDate), dmRefBooks.spGetReferenceFieldList, 'DocDate') then
+    Result := DocDate;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtDocNumber), dmRefBooks.spGetReferenceFieldList, 'DocNumber') then
-    Result := edtDocNumber;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(DocNumber), dmRefBooks.spGetReferenceFieldList, 'DocNumber') then
+    Result := DocNumber;
+
+  dmRefBooks.spGetReferenceFieldList.Close;
 end;
 
 procedure TfmAddEditInvoice.cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
@@ -322,6 +336,18 @@ begin
       begin
         TcxButtonEdit(Sender).Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
         TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag := frm.tvRefBook.Controller.FocusedRow.Values[0];
+
+        if (Sender = Consignor) and (Supplier.Properties.Buttons.Items[0].Tag = 0) then
+        begin
+          Supplier.Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
+          Supplier.Properties.Buttons.Items[0].Tag := frm.tvRefBook.Controller.FocusedRow.Values[0];
+        end;
+        if (Sender = Consignee) and (Payer.Properties.Buttons.Items[0].Tag = 0) then
+        begin
+          Payer.Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
+          Payer.Properties.Buttons.Items[0].Tag := frm.tvRefBook.Controller.FocusedRow.Values[0];
+        end;
+
         IsModified := True;
       end;
     finally
@@ -389,33 +415,31 @@ var
   i: Integer;
 begin
   qWarehouse.Open;
-  qSprRef.ParamByName('ID').AsInteger := 16; // код справочника!
-  qSprRef.Open;
 
   if FormMode in [fmEdit, fmView] then
     with spParentRefBook do
     begin
-      edtDocNumber.Text := FieldByName('DocNumber').AsString;
-      deDocDate.Date := FieldByName('DocDate').AsDatetime;
+      DocNumber.Text := FieldByName('DocNumber').AsString;
+      DocDate.Date := FieldByName('DocDate').AsDatetime;
 
-      edtConsignor.Properties.Buttons.Items[0].Tag := FieldByName('Consignor').AsInteger;
-      edtConsignor.Text := FieldByName('ConsignorName').AsString;
-      edtConsignee.Properties.Buttons.Items[0].Tag := FieldByName('Consignee').AsInteger;
-      edtConsignee.Text := FieldByName('ConsigneeName').AsString;
-      edtSupplier.Properties.Buttons.Items[0].Tag := FieldByName('Supplier').AsInteger;
-      edtSupplier.Text := FieldByName('SupplierName').AsString;
-      edtPayer.Properties.Buttons.Items[0].Tag := FieldByName('Payer').AsInteger;
-      edtPayer.Text := FieldByName('PayerName').AsString;
+      Consignor.Properties.Buttons.Items[0].Tag := FieldByName('Consignor').AsInteger;
+      Consignor.Text := FieldByName('ConsignorName').AsString;
+      Consignee.Properties.Buttons.Items[0].Tag := FieldByName('Consignee').AsInteger;
+      Consignee.Text := FieldByName('ConsigneeName').AsString;
+      Supplier.Properties.Buttons.Items[0].Tag := FieldByName('Supplier').AsInteger;
+      Supplier.Text := FieldByName('SupplierName').AsString;
+      Payer.Properties.Buttons.Items[0].Tag := FieldByName('Payer').AsInteger;
+      Payer.Text := FieldByName('PayerName').AsString;
 
-      lcWarehouse.EditValue := FieldByName('WhouseID').AsInteger;
-      cePercent.Value := FieldByName('PricePercent').AsFloat;
+      WhouseID.EditValue := FieldByName('WhouseID').AsInteger;
+      PricePercent.Value := FieldByName('PricePercent').AsFloat;
 
       spInvoiceList.ParamByName('InvoiceID').Value := FieldByName('InvoiceID').AsInteger;
       spInvoiceList.Open;
     end
   else
   begin
-    spInvoiceList.ParamByName('InvoiceID').Value := 0;
+    spInvoiceList.ParamByName('InvoiceID').Value := -1;
     spInvoiceList.Open;
   end;
 
@@ -434,6 +458,9 @@ begin
         btnCancel.Caption := 'Закрыть';
       end;
   end;
+
+  qSprRef.ParamByName('ID').AsInteger := 16; // код справочника!
+  qSprRef.Open;
   tvInvoiceList.ClearItems;
   tvInvoiceList.DataController.CreateAllItems;
   spRefBookFieldsBrowse.Close;
@@ -477,6 +504,8 @@ begin
     else
       tvInvoiceList.Columns[i].Visible := False;
   actEdit.Enabled := (tvInvoiceList.DataController.KeyFieldNames <> '');
+
+  DrawRequiredAsterisks(Self, 15); //invoice
 
   IsModified := False;
 end;

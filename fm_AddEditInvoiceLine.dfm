@@ -1,10 +1,10 @@
-object fmAddEditRefBookClients: TfmAddEditRefBookClients
+object fmAddEditInvoiceLine: TfmAddEditInvoiceLine
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'fmAddEditRefBookClients'
-  ClientHeight = 372
-  ClientWidth = 549
+  Caption = 'fmAddEditInvoiceLine'
+  ClientHeight = 227
+  ClientWidth = 504
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,12 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object pnlBottom: TAdvPanel
+  object pnlClient: TAdvPanel
     Left = 0
-    Top = 308
-    Width = 549
-    Height = 64
-    Align = alBottom
+    Top = 0
+    Width = 504
+    Height = 163
+    Align = alClient
     BevelOuter = bvNone
     Color = 16643823
     Font.Charset = DEFAULT_CHARSET
@@ -63,12 +63,508 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
+    FullHeight = 200
+    object lblLabel4: THTMLabel
+      Left = 10
+      Top = 63
+      Width = 125
+      Height = 17
+      FocusControl = CountryCode
+      HTMLText.Strings = (
+        #1057#1090#1088#1072#1085#1072)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel3: THTMLabel
+      Left = 10
+      Top = 38
+      Width = 125
+      Height = 17
+      FocusControl = ProdDescrID
+      HTMLText.Strings = (
+        #1054#1087#1080#1089#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel5: THTMLabel
+      Left = 10
+      Top = 11
+      Width = 125
+      Height = 17
+      AutoSizeType = asBoth
+      FocusControl = ProdID
+      HTMLText.Strings = (
+        #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel2: THTMLabel
+      Left = 10
+      Top = 88
+      Width = 125
+      Height = 17
+      FocusControl = ContractPrice
+      HTMLText.Strings = (
+        #1047#1072#1082#1091#1087#1086#1095#1085#1072#1103' '#1094#1077#1085#1072)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel6: THTMLabel
+      Left = 264
+      Top = 88
+      Width = 80
+      Height = 17
+      FocusControl = Qty
+      HTMLText.Strings = (
+        #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lblLabel9: THTMLabel
+      Left = 10
+      Top = 116
+      Width = 125
+      Height = 17
+      FocusControl = PricePercent
+      HTMLText.Strings = (
+        #1055#1088#1086#1094#1077#1085#1090' '#1085#1072#1094#1077#1085#1082#1080)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lbl1: THTMLabel
+      Left = 264
+      Top = 116
+      Width = 105
+      Height = 17
+      FocusControl = SalePrice
+      HTMLText.Strings = (
+        #1055#1088#1086#1076#1072#1078#1085#1072#1103' '#1094#1077#1085#1072)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lbl2: THTMLabel
+      Left = 264
+      Top = 139
+      Width = 55
+      Height = 17
+      AutoSizeType = asBoth
+      FocusControl = GtdNumber
+      HTMLText.Strings = (
+        #1043#1058#1044)
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object lbl3: THTMLabel
+      Left = 10
+      Top = 139
+      Width = 125
+      Height = 17
+      AutoSizeType = asBoth
+      FocusControl = Tax
+      HTMLText.Strings = (
+        #1053#1044#1057' (%)')
+      Transparent = True
+      VAlignment = tvaCenter
+      Version = '1.9.2.0'
+    end
+    object CountryCode: TcxLookupComboBox
+      Tag = 6
+      Left = 136
+      Top = 61
+      Properties.KeyFieldNames = 'CountryID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'CountryName'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsCountries
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 2
+      Width = 350
+    end
+    object PricePercent: TcxCalcEdit
+      Tag = 3
+      Left = 136
+      Top = 111
+      AutoSize = False
+      EditValue = 0.000000000000000000
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000000000005252
+        5157F1F0ECFFECEBE7FFD7D4CFFFE3E1DCFFF1F0ECFFDBD8D3FFDBD8D3FFF1F0
+        ECFFE3E1DCFFD7D4CFFFECEBE7FFF1F0ECFF5252515700000000000000005353
+        5158F1F0ECFFE0DED9FFC7C3BDFFD0CDC7FFEDECE8FFC7C3BDFFC7C3BDFFEDEC
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFEDECE7FFD8D6D1FFE4E2DDFFF1F0ECFFDCDAD5FFDCDAD5FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1EFEBFFE4E2DEFFECEBE6FFF1F0ECFFE8E6E2FFE8E6E2FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE1DFDAFFC7C3BDFFD1CEC9FFEEEDE8FFC7C3BDFFC7C3BDFFEEED
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE7E6E1FFCBC8C2FFD9D7D2FFF0EEEAFFCFCCC6FFCFCCC6FFF0EE
+        EAFFD9D7D2FFCBC8C2FFE7E6E1FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE6E4E0FFC7C3BDFFD6D4CEFFEFEEEAFFCBC7C2FFCBC7C2FFEFEE
+        EAFFD6D4CEFFC7C3BDFFE6E4E0FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE2E0DCFFC7C3BDFFD3CFCAFFEEEDE9FFC8C4BEFFC8C4BEFFEEED
+        E9FFD3CFCAFFC7C3BDFFE2E0DCFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFE8E7E2FFEEEDE8FFF1F0ECFFEBE9E5FFEBE9E5FFF1F0
+        ECFFEEEDE8FFE8E7E2FFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1ECE4FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DC
+        C3FFF0DCC3FFF0DCC3FFF1ECE4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005252
+        5157F1F0ECFFF1EDE5FFF0DEC7FFF0DEC6FFF0DEC6FFF0DEC6FFF0DEC6FFF0DE
+        C6FFF0DEC6FFF0DEC7FFF1EDE5FFF1F0ECFF5252515700000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000}
+      Properties.OnChange = ContractPricePropertiesChange
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 5
+      Height = 22
+      Width = 121
+    end
+    object ProdID: TcxButtonEdit
+      Tag = -1
+      Left = 136
+      Top = 8
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end
+        item
+          ImageIndex = 9
+          Kind = bkGlyph
+        end>
+      Properties.Images = ilRefBookActionImages
+      Properties.OnButtonClick = ProdIDPropertiesButtonClick
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 0
+      Width = 350
+    end
+    object ProdDescrID: TcxLookupComboBox
+      Tag = 6
+      Left = 136
+      Top = 35
+      AutoSize = False
+      Properties.KeyFieldNames = 'ID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'Name'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsDescrGood
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 1
+      Height = 22
+      Width = 350
+    end
+    object SalePrice: TcxCalcEdit
+      Tag = 3
+      Left = 365
+      Top = 111
+      AutoSize = False
+      EditValue = 0.000000000000000000
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000000000005252
+        5157F1F0ECFFECEBE7FFD7D4CFFFE3E1DCFFF1F0ECFFDBD8D3FFDBD8D3FFF1F0
+        ECFFE3E1DCFFD7D4CFFFECEBE7FFF1F0ECFF5252515700000000000000005353
+        5158F1F0ECFFE0DED9FFC7C3BDFFD0CDC7FFEDECE8FFC7C3BDFFC7C3BDFFEDEC
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFEDECE7FFD8D6D1FFE4E2DDFFF1F0ECFFDCDAD5FFDCDAD5FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1EFEBFFE4E2DEFFECEBE6FFF1F0ECFFE8E6E2FFE8E6E2FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE1DFDAFFC7C3BDFFD1CEC9FFEEEDE8FFC7C3BDFFC7C3BDFFEEED
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE7E6E1FFCBC8C2FFD9D7D2FFF0EEEAFFCFCCC6FFCFCCC6FFF0EE
+        EAFFD9D7D2FFCBC8C2FFE7E6E1FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE6E4E0FFC7C3BDFFD6D4CEFFEFEEEAFFCBC7C2FFCBC7C2FFEFEE
+        EAFFD6D4CEFFC7C3BDFFE6E4E0FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE2E0DCFFC7C3BDFFD3CFCAFFEEEDE9FFC8C4BEFFC8C4BEFFEEED
+        E9FFD3CFCAFFC7C3BDFFE2E0DCFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFE8E7E2FFEEEDE8FFF1F0ECFFEBE9E5FFEBE9E5FFF1F0
+        ECFFEEEDE8FFE8E7E2FFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1ECE4FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DC
+        C3FFF0DCC3FFF0DCC3FFF1ECE4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005252
+        5157F1F0ECFFF1EDE5FFF0DEC7FFF0DEC6FFF0DEC6FFF0DEC6FFF0DEC6FFF0DE
+        C6FFF0DEC6FFF0DEC7FFF1EDE5FFF1F0ECFF5252515700000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000}
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 6
+      Height = 22
+      Width = 121
+    end
+    object Qty: TcxCalcEdit
+      Tag = 3
+      Left = 365
+      Top = 85
+      AutoSize = False
+      EditValue = 0.000000000000000000
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000000000005252
+        5157F1F0ECFFECEBE7FFD7D4CFFFE3E1DCFFF1F0ECFFDBD8D3FFDBD8D3FFF1F0
+        ECFFE3E1DCFFD7D4CFFFECEBE7FFF1F0ECFF5252515700000000000000005353
+        5158F1F0ECFFE0DED9FFC7C3BDFFD0CDC7FFEDECE8FFC7C3BDFFC7C3BDFFEDEC
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFEDECE7FFD8D6D1FFE4E2DDFFF1F0ECFFDCDAD5FFDCDAD5FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1EFEBFFE4E2DEFFECEBE6FFF1F0ECFFE8E6E2FFE8E6E2FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE1DFDAFFC7C3BDFFD1CEC9FFEEEDE8FFC7C3BDFFC7C3BDFFEEED
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE7E6E1FFCBC8C2FFD9D7D2FFF0EEEAFFCFCCC6FFCFCCC6FFF0EE
+        EAFFD9D7D2FFCBC8C2FFE7E6E1FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE6E4E0FFC7C3BDFFD6D4CEFFEFEEEAFFCBC7C2FFCBC7C2FFEFEE
+        EAFFD6D4CEFFC7C3BDFFE6E4E0FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE2E0DCFFC7C3BDFFD3CFCAFFEEEDE9FFC8C4BEFFC8C4BEFFEEED
+        E9FFD3CFCAFFC7C3BDFFE2E0DCFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFE8E7E2FFEEEDE8FFF1F0ECFFEBE9E5FFEBE9E5FFF1F0
+        ECFFEEEDE8FFE8E7E2FFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1ECE4FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DC
+        C3FFF0DCC3FFF0DCC3FFF1ECE4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005252
+        5157F1F0ECFFF1EDE5FFF0DEC7FFF0DEC6FFF0DEC6FFF0DEC6FFF0DEC6FFF0DE
+        C6FFF0DEC6FFF0DEC7FFF1EDE5FFF1F0ECFF5252515700000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000}
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 4
+      Height = 22
+      Width = 121
+    end
+    object ContractPrice: TcxCalcEdit
+      Tag = 3
+      Left = 136
+      Top = 85
+      AutoSize = False
+      EditValue = 0.000000000000000000
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000000000005252
+        5157F1F0ECFFECEBE7FFD7D4CFFFE3E1DCFFF1F0ECFFDBD8D3FFDBD8D3FFF1F0
+        ECFFE3E1DCFFD7D4CFFFECEBE7FFF1F0ECFF5252515700000000000000005353
+        5158F1F0ECFFE0DED9FFC7C3BDFFD0CDC7FFEDECE8FFC7C3BDFFC7C3BDFFEDEC
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFEDECE7FFD8D6D1FFE4E2DDFFF1F0ECFFDCDAD5FFDCDAD5FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1EFEBFFE4E2DEFFECEBE6FFF1F0ECFFE8E6E2FFE8E6E2FFF1F0
+        ECFFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE1DFDAFFC7C3BDFFD1CEC9FFEEEDE8FFC7C3BDFFC7C3BDFFEEED
+        E8FFD0CDC7FFC7C3BDFFE0DED9FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE7E6E1FFCBC8C2FFD9D7D2FFF0EEEAFFCFCCC6FFCFCCC6FFF0EE
+        EAFFD9D7D2FFCBC8C2FFE7E6E1FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE6E4E0FFC7C3BDFFD6D4CEFFEFEEEAFFCBC7C2FFCBC7C2FFEFEE
+        EAFFD6D4CEFFC7C3BDFFE6E4E0FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFE2E0DCFFC7C3BDFFD3CFCAFFEEEDE9FFC8C4BEFFC8C4BEFFEEED
+        E9FFD3CFCAFFC7C3BDFFE2E0DCFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1F0ECFFE8E7E2FFEEEDE8FFF1F0ECFFEBE9E5FFEBE9E5FFF1F0
+        ECFFEEEDE8FFE8E7E2FFF1F0ECFFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1ECE4FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DCC3FFF0DC
+        C3FFF0DCC3FFF0DCC3FFF1ECE4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005353
+        5158F1F0ECFFF1E4D4FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3B0FFF0D3
+        B0FFF0D3B0FFF0D3B0FFF1E4D4FFF1F0ECFF5353515800000000000000005252
+        5157F1F0ECFFF1EDE5FFF0DEC7FFF0DEC6FFF0DEC6FFF0DEC6FFF0DEC6FFF0DE
+        C6FFF0DEC6FFF0DEC7FFF1EDE5FFF1F0ECFF5252515700000000000000001B1B
+        1B1DD7D6D2E3F1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0ECFFF1F0
+        ECFFF1F0ECFFF1F0ECFFF1F0ECFFD7D6D2E31B1B1B1D00000000}
+      Properties.OnChange = ContractPricePropertiesChange
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 3
+      Height = 22
+      Width = 121
+    end
+    object Tax: TcxComboBox
+      Tag = 1
+      Left = 136
+      Top = 135
+      AutoSize = False
+      Properties.DropDownListStyle = lsFixedList
+      Properties.Items.Strings = (
+        '0'
+        '10'
+        '18')
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 7
+      Height = 21
+      Width = 121
+    end
+    object GtdNumber: TcxTextEdit
+      Tag = 1
+      Left = 365
+      Top = 136
+      AutoSize = False
+      Style.BorderStyle = ebsSingle
+      Style.LookAndFeel.Kind = lfOffice11
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.Kind = lfOffice11
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.Kind = lfOffice11
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.Kind = lfOffice11
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 8
+      Height = 21
+      Width = 121
+    end
+  end
+  object pnlBottom: TAdvPanel
+    Left = 0
+    Top = 163
+    Width = 504
+    Height = 64
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = 16643823
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    UseDockManager = True
+    Version = '2.3.0.8'
+    BorderColor = 13087391
+    Caption.Color = 16643823
+    Caption.ColorTo = 15784647
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = 5978398
+    Caption.Font.Height = -11
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.GradientDirection = gdVertical
+    Caption.Indent = 2
+    Caption.ShadeLight = 255
+    CollapsColor = clNone
+    CollapsDelay = 0
+    ColorTo = 15784647
+    ShadowColor = clBlack
+    ShadowOffset = 0
+    StatusBar.BorderColor = 16643823
+    StatusBar.BorderStyle = bsSingle
+    StatusBar.Font.Charset = DEFAULT_CHARSET
+    StatusBar.Font.Color = 5978398
+    StatusBar.Font.Height = -11
+    StatusBar.Font.Name = 'Tahoma'
+    StatusBar.Font.Style = []
+    StatusBar.Color = 16643823
+    StatusBar.ColorTo = 15784647
+    StatusBar.GradientDirection = gdVertical
+    Styler = dmMain.AdvPanelStyler1
+    Text = ''
     DesignSize = (
-      549
+      504
       64)
     FullHeight = 200
     object btnSave: TcxButton
-      Left = 319
+      Left = 274
       Top = 20
       Width = 100
       Height = 25
@@ -113,7 +609,7 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
       OnClick = btnSaveClick
     end
     object btnCancel: TcxButton
-      Left = 439
+      Left = 394
       Top = 20
       Width = 100
       Height = 25
@@ -158,550 +654,13 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
       OnClick = btnCancelClick
     end
   end
-  object cxPageControl: TcxPageControl
-    Left = 0
-    Top = 0
-    Width = 549
-    Height = 308
-    Align = alClient
-    TabOrder = 1
-    Properties.ActivePage = cxTabSheet1
-    Properties.CustomButtons.Buttons = <>
-    Properties.NavigatorPosition = npLeftBottom
-    Properties.Options = [pcoGradient, pcoGradientClientArea, pcoRedrawOnResize]
-    Properties.Style = 8
-    LookAndFeel.Kind = lfOffice11
-    ClientRectBottom = 308
-    ClientRectRight = 549
-    ClientRectTop = 24
-    object cxTabSheet1: TcxTabSheet
-      Caption = #1054#1089#1085#1086#1074#1085#1099#1077' '#1089#1074#1077#1076#1077#1085#1080#1103
-      ImageIndex = 0
-      object lblLabel1: THTMLabel
-        Left = 10
-        Top = 38
-        Width = 130
-        Height = 17
-        FocusControl = ClientShortName
-        HTMLText.Strings = (
-          #1050#1088#1072#1090#1082#1086#1077' '#1085#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel2: THTMLabel
-        Left = 10
-        Top = 67
-        Width = 130
-        Height = 17
-        FocusControl = ClientINN
-        HTMLText.Strings = (
-          #1048#1053#1053)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel7: THTMLabel
-        Left = 10
-        Top = 229
-        Width = 130
-        Height = 17
-        FocusControl = Comment
-        HTMLText.Strings = (
-          #1055#1088#1080#1084#1077#1095#1072#1085#1080#1077)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel5: THTMLabel
-        Left = 10
-        Top = 10
-        Width = 130
-        Height = 17
-        FocusControl = ClientFullName
-        HTMLText.Strings = (
-          #1055#1086#1083#1085#1086#1077' '#1085#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel3: THTMLabel
-        Left = 10
-        Top = 148
-        Width = 130
-        Height = 17
-        FocusControl = ClientLegalAddress
-        HTMLText.Strings = (
-          #1070#1088#1080#1076#1080#1095#1077#1089#1082#1080#1081' '#1072#1076#1088#1077#1089)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel4: THTMLabel
-        Left = 10
-        Top = 121
-        Width = 130
-        Height = 17
-        FocusControl = ClientPostAddress
-        HTMLText.Strings = (
-          #1055#1086#1095#1090#1086#1074#1099#1081' '#1072#1076#1088#1077#1089)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel6: THTMLabel
-        Left = 227
-        Top = 67
-        Width = 30
-        Height = 17
-        FocusControl = ClientKPP
-        HTMLText.Strings = (
-          #1050#1055#1055)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel8: THTMLabel
-        Left = 10
-        Top = 94
-        Width = 130
-        Height = 17
-        FocusControl = ClientCity
-        HTMLText.Strings = (
-          #1043#1086#1088#1086#1076)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel9: THTMLabel
-        Left = 10
-        Top = 175
-        Width = 130
-        Height = 17
-        FocusControl = ClientMainPhone
-        HTMLText.Strings = (
-          #1054#1089#1085#1086#1074#1085#1086#1081' '#1090#1077#1083#1077#1092#1086#1085)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel10: THTMLabel
-        Left = 10
-        Top = 202
-        Width = 130
-        Height = 17
-        FocusControl = ClientEmail
-        HTMLText.Strings = (
-          'E-mail')
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel11: THTMLabel
-        Left = 306
-        Top = 175
-        Width = 115
-        Height = 17
-        FocusControl = ClientSecondPhone
-        HTMLText.Strings = (
-          #1056#1077#1079#1077#1088#1074#1085#1099#1081' '#1090#1077#1083#1077#1092#1086#1085)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object lblLabel12: THTMLabel
-        Left = 306
-        Top = 200
-        Width = 35
-        Height = 17
-        FocusControl = ClientSite
-        HTMLText.Strings = (
-          #1057#1072#1081#1090)
-        Transparent = True
-        VAlignment = tvaCenter
-        Version = '1.9.2.0'
-      end
-      object ClientShortName: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 36
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.Kind = lfOffice11
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.Kind = lfOffice11
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.Kind = lfOffice11
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.Kind = lfOffice11
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 1
-        Width = 400
-      end
-      object ClientTypeID: TcxLookupComboBox
-        Tag = 6
-        Left = 376
-        Top = 65
-        Properties.KeyFieldNames = 'ClientTypeID'
-        Properties.ListColumns = <
-          item
-            FieldName = 'ClientTypeName'
-          end>
-        Properties.ListOptions.ShowHeader = False
-        Properties.ListSource = dsClientType
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 4
-        Width = 159
-      end
-      object ClientINN: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 65
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 2
-        Width = 85
-      end
-      object Comment: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 227
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 12
-        Width = 400
-      end
-      object ClientFullName: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 8
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.Kind = lfOffice11
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.Kind = lfOffice11
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.Kind = lfOffice11
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.Kind = lfOffice11
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 0
-        Width = 400
-      end
-      object ClientLegalAddress: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 146
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 7
-        Width = 400
-      end
-      object ClientPostAddress: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 119
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 6
-        Width = 400
-      end
-      object ClientKPP: TcxTextEdit
-        Tag = 1
-        Left = 265
-        Top = 65
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 3
-        Width = 67
-      end
-      object ClientCity: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 92
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 5
-        Width = 400
-      end
-      object ClientMainPhone: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 173
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 8
-        Width = 150
-      end
-      object ClientEmail: TcxTextEdit
-        Tag = 1
-        Left = 135
-        Top = 200
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 10
-        Width = 150
-      end
-      object ClientSecondPhone: TcxTextEdit
-        Tag = 1
-        Left = 418
-        Top = 173
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 9
-        Width = 117
-      end
-      object ClientSite: TcxTextEdit
-        Tag = 1
-        Left = 341
-        Top = 200
-        Style.BorderColor = clWindowFrame
-        Style.BorderStyle = ebsSingle
-        Style.LookAndFeel.NativeStyle = False
-        StyleDisabled.LookAndFeel.NativeStyle = False
-        StyleFocused.LookAndFeel.NativeStyle = False
-        StyleHot.LookAndFeel.NativeStyle = False
-        TabOrder = 11
-        Width = 194
-      end
-    end
-    object cxTabSheet4: TcxTabSheet
-      Caption = #1050#1086#1085#1090#1072#1082#1090#1085#1099#1077' '#1083#1080#1094#1072
-      ImageIndex = 1
-      object GridContacts: TcxGrid
-        Left = 0
-        Top = 29
-        Width = 549
-        Height = 255
-        Align = alClient
-        PopupMenu = pmContacts
-        TabOrder = 0
-        object tvContacts: TcxGridDBTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dsContacts
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.ImmediateEditor = False
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.UnselectFocusedRecordOnExit = False
-          OptionsView.GroupByBox = False
-          OptionsView.ShowColumnFilterButtons = sfbAlways
-          Styles.ContentEven = dmMain.GridStyleEvenRow
-          Styles.Inactive = dmMain.GridStyleSelectedRow
-          Styles.Selection = dmMain.GridStyleSelectedRow
-        end
-        object GridContactsLevel1: TcxGridLevel
-          GridView = tvContacts
-        end
-      end
-      object tbContacts: TRzToolbar
-        Left = 0
-        Top = 0
-        Width = 549
-        Height = 29
-        Images = ilRefBookActionImages
-        BorderInner = fsNone
-        BorderOuter = fsGroove
-        BorderSides = [sdTop]
-        BorderWidth = 0
-        GradientColorStyle = gcsMSOffice
-        TabOrder = 1
-        VisualStyle = vsGradient
-        ToolbarControls = (
-          RzToolButton3
-          RzSpacer3
-          RzToolButton5
-          RzSpacer4
-          RzToolButton6)
-        object RzToolButton3: TRzToolButton
-          Left = 4
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actAddContact
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer3: TRzSpacer
-          Left = 94
-          Top = 2
-        end
-        object RzToolButton5: TRzToolButton
-          Left = 102
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actEditContact
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer4: TRzSpacer
-          Left = 192
-          Top = 2
-        end
-        object RzToolButton6: TRzToolButton
-          Left = 200
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actDeleteContact
-          ParentShowHint = False
-          ShowHint = True
-        end
-      end
-    end
-    object cxTabSheet5: TcxTabSheet
-      Caption = #1041#1072#1085#1082#1086#1074#1089#1082#1080#1077' '#1089#1095#1077#1090#1072
-      ImageIndex = 2
-      object GridBankAccounts: TcxGrid
-        Left = 0
-        Top = 29
-        Width = 549
-        Height = 255
-        Align = alClient
-        PopupMenu = pmBankAccounts
-        TabOrder = 0
-        object tvBankAccounts: TcxGridDBTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dsBankAccounts
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.ImmediateEditor = False
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.UnselectFocusedRecordOnExit = False
-          OptionsView.GroupByBox = False
-          OptionsView.ShowColumnFilterButtons = sfbAlways
-          Styles.ContentEven = dmMain.GridStyleEvenRow
-          Styles.Inactive = dmMain.GridStyleSelectedRow
-          Styles.Selection = dmMain.GridStyleSelectedRow
-        end
-        object cxGridLevel1: TcxGridLevel
-          GridView = tvBankAccounts
-        end
-      end
-      object tbBankAccounts: TRzToolbar
-        Left = 0
-        Top = 0
-        Width = 549
-        Height = 29
-        Images = ilRefBookActionImages
-        BorderInner = fsNone
-        BorderOuter = fsGroove
-        BorderSides = [sdTop]
-        BorderWidth = 0
-        GradientColorStyle = gcsMSOffice
-        TabOrder = 1
-        VisualStyle = vsGradient
-        ToolbarControls = (
-          RzToolButton1
-          RzSpacer1
-          RzToolButton2
-          RzSpacer2
-          RzToolButton4)
-        object RzToolButton1: TRzToolButton
-          Left = 4
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actAddBankAccount
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer1: TRzSpacer
-          Left = 94
-          Top = 2
-        end
-        object RzToolButton2: TRzToolButton
-          Left = 102
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actEditBankAccount
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object RzSpacer2: TRzSpacer
-          Left = 192
-          Top = 2
-        end
-        object RzToolButton4: TRzToolButton
-          Left = 200
-          Top = 2
-          Width = 90
-          ShowCaption = True
-          UseToolbarButtonSize = False
-          UseToolbarShowCaption = False
-          Action = actDeleteBankAccount
-          ParentShowHint = False
-          ShowHint = True
-        end
-      end
-    end
-  end
   object spRefBookFieldsAddEditView: TUniStoredProc
     StoredProcName = 'spGetReferenceFieldList'
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spGetReferenceFieldList (:ReferenceID)}')
     Connection = dmMain.MainConnection
-    Left = 432
-    Top = 108
+    Left = 352
+    Top = 164
     ParamData = <
       item
         DataType = ftInteger
@@ -716,22 +675,9 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
         Value = 1
       end>
   end
-  object dsClientType: TUniDataSource
-    DataSet = qClientType
-    Left = 460
-    Top = 52
-  end
-  object qClientType: TUniQuery
-    Connection = dmMain.MainConnection
-    SQL.Strings = (
-      'select * from sprClientType'
-      'order by ClientTypeName')
-    Left = 410
-    Top = 52
-  end
   object ilRefBookActionImages: TcxImageList
     FormatVersion = 1
-    DesignInfo = 18612232
+    DesignInfo = 10485968
     ImageInfo = <
       item
         Image.Data = {
@@ -1065,185 +1011,66 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
           FEFFFEFEFDFFFEFDFDFFFEFDFDFFFEFDFCFFCA9D8DFF00000009000000000000
           00000000000000000000000000039A7B6FC0CEA495FFCFA494FFCDA494FFCCA3
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
-      end>
-  end
-  object pmContacts: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
-    Version = '2.5.7.0'
-    Left = 329
-    Top = 284
-    object N1: TMenuItem
-      Action = actAddContact
-    end
-    object N2: TMenuItem
-      Action = actEditContact
-    end
-    object N4: TMenuItem
-      Action = actDeleteContact
-    end
-    object N5: TMenuItem
-      Caption = '-'
-    end
-    object N7: TMenuItem
-      Action = actCopyCellContacts
-    end
-  end
-  object mdBankAccounts: TdxMemData
-    Indexes = <>
-    SortOptions = []
-    AfterPost = mdBankAccountsAfterPost
-    Left = 180
-    Top = 284
-  end
-  object mdContacts: TdxMemData
-    Indexes = <>
-    SortOptions = []
-    AfterPost = mdBankAccountsAfterPost
-    Left = 100
-    Top = 288
-  end
-  object pmBankAccounts: TAdvPopupMenu
-    MenuStyler = dmMain.AdvMenuFantasyStyler1
-    Version = '2.5.7.0'
-    Left = 389
-    Top = 284
-    object MenuItem1: TMenuItem
-      Action = actAddBankAccount
-    end
-    object MenuItem2: TMenuItem
-      Action = actEditBankAccount
-    end
-    object MenuItem3: TMenuItem
-      Action = actDeleteBankAccount
-    end
-    object MenuItem4: TMenuItem
-      Caption = '-'
-    end
-    object MenuItem5: TMenuItem
-      Action = actCopyCellBankAccounts
-    end
-  end
-  object spContacts: TUniStoredProc
-    StoredProcName = 'br_aspPersons;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL br_aspPersons;1 (:ClientID)}')
-    Connection = dmMain.MainConnection
-    Left = 92
-    Top = 328
-    ParamData = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = nil
       end
       item
-        DataType = ftInteger
-        Name = 'ClientID'
-        ParamType = ptInput
-        Value = nil
+        Image.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          2000000000000004000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000001000000030000
+          0007000000060000000300000006000000080000000400000001000000000000
+          00000000000000000000000000000000000000000000000000030B082C4D2619
+          99EA110A58A2010003160F0855A3160C7EEA0603244F00000004000000000000
+          0001000000060000000A0000000B0000000B0000000B000000112E23A2EA6F85
+          EAFF4150CBFF1F1689E63B48C9FF5C74E4FF180E82E700000007000000000000
+          000680574CBDB37B69FFB37A68FFB37A68FFB27968FFDCC6BEFF756BC0FF7780
+          DDFF6D8BEFFF5872E5FF6381EDFF6972D8FF1A13659F00000005000000000000
+          0008B57D6BFFFBF7F3FFFBF6F3FFFBF6F3FFFBF5F2FFFAF5F3FFEFECEFFF4D46
+          BDFF6A85EBFF7494F2FF6079E7FF262094E40101041300000002000000000000
+          0008B67F6DFFFCF8F5FFF8EFECFFF7EEEAFFF7EEEAFFF9F5F3FF807DD4FF6B7E
+          E2FF93B0F6FFA0B3F2FF8AA6F4FF5D6EDBFF1C186AA000000004000000000000
+          0008B8826FFFFCF9F6FFF8F0ECFFF8F0ECFFF7EFECFFFAF8F7FF6261D8FFB1C3
+          F6FF8D99EAFF5F5DD2FF8995E7FFA6B8F3FF3B35AEE300000004000000000000
+          0007BA8473FFFDF9F8FFF8F1EEFFF8F0EDFFF8F0ECFFFAF5F3FFCECDEEFF6564
+          DEFF9291E2FFF2F1F3FF8982D3FF4340BCE71212334600000002000000000000
+          0007BB8776FFFDFBF9FFF9F1EFFFF9F2EEFFF8F1EEFFF8F0EDFFFAF5F3FFFAF8
+          F7FFFAF7F6FFFCF9F8FFE3CFC9FF0000000C0000000200000000000000000000
+          0006BD8A78FFFDFBFAFFF9F2F0FFF9F2F0FFF8F2EFFFF9F1EFFFF8F1EEFFF9F1
+          EEFFF8F0EDFFFDFAF8FFBB8675FF000000080000000000000000000000000000
+          0006BF8D7BFFFEFCFBFFFAF4F1FFFAF4F1FFFAF2F1FFFAF2F0FFF9F2EFFFF9F2
+          EEFFF8F1EEFFFDFBF9FFBD8978FF000000080000000000000000000000000000
+          0005C39381FFFEFDFDFFFBF6F4FFFBF5F4FFFBF4F2FFFAF4F2FFFAF4F1FFF9F3
+          F1FFFAF3F1FFFEFCFBFFC18F7EFF000000070000000000000000000000000000
+          0004C69887FFFFFEFEFFFBF7F6FFFCF6F6FFFBF6F5FFFBF6F4FFFBF5F4FFFAF5
+          F3FFFAF5F3FFFEFDFDFFC59684FF000000060000000000000000000000000000
+          0003C99B8AFFFFFEFEFFFBF7F6FFFCF7F6FFFCF6F5FFFBF6F5FFFCF6F5FFFBF5
+          F5FFFBF6F4FFFFFEFEFFC79887FF000000050000000000000000000000000000
+          0003CA9E8DFFFFFFFFFFFFFFFFFFFFFFFEFFFFFEFEFFFFFEFEFFFFFEFEFFFFFE
+          FEFFFFFEFEFFFFFEFEFFC99B8AFF000000040000000000000000000000000000
+          00029B7F74BFD0AB9CFFD0AB9CFFD0AA9CFFCFA99BFFCFA99AFFCFA999FFCFA8
+          99FFCEA899FFCFA898FF997B71C0000000030000000000000000}
       end>
-    CommandStoredProcName = 'br_aspPersons;1'
   end
-  object spBankAccounts: TUniStoredProc
-    StoredProcName = 'br_aspBankAccount;1'
-    SQL.Strings = (
-      '{:RETURN_VALUE = CALL br_aspBankAccount;1 (:ClientID)}')
+  object qSprRef: TUniQuery
     Connection = dmMain.MainConnection
-    Left = 176
-    Top = 328
+    SQL.Strings = (
+      'select * from sprReference'
+      'where ReferenceID = :ID')
+    Left = 52
+    Top = 156
     ParamData = <
       item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Value = nil
-      end
-      item
-        DataType = ftInteger
-        Name = 'ClientID'
-        ParamType = ptInput
+        DataType = ftUnknown
+        Name = 'ID'
         Value = nil
       end>
-    CommandStoredProcName = 'br_aspBankAccount;1'
-  end
-  object dsContacts: TUniDataSource
-    DataSet = mdContacts
-    Left = 96
-    Top = 236
-  end
-  object dsBankAccounts: TUniDataSource
-    DataSet = mdBankAccounts
-    Left = 180
-    Top = 240
-  end
-  object alRefBook: TActionList
-    Images = ilRefBookActionImages
-    OnUpdate = alRefBookUpdate
-    Left = 461
-    Top = 268
-    object actAddContact: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      Hint = #1044#1086#1073#1072#1074#1080#1090#1100
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddContactExecute
-    end
-    object actEditContact: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditContactExecute
-    end
-    object actDeleteContact: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      Hint = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      ShortCut = 46
-      OnExecute = actDeleteContactExecute
-    end
-    object actCopyCellContacts: TAction
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      ImageIndex = 8
-      ShortCut = 16451
-      OnExecute = actCopyCellContactsExecute
-    end
-    object actAddBankAccount: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      Hint = #1044#1086#1073#1072#1074#1080#1090#1100
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddBankAccountExecute
-    end
-    object actEditBankAccount: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      Hint = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditBankAccountExecute
-    end
-    object actDeleteBankAccount: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      Hint = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      ShortCut = 46
-      OnExecute = actDeleteBankAccountExecute
-    end
-    object actCopyCellBankAccounts: TAction
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      ImageIndex = 8
-      ShortCut = 16451
-      OnExecute = actCopyCellBankAccountsExecute
-    end
   end
   object spRefBookFieldsBrowse: TUniStoredProc
     StoredProcName = 'spGetReferenceBrowser;1'
     SQL.Strings = (
       '{:RETURN_VALUE = CALL spGetReferenceBrowser;1 (:ReferenceID)}')
     Connection = dmMain.MainConnection
-    Left = 276
-    Top = 108
+    Left = 112
+    Top = 168
     ParamData = <
       item
         DataType = ftInteger
@@ -1258,5 +1085,45 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
         Value = nil
       end>
     CommandStoredProcName = 'spGetReferenceBrowser;1'
+  end
+  object dsDescrGood: TUniDataSource
+    DataSet = spDescrGood
+    Left = 428
+    Top = 28
+  end
+  object qCountries: TUniQuery
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from sprCountry'
+      'order by CountryName')
+    Left = 322
+    Top = 44
+  end
+  object dsCountries: TUniDataSource
+    DataSet = qCountries
+    Left = 288
+    Top = 48
+  end
+  object spDescrGood: TUniStoredProc
+    StoredProcName = 'spProdDescription;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spProdDescription;1 (:ProdID)}')
+    Connection = dmMain.MainConnection
+    Left = 392
+    Top = 24
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        DataType = ftInteger
+        Name = 'ProdID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spProdDescription;1'
   end
 end

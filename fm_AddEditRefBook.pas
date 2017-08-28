@@ -50,7 +50,6 @@ type
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
     procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
-    function GetControlValue(AControl: TControl): Variant;
     function CheckControl(AControl: TcxCustomEdit): Boolean;
     function CheckReqControls: TWinControl;
     { Private declarations }
@@ -125,8 +124,8 @@ begin
   c.VAlignment := tvaCenter;
   c.Transparent := True;
   if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
-    s := '<b><font color="#FF0000">* </font></b>';
-  c.HTMLText.Text := s + spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString;
+    s := '<b><font color="#FF0000">*</font></b>';
+  c.HTMLText.Text := spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString + s;
 end;
 
 procedure TfmAddEditRefBook.InsertFieldEdit(APanel: TAdvPanel);
@@ -190,7 +189,7 @@ begin
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
-      c.Date := 0
+      c.Date := NullDate
     else
       c.Date := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsDateTime
   else
@@ -261,19 +260,6 @@ end;
 procedure TfmAddEditRefBook.btnCancelClick(Sender: TObject);
 begin
   Close;
-end;
-
-function TfmAddEditRefBook.GetControlValue(AControl: TControl): Variant;
-begin
-  case AControl.Tag of
-    1: Result := (AControl as TcxTextEdit).Text; // DBTextEdit
-    2: Result := (AControl as TcxDateEdit).Date; // DBDateEdit
-    3: Result := (AControl as TcxCalcEdit).Value; // DBCalcEdit
-//          4	DBMaskEdit
-    5: Result := Integer((AControl as TcxCheckBox).Checked); // DBCheckBox
-    6: Result := (AControl as TcxLookupComboBox).EditingValue; // DBLookupEdit
-//          7	DBImageEdit
-  end;
 end;
 
 procedure TfmAddEditRefBook.SetParamsAndExecStoredProc(sp: TUniStoredProc);

@@ -117,19 +117,15 @@ var
 begin
   c := THTMLabel.Create(APanel);
   c.Parent := APanel;
-//  c.AutoSize := False;
   c.Width := 200;
-//  c.Align := alLeft;
   c.Left := 10;
   c.Top := 1;
   c.Height := APanel.Height - 2;
-//  c.Properties.WordWrap := True;
-//  c.Properties.Alignment.Vert := taVCenter;
   c.VAlignment := tvaCenter;
   c.Transparent := True;
   if spRefBookFieldsAddEditView.FieldByName('IsRequired').AsInteger = 1 then
     s := '<b><font color="#FF0000">* </font></b>';
-  c.HTMLText.Text := s + spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString;
+  c.HTMLText.Text := spRefBookFieldsAddEditView.FieldByName('RefFieldRUSName').AsString + s;
 end;
 
 procedure TfmAddEditLinkedRefBook.InsertFieldEdit(APanel: TAdvPanel);
@@ -198,7 +194,7 @@ begin
   c.Name := spRefBookFieldsAddEditView.FieldByName('RefFieldName').AsString;
   if (FormMode = fmAdd) then
     if spRefBookFieldsAddEditView.FieldByName('DefaultValue').IsNull then
-      c.Date := 0
+      c.Date := NullDate
     else
       c.Date := spRefBookFieldsAddEditView.FieldByName('DefaultValue').AsDateTime
   else

@@ -25,33 +25,26 @@ uses
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator;
+  cxSpinEdit, cxDBNavigator, HTMLabel;
 
 type
   TfmAddEditRefBookGoods = class(TForm)
     pnlClient: TAdvPanel;
-    cxLabel1: TcxLabel;
-    cxLabel2: TcxLabel;
-    cxLabel4: TcxLabel;
-    cxLabel7: TcxLabel;
-    edtProdDescr: TcxTextEdit;
-    lcCountry: TcxLookupComboBox;
-    edtArticleNumber: TcxTextEdit;
-    cbOnlyIntSales: TcxCheckBox;
+    ProdDescription: TcxTextEdit;
+    CountryID: TcxLookupComboBox;
+    ArticleNumber: TcxTextEdit;
+    OnlyIntSales: TcxCheckBox;
     cxGroupBox1: TcxGroupBox;
-    cxLabel9: TcxLabel;
-    cxLabel12: TcxLabel;
-    cxLabel13: TcxLabel;
-    ceBruttoWeight: TcxCalcEdit;
-    ceProdVolume: TcxCalcEdit;
-    edtComment: TcxTextEdit;
+    BruttoWeight: TcxCalcEdit;
+    ProdVolume: TcxCalcEdit;
+    Comment: TcxTextEdit;
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
     cxTabSheet2: TcxTabSheet;
     pnlBottom: TAdvPanel;
     btnSave: TcxButton;
     btnCancel: TcxButton;
-    ceNettoWeight: TcxCalcEdit;
+    NettoWeight: TcxCalcEdit;
     GridDescr: TcxGrid;
     tvDescriptions: TcxGridDBTableView;
     GridDescrLevel1: TcxGridLevel;
@@ -100,14 +93,11 @@ type
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
-    lcUnit: TcxLookupComboBox;
-    cxLabel8: TcxLabel;
-    lcThermoType: TcxLookupComboBox;
-    cxLabel3: TcxLabel;
+    UnitID: TcxLookupComboBox;
+    ThermoTypeID: TcxLookupComboBox;
     dsThermoType: TUniDataSource;
     qThermoType: TUniQuery;
-    cxLabel5: TcxLabel;
-    edtProdName: TcxTextEdit;
+    ProdName: TcxTextEdit;
     mdDescr: TdxMemData;
     mdDescrProdDescrID: TIntegerField;
     mdDescrProdDescription: TStringField;
@@ -118,6 +108,17 @@ type
     mdBarcodeUnitQty: TIntegerField;
     tvBarcodesColumn2: TcxGridDBColumn;
     tvDescriptionsRecId: TcxGridDBColumn;
+    lblLabel1: THTMLabel;
+    lblLabel2: THTMLabel;
+    lblLabel4: THTMLabel;
+    lblLabel7: THTMLabel;
+    lblLabel9: THTMLabel;
+    lblLabel12: THTMLabel;
+    lblLabel13: THTMLabel;
+    lblLabel8: THTMLabel;
+    lblLabel3: THTMLabel;
+    lblLabel5: THTMLabel;
+    lbl1: THTMLabel;
     procedure FormShow(Sender: TObject);
     procedure actAddBarcodeExecute(Sender: TObject);
     procedure actEditBarcodeExecute(Sender: TObject);
@@ -259,17 +260,17 @@ begin
     dmMain.MainConnection.StartTransaction;
 
     sp.ParamByName('ProdCatID').Value := ParentID;
-    sp.ParamByName('ProdName').Value := edtProdName.Text;
-    sp.ParamByName('ProdDescription').Value := edtProdDescr.Text;
-    sp.ParamByName('ArticleNumber').Value := edtArticleNumber.Text;
-    sp.ParamByName('CountryID').Value := lcCountry.EditValue;
-    sp.ParamByName('UnitID').Value := lcUnit.EditValue;
-    sp.ParamByName('ThermoTypeID').Value := lcThermoType.EditValue;
-    sp.ParamByName('OnlyIntSales').Value := Integer(cbOnlyIntSales.Checked);
-    sp.ParamByName('NettoWeight').Value := ceNettoWeight.Value;
-    sp.ParamByName('BruttoWeight').Value := ceBruttoWeight.Value;
-    sp.ParamByName('ProdVolume').Value := ceProdVolume.Value;
-    sp.ParamByName('Comment').Value := edtComment.Text;
+    sp.ParamByName('ProdName').Value := ProdName.Text;
+    sp.ParamByName('ProdDescription').Value := ProdDescription.Text;
+    sp.ParamByName('ArticleNumber').Value := ArticleNumber.Text;
+    sp.ParamByName('CountryID').Value := CountryID.EditValue;
+    sp.ParamByName('UnitID').Value := UnitID.EditValue;
+    sp.ParamByName('ThermoTypeID').Value := ThermoTypeID.EditValue;
+    sp.ParamByName('OnlyIntSales').Value := Integer(OnlyIntSales.Checked);
+    sp.ParamByName('NettoWeight').Value := NettoWeight.Value;
+    sp.ParamByName('BruttoWeight').Value := BruttoWeight.Value;
+    sp.ParamByName('ProdVolume').Value := ProdVolume.Value;
+    sp.ParamByName('Comment').Value := Comment.Text;
     sp.ParamByName('IsVisible').Value := 1;
 
     if (FormMode = fmAdd) then
@@ -343,7 +344,7 @@ begin
         sp1.Execute;
         mdBarcode.Next;
       end;
-
+      dmMain.MainConnection.Commit;
     finally
       FreeAndNil(sp1);
     end;
@@ -361,35 +362,38 @@ begin
   dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 7; //prod
   dmRefBooks.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtComment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
-    Result := edtComment;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(Comment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
+    Result := Comment;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcUnit), dmRefBooks.spGetReferenceFieldList, 'UnitID') then
-    Result := lcUnit;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(UnitID), dmRefBooks.spGetReferenceFieldList, 'UnitID') then
+    Result := UnitID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceProdVolume), dmRefBooks.spGetReferenceFieldList, 'ProdVolume') then
-    Result := ceProdVolume;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdVolume), dmRefBooks.spGetReferenceFieldList, 'ProdVolume') then
+    Result := ProdVolume;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceBruttoWeight), dmRefBooks.spGetReferenceFieldList, 'BruttoWeight') then
-    Result := ceBruttoWeight;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(BruttoWeight), dmRefBooks.spGetReferenceFieldList, 'BruttoWeight') then
+    Result := BruttoWeight;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ceNettoWeight), dmRefBooks.spGetReferenceFieldList, 'NettoWeight') then
-    Result := ceNettoWeight;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(NettoWeight), dmRefBooks.spGetReferenceFieldList, 'NettoWeight') then
+    Result := NettoWeight;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcThermoType), dmRefBooks.spGetReferenceFieldList, 'ThermoTypeID') then
-    Result := lcThermoType;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(OnlyIntSales), dmRefBooks.spGetReferenceFieldList, 'OnlyIntSales') then
+    Result := OnlyIntSales;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(lcCountry), dmRefBooks.spGetReferenceFieldList, 'CountryID') then
-    Result := lcCountry;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ThermoTypeID), dmRefBooks.spGetReferenceFieldList, 'ThermoTypeID') then
+    Result := ThermoTypeID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtArticleNumber), dmRefBooks.spGetReferenceFieldList, 'ArticleNumber') then
-    Result := edtArticleNumber;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(CountryID), dmRefBooks.spGetReferenceFieldList, 'CountryID') then
+    Result := CountryID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtProdName), dmRefBooks.spGetReferenceFieldList, 'ProdName') then
-    Result := edtProdName;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ArticleNumber), dmRefBooks.spGetReferenceFieldList, 'ArticleNumber') then
+    Result := ArticleNumber;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(edtProdDescr), dmRefBooks.spGetReferenceFieldList, 'ProdDescription') then
-    Result := edtProdDescr;
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdDescription), dmRefBooks.spGetReferenceFieldList, 'ProdDescription') then
+    Result := ProdDescription;
+
+  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdName), dmRefBooks.spGetReferenceFieldList, 'ProdName') then
+    Result := ProdName;
 end;
 
 procedure TfmAddEditRefBookGoods.btnSaveClick(Sender: TObject);
@@ -449,17 +453,17 @@ begin
   if FormMode in [fmEdit, fmView] then
     with dmRefBooks.spGetGoodsForProdCat do
     begin
-      edtProdName.Text := FieldByName('ProdName').AsString;
-      edtProdDescr.Text := FieldByName('ProdDescription').AsString;
-      edtArticleNumber.Text := FieldByName('ArticleNumber').AsString;
-      lcCountry.EditValue := FieldByName('CountryID').AsInteger;
-      lcUnit.EditValue := FieldByName('UnitID').AsInteger;
-      lcThermoType.EditValue := FieldByName('ThermoTypeID').AsInteger;
-      cbOnlyIntSales.Checked := Boolean(FieldByName('OnlyIntSales').AsInteger);
-      ceNettoWeight.Value := FieldByName('NettoWeight').AsFloat;
-      ceBruttoWeight.Value := FieldByName('BruttoWeight').AsFloat;
-      ceProdVolume.Value := FieldByName('ProdVolume').AsFloat;
-      edtComment.Text := FieldByName('Comment').AsString;
+      ProdName.Text := FieldByName('ProdName').AsString;
+      ProdDescription.Text := FieldByName('ProdDescription').AsString;
+      ArticleNumber.Text := FieldByName('ArticleNumber').AsString;
+      CountryID.EditValue := FieldByName('CountryID').AsInteger;
+      UnitID.EditValue := FieldByName('UnitID').AsInteger;
+      ThermoTypeID.EditValue := FieldByName('ThermoTypeID').AsInteger;
+      OnlyIntSales.Checked := Boolean(FieldByName('OnlyIntSales').AsInteger);
+      NettoWeight.Value := FieldByName('NettoWeight').AsFloat;
+      BruttoWeight.Value := FieldByName('BruttoWeight').AsFloat;
+      ProdVolume.Value := FieldByName('ProdVolume').AsFloat;
+      Comment.Text := FieldByName('Comment').AsString;
       spDescriptions.ParamByName('ProdID').Value := FieldByName('ProdID').AsInteger;
       spDescriptions.Open;
       spBarcodes.ParamByName('ProdID').Value := FieldByName('ProdID').AsInteger;
@@ -510,6 +514,9 @@ begin
         btnCancel.Caption := 'Закрыть';
       end;
   end;
+
+  DrawRequiredAsterisks(Self, 7); //prod
+
   IsModified := False;
 end;
 
