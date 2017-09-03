@@ -992,7 +992,6 @@ object fmShowRefBookClients: TfmShowRefBookClients
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1004,8 +1003,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42974.984247766200000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42981.468572615740000000
       BuiltInReportLink = True
     end
   end

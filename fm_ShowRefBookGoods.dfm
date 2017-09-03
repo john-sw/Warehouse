@@ -62,7 +62,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     StatusBar.GradientDirection = gdVertical
     Styler = dmMain.AdvPanelStyler1
     Text = ''
-    ExplicitHeight = 539
     FullHeight = 200
     object cxGroupBox1: TcxGroupBox
       Left = 0
@@ -71,7 +70,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Caption = ' '#1043#1088#1091#1087#1087#1099' '#1090#1086#1074#1072#1088#1086#1074' '
       TabOrder = 0
       Transparent = True
-      ExplicitHeight = 539
       Height = 497
       Width = 251
       object RzToolbar1: TRzToolbar
@@ -88,7 +86,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         GradientColorStyle = gcsMSOffice
         TabOrder = 0
         VisualStyle = vsGradient
-        ExplicitTop = 508
         ToolbarControls = (
           RzToolButton1
           RzSpacer1
@@ -173,7 +170,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         RootValue = -1
         Styles.Selection = dmMain.GridStyleSelectedRow
         TabOrder = 1
-        ExplicitHeight = 490
         object cxDBTreeList1ProdCatName: TcxDBTreeListColumn
           DataBinding.FieldName = 'ProdCatName'
           Options.Footer = False
@@ -195,7 +191,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Height = 497
       HotZoneClassName = 'TcxSimpleStyle'
       Control = cxGroupBox1
-      ExplicitHeight = 539
     end
     object cxGroupBox2: TcxGroupBox
       Left = 259
@@ -204,7 +199,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       Caption = ' '#1058#1086#1074#1072#1088#1099' '
       TabOrder = 2
       Transparent = True
-      ExplicitHeight = 539
       Height = 497
       Width = 709
       object GridRefBook: TcxGrid
@@ -215,8 +209,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         Align = alClient
         PopupMenu = pmDefaultPopupMenu
         TabOrder = 0
-        ExplicitTop = 18
-        ExplicitHeight = 490
         object tvRefBook: TcxGridDBTableView
           OnDblClick = tvRefBookDblClick
           Navigator.Buttons.CustomButtons = <>
@@ -253,7 +245,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         GradientColorStyle = gcsMSOffice
         TabOrder = 1
         VisualStyle = vsGradient
-        ExplicitTop = 508
         ToolbarControls = (
           RzToolButton6
           RzSpacer5
@@ -407,8 +398,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         StatusBar.GradientDirection = gdVertical
         Styler = dmMain.AdvPanelStyler1
         Text = ''
-        ExplicitLeft = 4
-        ExplicitTop = 26
         FullHeight = 30
         object tbShowGrouped: TAdvToolButton
           Left = 10
@@ -965,6 +954,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -976,7 +966,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42974.984275671300000000
+      ReportDocument.CreationDate = 42981.468316111110000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

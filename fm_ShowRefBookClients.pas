@@ -513,6 +513,11 @@ begin
       end;
 
       tvRefBook.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
+      if not spRefBookFieldsBrowse.FieldByName('DisplayFormat').IsNull then
+      begin
+        tvRefBook.Columns[i].PropertiesClass := TcxCurrencyEditProperties;
+        (tvRefBook.Columns[i].Properties as TcxCurrencyEditProperties).DisplayFormat := spRefBookFieldsBrowse.FieldByName('DisplayFormat').AsString;
+      end;
     end
     else
       tvRefBook.Columns[i].Visible := False;

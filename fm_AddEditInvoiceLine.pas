@@ -62,13 +62,18 @@ type
     spDescrGood: TUniStoredProc;
     Tax: TcxComboBox;
     GtdNumber: TcxTextEdit;
-    procedure FormShow(Sender: TObject);
+    btnAddDescr: TcxButton;
+    mdDescr: TdxMemData;
+    mdDescrProdDescrID: TIntegerField;
+    mdDescrProdDescription: TStringField;
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure ProdIDPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure ContractPricePropertiesChange(Sender: TObject);
+    procedure btnAddDescrClick(Sender: TObject);
   private
     IsModified: Boolean;
     function CheckReqControls: TWinControl;
@@ -123,6 +128,43 @@ begin
     Exit;
 
   SalePrice.Value := ContractPrice.EditingValue * (PricePercent.EditingValue / 100) + ContractPrice.EditingValue;
+end;
+
+procedure TfmAddEditInvoiceLine.btnAddDescrClick(Sender: TObject);
+var
+  sp1: TUniStoredProc;
+begin
+  Application.CreateForm(TfmAddEditLinkedRefBook, fmAddEditLinkedRefBook);
+  try
+    mdDescr.Open;
+    fmAddEditLinkedRefBook.RefBookName := 'Описание товара';
+    fmAddEditLinkedRefBook.FormMode := fmAdd;
+    fmAddEditLinkedRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 8; //descriptions
+    fmAddEditLinkedRefBook.rsRefBookDataSet := mdDescr;
+    if fmAddEditLinkedRefBook.ShowModal = mrOk then
+    try
+      sp1 := TUniStoredProc.Create(Nil);
+      sp1.Connection := dmMain.MainConnection;
+      sp1.CreateProcCall('insProdDescription');
+      mdDescr.First;
+      sp1.ParamByName('ProdID').AsInteger := ProdID.Properties.Buttons.Items[0].Tag;
+      sp1.ParamByName('ProdDescription').AsString := mdDescr.FieldByName('ProdDescription').AsString;
+      sp1.ParamByName('IsReadOnly').AsInteger := 0;
+      sp1.Execute;
+
+      spDescrGood.Close;
+      spDescrGood.Open;
+      spDescrGood.Locate('name', mdDescr.FieldByName('ProdDescription').AsString, []);
+      ProdDescrID.ItemIndex := spDescrGood.RecNo - 1;
+
+      mdDescr.Close;
+      IsModified := True;
+    finally
+      FreeAndNil(sp1);
+    end;
+  finally
+    FreeAndNil(fmAddEditLinkedRefBook);
+  end;
 end;
 
 procedure TfmAddEditInvoiceLine.AppendUpdateRecordSet;
@@ -206,10 +248,18 @@ begin
 
   if FormMode in [fmEdit, fmView] then
     with rsRefBookDataSet do
+    begin
+      ProdID.Text := FieldByName('ProdName').Value;
+      ProdID.Properties.Buttons.Items[0].Tag := FieldByName('ProdID').Value;
+      spDescrGood.Close;
+      spDescrGood.ParamByName('ProdID').Value := FieldByName('ProdID').Value;
+      spDescrGood.Open;
+      btnAddDescr.Enabled := True;
       for i := 0 to pnlClient.ControlCount - 1 do
         if pnlClient.Controls[i] is TcxCustomEdit then
-          SetControlValue(pnlClient.Controls[i], FieldByName(pnlClient.Controls[i].Name).Value);
-
+          if pnlClient.Controls[i].Tag <> - 1 then
+            SetControlValue(pnlClient.Controls[i], FieldByName(pnlClient.Controls[i].Name).Value);
+    end;
   case FormMode of
     fmAdd: Caption := 'Добавление позиции документа';
     fmEdit: Caption := 'Изменение позиции документа';
@@ -245,6 +295,9 @@ begin
         spDescrGood.Close;
         spDescrGood.ParamByName('ProdID').Value := frm.tvRefBook.Controller.FocusedRow.Values[0];
         spDescrGood.Open;
+
+        ProdDescrID.ItemIndex := 0;
+        btnAddDescr.Enabled := True;
         IsModified := True;
       end;
     finally
@@ -255,6 +308,7 @@ begin
       TcxButtonEdit(Sender).Text := '';
       TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag := 0;
       spDescrGood.Close;
+      btnAddDescr.Enabled := False;
       IsModified := True;
     end;
 

@@ -160,7 +160,7 @@ begin
   if AspCheck.Locate('RefFieldName', AFieldName, [loCaseInsensitive]) and
      (AspCheck.FieldByName('IsRequired').AsInteger = 1) then
     case AControl.Tag of
-      1: Result := (AControl as TcxCustomTextEdit).Text <> ''; // DBTextEdit
+      -1, 1: Result := (AControl as TcxCustomTextEdit).Text <> ''; // DBTextEdit
       2: Result := (AControl as TcxDateEdit).Date <> NullDate; // DBDateEdit
       3: Result := (AControl as TcxCalcEdit).Value <> 0;       //	DBCalcEdit
   //          4	DBMaskEdit

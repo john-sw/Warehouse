@@ -197,8 +197,6 @@ object fmAddEditInvoice: TfmAddEditInvoice
         Align = alClient
         PopupMenu = pmBarcode
         TabOrder = 0
-        ExplicitLeft = -94
-        ExplicitTop = -27
         object tvInvoiceList: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dsInvoiceList
@@ -566,6 +564,7 @@ object fmAddEditInvoice: TfmAddEditInvoice
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebsSingle
       Style.LookAndFeel.NativeStyle = False
+      Style.ButtonStyle = btsOffice11
       StyleDisabled.LookAndFeel.NativeStyle = False
       StyleFocused.LookAndFeel.NativeStyle = False
       StyleHot.LookAndFeel.NativeStyle = False

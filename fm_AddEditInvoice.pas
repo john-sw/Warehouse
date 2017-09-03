@@ -25,7 +25,8 @@ uses
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel;
+  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel,
+  cxCurrencyEdit;
 
 type
   TfmAddEditInvoice = class(TForm)
@@ -143,7 +144,7 @@ begin
     fmAddEditInvoiceLine.FormMode := fmAdd;
     fmAddEditInvoiceLine.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := 16; //invoice line
     fmAddEditInvoiceLine.rsRefBookDataSet := mdInvoiceList;
-
+    fmAddEditInvoiceLine.PricePercent.Value := PricePercent.Value;
     if fmAddEditInvoiceLine.ShowModal = mrOk then
     begin
       GridInvoiceList.SetFocus;
@@ -444,7 +445,8 @@ begin
   end;
 
   mdInvoiceList.CopyFromDataSet(spInvoiceList);
-  mdInvoiceList.Open;
+  mdInvoiceList.First;
+
   case FormMode of
     fmAdd: Caption := 'Добавление документа';
     fmEdit: Caption := 'Изменение документа';
@@ -500,6 +502,11 @@ begin
       end;
 
       tvInvoiceList.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
+      if not spRefBookFieldsBrowse.FieldByName('DisplayFormat').IsNull then
+      begin
+        tvInvoiceList.Columns[i].PropertiesClass := TcxCurrencyEditProperties;
+        (tvInvoiceList.Columns[i].Properties as TcxCurrencyEditProperties).DisplayFormat := spRefBookFieldsBrowse.FieldByName('DisplayFormat').AsString;
+      end;
     end
     else
       tvInvoiceList.Columns[i].Visible := False;
