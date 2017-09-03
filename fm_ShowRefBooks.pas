@@ -30,7 +30,7 @@ uses
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
-  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton;
+  dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton, dxSkinsdxRibbonPainter;
 
 type
   TfmShowRefBook = class(TForm)
@@ -221,9 +221,6 @@ end;
 
 procedure TfmShowRefBook.FormCreate(Sender: TObject);
 begin
-{  Localizer.Active=true;
-  Localizer
-	Localizer.LanguageIndex=1049;}
   OriginalSettings := TMemoryStream.Create;
 end;
 
@@ -274,6 +271,11 @@ begin
       end;
 
       tvRefBook.Columns[i].Width := spRefBookFieldsBrowse.FieldByName('Width').AsInteger;
+      if not spRefBookFieldsBrowse.FieldByName('DisplayFormat').IsNull then
+      begin
+        tvRefBook.Columns[i].PropertiesClass := TcxCurrencyEditProperties;
+        (tvRefBook.Columns[i].Properties as TcxCurrencyEditProperties).DisplayFormat := spRefBookFieldsBrowse.FieldByName('DisplayFormat').AsString;
+      end;
     end
     else
       tvRefBook.Columns[i].Visible := False;
