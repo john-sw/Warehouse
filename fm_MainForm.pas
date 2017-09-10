@@ -42,14 +42,22 @@ type
     dxBarManager1Bar1: TdxBar;
     btnShowRefBookGoods: TdxBarLargeButton;
     btnShowClients: TdxBarLargeButton;
-    dxBarLargeButton1: TdxBarLargeButton;
+    btnShowInvoiceRegister: TdxBarLargeButton;
     dxBarLargeButton2: TdxBarLargeButton;
     N1: TMenuItem;
     N2: TMenuItem;
+    N5: TMenuItem;
+    dxBarManager1Bar3: TdxBar;
+    N7: TMenuItem;
+    N9: TMenuItem;
+    btnShowPriceLists: TdxBarLargeButton;
+    btnShowCurrentPrice: TdxBarLargeButton;
     procedure FormShow(Sender: TObject);
     procedure btnShowRefBookGoodsClick(Sender: TObject);
     procedure btnShowClientsClick(Sender: TObject);
-    procedure dxBarLargeButton1Click(Sender: TObject);
+    procedure btnShowInvoiceRegisterClick(Sender: TObject);
+    procedure btnShowPriceListsClick(Sender: TObject);
+    procedure btnShowCurrentPriceClick(Sender: TObject);
   private
     { Private declarations }
     procedure CreateMainMenu;
@@ -68,7 +76,7 @@ var
 implementation
 
 uses
-  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients, fm_ShowInvoiceRegister;
+  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients, fm_ShowInvoiceRegister, fm_ShowPriceLists, fm_ShowCurrentPriceList;
 
 {$R *.dfm}
 
@@ -121,7 +129,21 @@ begin
   end;
 end;
 
-procedure TMainForm.dxBarLargeButton1Click(Sender: TObject);
+procedure TMainForm.btnShowCurrentPriceClick(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  mi := FindFormInMainMenu('Текущий прайс лист');
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
+  begin
+    Application.CreateForm(TfmShowCurrentPriceList, fmShowCurrentPriceList);
+    AddFormToMainMenu(fmShowCurrentPriceList);
+  end;
+end;
+
+procedure TMainForm.btnShowInvoiceRegisterClick(Sender: TObject);
 var
   mi: TMenuItem;
 begin
@@ -132,6 +154,20 @@ begin
   begin
     Application.CreateForm(TfmShowInvoiceRegister, fmShowInvoiceRegister);
     AddFormToMainMenu(fmShowInvoiceRegister);
+  end;
+end;
+
+procedure TMainForm.btnShowPriceListsClick(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  mi := FindFormInMainMenu('Прайс листы поставщиков');
+  if (mi <> nil) then
+    TCustomForm(mi.Tag).BringToFront
+  else
+  begin
+    Application.CreateForm(TfmShowPriceLists, fmShowPriceLists);
+    AddFormToMainMenu(fmShowPriceLists);
   end;
 end;
 

@@ -579,6 +579,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -590,7 +591,8 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42969.893779351850000000
+      ReportDocument.CreationDate = 42988.634662592600000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -647,6 +649,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       OnExecute = actCopyCellExecute
     end
     object actApprove: TAction
+      Tag = 1
       Caption = #1059#1090#1074#1077#1088#1076#1080#1090#1100
       ImageIndex = 11
       OnExecute = actApproveExecute

@@ -1,4 +1,4 @@
-object fmShowRefBook: TfmShowRefBook
+object fmShowPriceLists: TfmShowPriceLists
   Left = 0
   Top = 0
   Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082' - '
@@ -71,7 +71,9 @@ object fmShowRefBook: TfmShowRefBook
       RzSpacer8
       RzToolButton10
       RzSpacer9
-      RzToolButton11)
+      RzToolButton11
+      RzSpacer1
+      RzToolButton1)
     object RzToolButton6: TRzToolButton
       Left = 4
       Top = 2
@@ -137,7 +139,7 @@ object fmShowRefBook: TfmShowRefBook
       ShowCaption = True
       UseToolbarButtonSize = False
       UseToolbarShowCaption = False
-      Action = actRefresh
+      Action = actCopy
       ParentShowHint = False
       ShowHint = True
     end
@@ -152,9 +154,22 @@ object fmShowRefBook: TfmShowRefBook
       ShowCaption = True
       UseToolbarButtonSize = False
       UseToolbarShowCaption = False
-      Action = actClose
+      Action = actRefresh
       ParentShowHint = False
       ShowHint = True
+    end
+    object RzSpacer1: TRzSpacer
+      Left = 584
+      Top = 2
+    end
+    object RzToolButton1: TRzToolButton
+      Left = 592
+      Top = 2
+      Width = 90
+      ShowCaption = True
+      UseToolbarButtonSize = False
+      UseToolbarShowCaption = False
+      Action = actClose
     end
   end
   object spShowRefBook: TUniStoredProc
@@ -293,7 +308,7 @@ object fmShowRefBook: TfmShowRefBook
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42988.647007997680000000
+      ReportDocument.CreationDate = 42988.673003252310000000
       AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
@@ -349,6 +364,11 @@ object fmShowRefBook: TfmShowRefBook
       ImageIndex = 8
       ShortCut = 16451
       OnExecute = actCopyCellExecute
+    end
+    object actCopy: TAction
+      Caption = #1057#1082#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      ImageIndex = 8
+      OnExecute = actCopyExecute
     end
   end
   object ilRefBookActionImages: TcxImageList

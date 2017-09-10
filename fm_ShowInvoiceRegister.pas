@@ -117,9 +117,9 @@ type
     procedure actCopyCellExecute(Sender: TObject);
     procedure spShowInvoiceRegisterAfterOpen(DataSet: TDataSet);
     procedure actApproveExecute(Sender: TObject);
-    procedure actDisApproveExecute(Sender: TObject);
     procedure btnFilterClick(Sender: TObject);
     procedure btnClearFilterClick(Sender: TObject);
+    procedure actDisApproveExecute(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -157,8 +157,22 @@ begin
 end;
 
 procedure TfmShowInvoiceRegister.actApproveExecute(Sender: TObject);
+var
+  sp1: TUniStoredProc;
 begin
- ShowMessage('q');
+  sp1 := TUniStoredProc.Create(Nil);
+  try
+    sp1.Connection := dmMain.MainConnection;
+    sp1.CreateProcCall('spChangeFieldValue');
+    sp1.ParamByName('TableName').AsString := 'Invoice';
+    sp1.ParamByName('FieldName').AsString := 'IsAccept';
+    sp1.ParamByName('FieldValue').Value := 1;
+    sp1.ParamByName('KeyFieldValue').Value := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;;
+    sp1.Execute;
+  finally
+    FreeAndNil(sp1);
+    actRefreshExecute(nil);
+  end;
 end;
 
 procedure TfmShowInvoiceRegister.actCloseExecute(Sender: TObject);
@@ -188,8 +202,22 @@ begin
 end;
 
 procedure TfmShowInvoiceRegister.actDisApproveExecute(Sender: TObject);
+var
+  sp1: TUniStoredProc;
 begin
-  ShowMessage('rrr');
+  sp1 := TUniStoredProc.Create(Nil);
+  try
+    sp1.Connection := dmMain.MainConnection;
+    sp1.CreateProcCall('spChangeFieldValue');
+    sp1.ParamByName('TableName').AsString := 'Invoice';
+    sp1.ParamByName('FieldName').AsString := 'IsAccept';
+    sp1.ParamByName('FieldValue').Value := 0;
+    sp1.ParamByName('KeyFieldValue').Value := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;;
+    sp1.Execute;
+  finally
+    FreeAndNil(sp1);
+    actRefreshExecute(nil);
+  end;
 end;
 
 procedure TfmShowInvoiceRegister.actEditExecute(Sender: TObject);
@@ -282,9 +310,6 @@ end;
 
 procedure TfmShowInvoiceRegister.FormCreate(Sender: TObject);
 begin
-{  Localizer.Active=true;
-  Localizer
-	Localizer.LanguageIndex=1049;}
   OriginalSettings := TMemoryStream.Create;
 end;
 

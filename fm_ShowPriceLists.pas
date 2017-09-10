@@ -1,4 +1,4 @@
-unit fm_ShowRefBooks;
+unit fm_ShowPriceLists;
 
 interface
 
@@ -29,11 +29,11 @@ uses
   dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore,
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
-  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter, cxCurrencyEdit,
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton, dxSkinsdxRibbonPainter;
 
 type
-  TfmShowRefBook = class(TForm)
+  TfmShowPriceLists = class(TForm)
     spShowRefBook: TUniStoredProc;
     dsShowRefBook: TUniDataSource;
     tvRefBook: TcxGridDBTableView;
@@ -82,6 +82,9 @@ type
     RzToolButton10: TRzToolButton;
     RzSpacer9: TRzSpacer;
     RzToolButton11: TRzToolButton;
+    actCopy: TAction;
+    RzSpacer1: TRzSpacer;
+    RzToolButton1: TRzToolButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -96,52 +99,73 @@ type
     procedure actCloseExecute(Sender: TObject);
     procedure actCopyCellExecute(Sender: TObject);
     procedure spShowRefBookAfterOpen(DataSet: TDataSet);
+    procedure actCopyExecute(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
   public
     { Public declarations }
-
+    RefBookID: Integer;
   end;
 
 var
-  fmShowRefBook: TfmShowRefBook;
+  fmShowPriceLists: TfmShowPriceLists;
 
 implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
+uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, cxCurrencyEdit, fm_AddEditPriceList;
 
-procedure TfmShowRefBook.actAddExecute(Sender: TObject);
+procedure TfmShowPriceLists.actAddExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  Application.CreateForm(TfmAddEditPriceList, fmAddEditPriceList);
   try
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditPriceList.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditPriceList.spParentRefBook := spShowRefBook;
+    fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
-    if fmAddEditRefBook.ShowModal = mrOk then
+    if fmAddEditPriceList.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
-      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditPriceList.CurrentID,[]);
     end;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditPriceList);
   end;
 end;
 
-procedure TfmShowRefBook.actCloseExecute(Sender: TObject);
+procedure TfmShowPriceLists.actCloseExecute(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TfmShowRefBook.actCopyCellExecute(Sender: TObject);
+procedure TfmShowPriceLists.actCopyCellExecute(Sender: TObject);
 begin
   ClipBoard.AsText := tvRefBook.Controller.FocusedRecord.Values[tvRefBook.Controller.FocusedColumn.Index];
 end;
 
-procedure TfmShowRefBook.actDeleteExecute(Sender: TObject);
+procedure TfmShowPriceLists.actCopyExecute(Sender: TObject);
+begin
+  Application.CreateForm(TfmAddEditPriceList, fmAddEditPriceList);
+  try
+    fmAddEditPriceList.FormMode := fmCopy;
+    fmAddEditPriceList.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditPriceList.spParentRefBook := spShowRefBook;
+    fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditPriceList.CurrentID := -1;
+    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    if fmAddEditPriceList.ShowModal = mrOk then
+    begin
+      spShowRefBook.Refresh;
+      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditPriceList.CurrentID,[]);
+    end;
+  finally
+    FreeAndNil(fmAddEditPriceList);
+  end;
+end;
+
+procedure TfmShowPriceLists.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
@@ -157,28 +181,28 @@ begin
   end;
 end;
 
-procedure TfmShowRefBook.actEditExecute(Sender: TObject);
+procedure TfmShowPriceLists.actEditExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  Application.CreateForm(TfmAddEditPriceList, fmAddEditPriceList);
   try
-    fmAddEditRefBook.FormMode := fmEdit;
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBook.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    fmAddEditPriceList.FormMode := fmEdit;
+    fmAddEditPriceList.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditPriceList.spParentRefBook := spShowRefBook;
+    fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditPriceList.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
-    if fmAddEditRefBook.ShowModal = mrOk then
+    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditPriceList.CurrentID;
+    if fmAddEditPriceList.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
-      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBook.CurrentID,[]);
+      spShowRefBook.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditPriceList.CurrentID,[]);
     end;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditPriceList);
   end;
 end;
 
-procedure TfmShowRefBook.actExportExecute(Sender: TObject);
+procedure TfmShowPriceLists.actExportExecute(Sender: TObject);
 begin
   if ExportToExcelSaveDialog.Execute(Self.Handle) then
     if AnsiLowerCase(ExtractFileExt(ExportToExcelSaveDialog.FileName)) = '.xls' then
@@ -187,50 +211,50 @@ begin
       ExportGridToXLSX(ExportToExcelSaveDialog.FileName, GridRefBook, True, True, True, '');
 end;
 
-procedure TfmShowRefBook.actPrintExecute(Sender: TObject);
+procedure TfmShowPriceLists.actPrintExecute(Sender: TObject);
 begin
   prnRefBook.Preview();
 end;
 
-procedure TfmShowRefBook.actRefreshExecute(Sender: TObject);
+procedure TfmShowPriceLists.actRefreshExecute(Sender: TObject);
 begin
   spShowRefBook.Close;
   spShowRefBook.Open;
 end;
 
-procedure TfmShowRefBook.actViewExecute(Sender: TObject);
+procedure TfmShowPriceLists.actViewExecute(Sender: TObject);
 begin
-  Application.CreateForm(TfmAddEditRefBook, fmAddEditRefBook);
+  Application.CreateForm(TfmAddEditPriceList, fmAddEditPriceList);
   try
-    fmAddEditRefBook.FormMode := fmView;
-    fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBook.spParentRefBook := spShowRefBook;
-    fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBook.ShowModal;
+    fmAddEditPriceList.FormMode := fmView;
+    fmAddEditPriceList.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
+    fmAddEditPriceList.spParentRefBook := spShowRefBook;
+    fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
+    fmAddEditPriceList.ShowModal;
   finally
-    FreeAndNil(fmAddEditRefBook);
+    FreeAndNil(fmAddEditPriceList);
   end;
 end;
 
-procedure TfmShowRefBook.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfmShowPriceLists.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   tvRefBook.StoreToRegistry('Software\Warehouse\GridsSettings\RefBooks\' + qSprRef.FieldByName('ReferenceTableName').AsString);
   FreeAndNil(OriginalSettings);
   PostMessage(MainForm.Handle,WM_USER + 1, UIntPtr(Self), 0);
 end;
 
-procedure TfmShowRefBook.FormCreate(Sender: TObject);
+procedure TfmShowPriceLists.FormCreate(Sender: TObject);
 begin
   OriginalSettings := TMemoryStream.Create;
 end;
 
-procedure TfmShowRefBook.FormShow(Sender: TObject);
+procedure TfmShowPriceLists.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  qSprRef.ParamByName('ID').AsInteger := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
+  qSprRef.ParamByName('ID').AsInteger := 17; // код справочника
   qSprRef.Open;
-  Caption := 'Справочник - ' + qSprRef.FieldByName('ReferenceRUSName').AsString;
+  Caption := qSprRef.FieldByName('ReferenceRUSName').AsString;
   spShowRefBook.StoredProcName := qSprRef.FieldByName('BrowserProcName').AsString;
   spShowRefBook.Open;
   tvRefBook.DataController.CreateAllItems;
@@ -286,13 +310,13 @@ begin
   tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 end;
 
-procedure TfmShowRefBook.N9Click(Sender: TObject);
+procedure TfmShowPriceLists.N9Click(Sender: TObject);
 begin
   OriginalSettings.Position := 0;
   tvRefBook.RestoreFromStream(OriginalSettings, True, True, [], '');
 end;
 
-procedure TfmShowRefBook.spShowRefBookAfterOpen(DataSet: TDataSet);
+procedure TfmShowPriceLists.spShowRefBookAfterOpen(DataSet: TDataSet);
 begin
   actEdit.Enabled := (not spShowRefBook.Eof);
   actView.Enabled := actEdit.Enabled;

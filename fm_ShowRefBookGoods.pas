@@ -171,7 +171,7 @@ implementation
 
 {$R *.dfm}
 
-uses fm_AddEditRefBookGoods, Vcl.Clipbrd, cxGridExportLink, fm_AddEditGroup, fm_MainForm, dm_main;
+uses fm_AddEditRefBookGoods, Vcl.Clipbrd, cxGridExportLink, fm_AddEditGroup, fm_MainForm, dm_main, cxCurrencyEdit;
 
 constructor TfmShowRefBookGoods.CreateMDI(AOwner: TComponent);
 begin

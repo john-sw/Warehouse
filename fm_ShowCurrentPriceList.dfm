@@ -1,4 +1,4 @@
-object fmShowRefBook: TfmShowRefBook
+object fmShowCurrentPriceList: TfmShowCurrentPriceList
   Left = 0
   Top = 0
   Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082' - '
@@ -21,15 +21,17 @@ object fmShowRefBook: TfmShowRefBook
   TextHeight = 13
   object GridRefBook: TcxGrid
     Left = 0
-    Top = 0
+    Top = 31
     Width = 886
-    Height = 516
+    Height = 485
     Align = alClient
     PopupMenu = pmDefaultPopupMenu
     TabOrder = 0
+    ExplicitTop = 0
+    ExplicitHeight = 516
     object tvRefBook: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = dsShowRefBook
+      DataController.DataSource = dsShowCurrentPriceList
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
@@ -61,77 +63,11 @@ object fmShowRefBook: TfmShowRefBook
     TabOrder = 1
     VisualStyle = vsGradient
     ToolbarControls = (
-      RzToolButton6
-      RzSpacer5
-      RzToolButton7
-      RzSpacer6
-      RzToolButton8
-      RzSpacer7
-      RzToolButton9
-      RzSpacer8
       RzToolButton10
       RzSpacer9
       RzToolButton11)
-    object RzToolButton6: TRzToolButton
-      Left = 4
-      Top = 2
-      Width = 90
-      ShowCaption = True
-      UseToolbarButtonSize = False
-      UseToolbarShowCaption = False
-      Action = actAdd
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object RzSpacer5: TRzSpacer
-      Left = 94
-      Top = 2
-    end
-    object RzToolButton7: TRzToolButton
-      Left = 102
-      Top = 2
-      Width = 90
-      ShowCaption = True
-      UseToolbarButtonSize = False
-      UseToolbarShowCaption = False
-      Action = actEdit
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object RzSpacer6: TRzSpacer
-      Left = 192
-      Top = 2
-    end
-    object RzToolButton8: TRzToolButton
-      Left = 200
-      Top = 2
-      Width = 90
-      ShowCaption = True
-      UseToolbarButtonSize = False
-      UseToolbarShowCaption = False
-      Action = actView
-    end
-    object RzSpacer7: TRzSpacer
-      Left = 290
-      Top = 2
-    end
-    object RzToolButton9: TRzToolButton
-      Left = 298
-      Top = 2
-      Width = 90
-      ShowCaption = True
-      UseToolbarButtonSize = False
-      UseToolbarShowCaption = False
-      Action = actDelete
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object RzSpacer8: TRzSpacer
-      Left = 388
-      Top = 2
-    end
     object RzToolButton10: TRzToolButton
-      Left = 396
+      Left = 4
       Top = 2
       Width = 90
       ShowCaption = True
@@ -142,11 +78,11 @@ object fmShowRefBook: TfmShowRefBook
       ShowHint = True
     end
     object RzSpacer9: TRzSpacer
-      Left = 486
+      Left = 94
       Top = 2
     end
     object RzToolButton11: TRzToolButton
-      Left = 494
+      Left = 102
       Top = 2
       Width = 90
       ShowCaption = True
@@ -157,12 +93,104 @@ object fmShowRefBook: TfmShowRefBook
       ShowHint = True
     end
   end
-  object spShowRefBook: TUniStoredProc
+  object AdvPanel1: TAdvPanel
+    Left = 0
+    Top = 0
+    Width = 886
+    Height = 31
+    Align = alTop
+    BevelOuter = bvNone
+    Color = 16643823
+    TabOrder = 2
+    UseDockManager = True
+    Version = '2.3.0.8'
+    BorderColor = 13087391
+    Caption.Color = 16643823
+    Caption.ColorTo = 15784647
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = clWindowText
+    Caption.Font.Height = -11
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.GradientDirection = gdVertical
+    Caption.Indent = 2
+    Caption.ShadeLight = 255
+    CollapsColor = clNone
+    CollapsDelay = 0
+    ColorTo = 15784647
+    ShadowColor = clBlack
+    ShadowOffset = 0
+    StatusBar.BorderColor = 16643823
+    StatusBar.BorderStyle = bsSingle
+    StatusBar.Font.Charset = DEFAULT_CHARSET
+    StatusBar.Font.Color = 5978398
+    StatusBar.Font.Height = -11
+    StatusBar.Font.Name = 'Tahoma'
+    StatusBar.Font.Style = []
+    StatusBar.Color = 16643823
+    StatusBar.ColorTo = 15784647
+    StatusBar.GradientDirection = gdVertical
+    Styler = dmMain.AdvPanelStyler1
+    Text = ''
+    ExplicitTop = 8
+    FullHeight = 50
+    object cxLabel1: TcxLabel
+      Left = 15
+      Top = 7
+      Caption = #1053#1072' '#1076#1072#1090#1091
+      Transparent = True
+    end
+    object PriceDate: TcxDateEdit
+      Left = 71
+      Top = 3
+      Properties.ButtonGlyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000000000020000
+        000A000000100000001100000011000000110000001200000012000000120000
+        0012000000120000001300000013000000120000000C000000030000000A8159
+        4CC2B47C69FFB37B69FFB37B68FFB37A68FFB37A68FFB27A68FFB37968FFB279
+        68FFB27967FFB27867FFB17867FFB17866FF7F5649C30000000B0000000EB77F
+        6EFFFBF7F4FFF8EEE9FFF8EEE8FFF7EFE8FFFAF4F0FFFBF7F4FFFBF6F3FFFAF4
+        EFFFF6EDE6FFF6ECE6FFF6ECE6FFF6ECE5FFB47B69FF000000110000000EB984
+        72FFFBF8F5FFF8F0EAFFF7EFE9FFF8EFE9FF806B62FF543B31FF543B30FF7F6A
+        61FFF7EDE7FFF7ECE7FFF6ECE6FFF7EDE7FFB77F6EFF000000110000000EBC89
+        78FFFCF9F7FFF9F1EDFFF8F0ECFFF8F0EBFFF9F0EBFF98877EFF816E64FFF8EF
+        EAFFF7EFE9FFF8EEE9FFF7EEE8FFF8EEE9FFB98472FF000000100000000DC08E
+        7DFFFCFAF8FFFAF3EFFFF9F2EEFFF9F2EEFFF9F2EDFF9A887FFF837066FFF9F1
+        ECFFF8F1EBFFF9F0EBFFF8EFEAFFF8F1EBFFBC8977FF000000100000000CC394
+        82FFFCFBF9FFFBF5F2FFFBF4F1FFFAF4F1FFFAF3F0FF9B8981FF847268FFFAF2
+        EEFFF9F2EEFFF9F2EDFFF9F2EDFFF9F2EEFFC08E7CFF0000000F0000000BC798
+        87FFFDFCFAFFFBF7F4FFFBF6F4FFFBF6F2FFFCF9F7FF9D8C84FF877368FFFAF5
+        F1FFFAF4F1FFFAF3F0FFFAF3F0FFFAF4F0FFC49381FF0000000E0000000BC99D
+        8CFFFDFCFBFFFCF8F6FFFCF7F5FFFCF7F5FF89746AFF5F4538FF88746AFFFBF6
+        F3FFFBF6F2FFFBF6F2FFFAF5F2FFFAF6F2FFC69886FF0000000D0000000ACDA1
+        90FFFEFDFCFFFCF9F8FFFCF8F7FFFCF9F7FFFCF8F7FFBEB1AAFF8B756BFFFCF7
+        F6FFFCF7F6FFFCF7F5FFFBF6F5FFFBF7F5FFC99D8BFF0000000D00000009CFA5
+        94FFFEFDFDFFFDFAF9FFFDF9F9FFFDFAF8FFFDF9F8FFFDFAF8FFFCF9F7FFFCF9
+        F7FFFCF9F7FFFDF8F7FFFCF9F7FFFCF9F7FFCCA290FF0000000C000000084B53
+        C3FF8D9EECFF687CE3FF6678E2FF6476E1FF6172E0FF5F70DFFF5D6CDEFF5B69
+        DCFF5966DBFF5664DAFF5462D9FF616DDCFF3337AAFF0000000B000000084C55
+        C4FF93A4EEFF6C80E6FF6A7EE4FF687BE4FF6678E2FF6375E1FF6172E0FF5E6F
+        DEFF5C6CDDFF5A69DCFF5766DAFF6472DDFF3538ABFF0000000A000000074D56
+        C6FF96A7EFFF95A6EFFF93A4EDFF90A2EDFF8F9FEDFF8B9BEBFF8898EAFF8595
+        EAFF8291E7FF7F8DE7FF7D89E5FF7987E5FF3539ACFF00000009000000043A40
+        93C14D55C5FF4B53C3FF4A51C1FF484FBFFF464DBEFF444BBBFF4249B9FF4046
+        B7FF3E44B4FF3C41B3FF3A3EB0FF393CAEFF282B80C200000006000000010000
+        0004000000060000000600000006000000070000000700000007000000070000
+        0007000000070000000800000008000000070000000500000001}
+      Properties.SaveTime = False
+      Properties.ShowTime = False
+      Properties.UseNullString = True
+      TabOrder = 1
+      Width = 121
+    end
+  end
+  object spShowCurrentPriceList: TUniStoredProc
     StoredProcName = 'br_aspThermoType;1'
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspThermoType;1}')
     Connection = dmMain.MainConnection
-    AfterOpen = spShowRefBookAfterOpen
+    AfterOpen = spShowCurrentPriceListAfterOpen
     Left = 48
     Top = 88
     ParamData = <
@@ -175,8 +203,8 @@ object fmShowRefBook: TfmShowRefBook
     CommandStoredProcName = 'br_aspThermoType;1'
     StoredProcIsQuery = True
   end
-  object dsShowRefBook: TUniDataSource
-    DataSet = spShowRefBook
+  object dsShowCurrentPriceList: TUniDataSource
+    DataSet = spShowCurrentPriceList
     Left = 152
     Top = 88
   end
@@ -192,16 +220,25 @@ object fmShowRefBook: TfmShowRefBook
       Caption = '-'
     end
     object N1: TMenuItem
-      Action = actAdd
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+      ImageIndex = 0
+      ShortCut = 45
+      OnClick = actAddExecute
     end
     object N2: TMenuItem
-      Action = actEdit
+      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+      ImageIndex = 1
+      OnClick = actEditExecute
     end
     object N3: TMenuItem
-      Action = actView
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
+      ImageIndex = 2
+      OnClick = actViewExecute
     end
     object N4: TMenuItem
-      Action = actDelete
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      ImageIndex = 3
+      OnClick = actDeleteExecute
     end
     object N5: TMenuItem
       Caption = '-'
@@ -281,7 +318,6 @@ object fmShowRefBook: TfmShowRefBook
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -293,8 +329,7 @@ object fmShowRefBook: TfmShowRefBook
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42988.647007997680000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42988.656812025460000000
       BuiltInReportLink = True
     end
   end
@@ -302,27 +337,6 @@ object fmShowRefBook: TfmShowRefBook
     Images = ilRefBookActionImages
     Left = 188
     Top = 196
-    object actAdd: TAction
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      ImageIndex = 0
-      ShortCut = 45
-      OnExecute = actAddExecute
-    end
-    object actEdit: TAction
-      Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-      ImageIndex = 1
-      OnExecute = actEditExecute
-    end
-    object actView: TAction
-      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100
-      ImageIndex = 2
-      OnExecute = actViewExecute
-    end
-    object actDelete: TAction
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      ImageIndex = 3
-      OnExecute = actDeleteExecute
-    end
     object actRefresh: TAction
       Caption = #1054#1073#1085#1086#1074#1080#1090#1100
       ImageIndex = 4

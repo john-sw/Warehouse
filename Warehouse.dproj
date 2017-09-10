@@ -154,6 +154,18 @@
         <DCCReference Include="fm_AddEditInvoiceLine.pas">
             <Form>fmAddEditInvoiceLine</Form>
         </DCCReference>
+        <DCCReference Include="fm_ShowPriceLists.pas">
+            <Form>fmShowPriceLists</Form>
+        </DCCReference>
+        <DCCReference Include="fm_AddEditPriceListLine.pas">
+            <Form>fmAddEditPriceListLine</Form>
+        </DCCReference>
+        <DCCReference Include="fm_AddEditPriceList.pas">
+            <Form>fmAddEditPriceList</Form>
+        </DCCReference>
+        <DCCReference Include="fm_ShowCurrentPriceList.pas">
+            <Form>fmShowCurrentPriceList</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

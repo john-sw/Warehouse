@@ -7,7 +7,7 @@ uses
   cxEdit, cxTextEdit, cxDateUtils, cxCalendar, cxCheckBox, cxDBLookupComboBox, HTMLabel, cxCalc, cxButtonEdit;
 
 type
-  TRefBookFormMode = (fmAdd, fmEdit, fmView);
+  TRefBookFormMode = (fmAdd, fmEdit, fmView, fmCopy);
 
 type
   TdmRefBooks = class(TDataModule)
@@ -56,7 +56,7 @@ begin
      -1: TcxTextEdit(AControl).Text := aValue; // ButtonEdit
       1: TcxTextEdit(AControl).Text := aValue; // DBTextEdit
       2: TcxDateEdit(AControl).Date := aValue; // DBDateEdit
-      3: TcxCalcEdit(AControl).Value := aValue; // DBCalcEdit
+      3: TcxCalcEdit(AControl).EditValue := aValue; // DBCalcEdit
   //          4	DBMaskEdit
       5: TcxCheckBox(AControl).Checked := Boolean(aValue); // DBCheckBox
       6: TcxLookupComboBox(AControl).EditValue := aValue; // DBLookupEdit

@@ -15,7 +15,11 @@ uses
   fm_ShowRefBookClients in 'fm_ShowRefBookClients.pas' {fmShowRefBookClients},
   fm_ShowRefBooks in 'fm_ShowRefBooks.pas' {fmShowRefBook},
   fm_AddEditInvoice in 'fm_AddEditInvoice.pas' {fmAddEditInvoice},
-  fm_AddEditInvoiceLine in 'fm_AddEditInvoiceLine.pas' {fmAddEditInvoiceLine};
+  fm_AddEditInvoiceLine in 'fm_AddEditInvoiceLine.pas' {fmAddEditInvoiceLine},
+  fm_ShowPriceLists in 'fm_ShowPriceLists.pas' {fmShowPriceLists},
+  fm_AddEditPriceListLine in 'fm_AddEditPriceListLine.pas' {fmAddEditPriceListLine},
+  fm_AddEditPriceList in 'fm_AddEditPriceList.pas' {fmAddEditPriceList},
+  fm_ShowCurrentPriceList in 'fm_ShowCurrentPriceList.pas' {fmShowCurrentPriceList};
 
 {$R *.res}
 
