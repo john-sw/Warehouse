@@ -398,7 +398,6 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         StatusBar.GradientDirection = gdVertical
         Styler = dmMain.AdvPanelStyler1
         Text = ''
-        ExplicitTop = 5
         FullHeight = 30
         object tbShowGrouped: TAdvToolButton
           Left = 10
@@ -418,6 +417,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
           ColorHotTo = 14285309
           ColorChecked = 7131391
           ColorCheckedTo = 7131391
+          Caption = #1043#1088#1091#1087#1087#1080#1088#1086#1074#1082#1072
           ImageIndex = 9
           Rounded = True
           Style = tasCheck
@@ -955,6 +955,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -966,7 +967,8 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42985.934601006940000000
+      ReportDocument.CreationDate = 42989.657774525460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

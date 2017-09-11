@@ -176,6 +176,7 @@ uses fm_AddEditRefBookGoods, Vcl.Clipbrd, cxGridExportLink, fm_AddEditGroup, fm_
 constructor TfmShowRefBookGoods.CreateMDI(AOwner: TComponent);
 begin
   Create(AOwner);
+
   tbShowGrouped.Down := True;
   actSelect.Visible := False;
   FormStyle := fsMDIChild;
@@ -264,11 +265,13 @@ begin
   begin
     dmRefBooks.spShowRefBookGoods.AfterScroll := OldAfterScroll; //TdmRefBooks.spShowRefBookClientsAfterScroll
     tlGridProdCat.Enabled := True;
+    tbShowGrouped.Caption := 'Группировка';
   end
   else
   begin
     dmRefBooks.spShowRefBookGoods.AfterScroll := nil;
     tlGridProdCat.Enabled := False;
+    tbShowGrouped.Caption := 'Без групп';
   end;
   actRefreshExecute(Nil);
 end;
@@ -455,7 +458,14 @@ var
   i: Integer;
 begin
   OldAfterScroll := dmRefBooks.spShowRefBookGoods.AfterScroll;
+  dmRefBooks.spShowRefBookGoods.AfterScroll := nil;
   dmRefBooks.spShowRefBookGoods.Open;
+
+  dmRefBooks.spGetGoodsForProdCat.Close;
+  dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+  dmRefBooks.spGetGoodsForProdCat.Open;
+
+  dmRefBooks.spShowRefBookGoods.AfterScroll := OldAfterScroll;
 
   qSprRef.ParamByName('ID').AsInteger := 7; // код справочника!
   qSprRef.Open;

@@ -274,8 +274,8 @@ begin
         TcxButtonEdit(Sender).Text := frm.tvRefBook.Controller.FocusedRow.Values[2];
         TcxButtonEdit(Sender).Properties.Buttons.Items[0].Tag := frm.tvRefBook.Controller.FocusedRow.Values[0];
 
-        ProdDescription.Text := frm.tvRefBook.Controller.FocusedRow.Values[3];
-        ArticleNumber.Text := frm.tvRefBook.Controller.FocusedRow.Values[4];
+        ProdDescription.Text := VarToStr(frm.tvRefBook.Controller.FocusedRow.Values[3]);
+        ArticleNumber.Text := VarToStr(frm.tvRefBook.Controller.FocusedRow.Values[4]);
         IsModified := True;
       end;
     finally

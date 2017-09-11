@@ -8,7 +8,6 @@ object dmMain: TdmMain
     Database = 'RasprCenter2017'
     Username = 'eugene'
     Server = '92.53.104.153'
-    Connected = True
     ConnectDialog = MainConnectDialog
     LoginPrompt = False
     Left = 128

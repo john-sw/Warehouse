@@ -18,7 +18,7 @@ uses
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
   cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus,
-  Vcl.Forms, cxLocalization, cxStyles;
+  Vcl.Forms, cxLocalization, cxStyles, System.IniFiles;
 
 type
   TdmMain = class(TDataModule)
@@ -49,7 +49,26 @@ implementation
 {$R *.dfm}
 
 procedure TdmMain.DataModuleCreate(Sender: TObject);
+var
+  Ini : TIniFile;
 begin
+
+  if MainConnection.Connected then MainConnection.Close;
+  if FileExists(ExtractFilePath(Application.ExeName)+'config.ini') then begin
+    try
+      Ini := TIniFile.Create(ExtractFilePath(Application.ExeName)+'config.ini');
+
+      MainConnection.Server := Ini.ReadString('DB', 'server', '');
+      MainConnection.Database := Ini.ReadString('DB', 'database', '');
+      MainConnection.Username := Ini.ReadString('DB', 'username', '');
+      MainConnection.Password := Ini.ReadString('DB', 'password', '');
+    finally
+      FreeAndNil(Ini);
+    end;
+  end;
+
+  MainConnection.Connect;
+
   try
     cxLocalizer.FileName := IncludeTrailingBackslash(ExtractFilePath(Application.ExeName)) + 'RussianLng.ini';
     cxLocalizer.Active := True;
