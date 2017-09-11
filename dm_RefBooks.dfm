@@ -37,7 +37,6 @@ object dmRefBooks: TdmRefBooks
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspProdCat;1}')
     Connection = dmMain.MainConnection
-    AfterScroll = spShowRefBookGoodsAfterScroll
     Left = 240
     Top = 20
     ParamData = <
@@ -110,7 +109,6 @@ object dmRefBooks: TdmRefBooks
     SQL.Strings = (
       '{:RETURN_VALUE = CALL br_aspClientFolder;1}')
     Connection = dmMain.MainConnection
-    AfterScroll = spShowRefBookClientsAfterScroll
     Left = 52
     Top = 216
     ParamData = <

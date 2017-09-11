@@ -22,8 +22,6 @@ type
     dsShowRefBookClients: TUniDataSource;
     spGetClientsForGroup: TUniStoredProc;
     dsGetClientsForGroup: TUniDataSource;
-    procedure spShowRefBookGoodsAfterScroll(DataSet: TDataSet);
-    procedure spShowRefBookClientsAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -49,12 +47,14 @@ implementation
 
 {$R *.dfm}
 
+uses System.Variants;
+
 procedure SetControlValue(aControl: TControl; aValue: Variant);
 begin
   if aControl is TcxCustomEdit then
     case AControl.Tag of
-     -1: TcxTextEdit(AControl).Text := aValue; // ButtonEdit
-      1: TcxTextEdit(AControl).Text := aValue; // DBTextEdit
+     -1: TcxTextEdit(AControl).Text := VarToStr(aValue); // ButtonEdit
+      1: TcxTextEdit(AControl).Text := VarToStr(aValue); // DBTextEdit
       2: TcxDateEdit(AControl).Date := aValue; // DBDateEdit
       3: TcxCalcEdit(AControl).EditValue := aValue; // DBCalcEdit
   //          4	DBMaskEdit
@@ -195,20 +195,6 @@ begin
     if (AControl.Controls[i] is TcxCustomEdit) and not CheckControl(TcxCustomEdit(AControl.Controls[i]), AspCheck) then
       if Result = nil then
         Result := TWinControl(AControl.Controls[i]);
-end;
-
-procedure TdmRefBooks.spShowRefBookClientsAfterScroll(DataSet: TDataSet);
-begin
-  spGetClientsForGroup.Close;
-  spGetClientsForGroup.ParamByName('ClientFolderID').AsInteger := spShowRefBookClients.FieldByName('ClientFolderID').AsInteger;
-  spGetClientsForGroup.Open;
-end;
-
-procedure TdmRefBooks.spShowRefBookGoodsAfterScroll(DataSet: TDataSet);
-begin
-  spGetGoodsForProdCat.Close;
-  spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
-  spGetGoodsForProdCat.Open;
 end;
 
 end.

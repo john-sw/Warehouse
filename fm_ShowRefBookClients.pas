@@ -155,6 +155,8 @@ type
       AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
     procedure edtSearchStringPropertiesChange(Sender: TObject);
     procedure tvRefBookDblClick(Sender: TObject);
+    procedure tlGridClientsGroupsFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
+      AFocusedNode: TcxTreeListNode);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -393,12 +395,12 @@ procedure TfmShowRefBookClients.actShowGroupedExecute(Sender: TObject);
 begin
   if tbShowGrouped.Down then
   begin
-    dmRefBooks.spShowRefBookClients.AfterScroll := OldAfterScroll; //TdmRefBooks.spShowRefBookClientsAfterScroll
+    tlGridClientsGroups.OnFocusedNodeChanged := tlGridClientsGroupsFocusedNodeChanged;
     tlGridClientsGroups.Enabled := True;
   end
   else
   begin
-    dmRefBooks.spShowRefBookClients.AfterScroll := nil;
+    tlGridClientsGroups.OnFocusedNodeChanged := nil;
     tlGridClientsGroups.Enabled := False;
   end;
   actRefreshExecute(Nil);
@@ -467,7 +469,6 @@ procedure TfmShowRefBookClients.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  OldAfterScroll := dmRefBooks.spShowRefBookClients.AfterScroll;
   dmRefBooks.spShowRefBookClients.Open;
 
   qSprRef.ParamByName('ID').AsInteger := 11; // код справочника!
@@ -533,6 +534,14 @@ begin
 
 end;
 
+procedure TfmShowRefBookClients.tlGridClientsGroupsFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
+  AFocusedNode: TcxTreeListNode);
+begin
+  dmRefBooks.spGetClientsForGroup.Close;
+  dmRefBooks.spGetClientsForGroup.ParamByName('ClientFolderID').AsInteger := dmRefBooks.spShowRefBookClients.FieldByName('ClientFolderID').AsInteger;
+  dmRefBooks.spGetClientsForGroup.Open;
+end;
+
 procedure TfmShowRefBookClients.tvRefBookDblClick(Sender: TObject);
 begin
   if actSelect.Visible then
@@ -553,7 +562,8 @@ begin
   if i <> nil then
   begin
     i.Selected := True;
-    i.Focused := true;
+    i.Focused := True;
+    tlGridClientsGroups.TopVisibleNode := i;
   end;
 end;
 

@@ -171,6 +171,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
         RootValue = -1
         Styles.Selection = dmMain.GridStyleSelectedRow
         TabOrder = 1
+        OnFocusedNodeChanged = tlGridClientsGroupsFocusedNodeChanged
         object cxDBTreeList1ClientFolderName: TcxDBTreeListColumn
           Caption.AlignVert = vaTop
           DataBinding.FieldName = 'ClientFolderName'
@@ -399,7 +400,6 @@ object fmShowRefBookClients: TfmShowRefBookClients
         StatusBar.GradientDirection = gdVertical
         Styler = dmMain.AdvPanelStyler1
         Text = ''
-        ExplicitTop = 5
         FullHeight = 30
         object tbShowGrouped: TAdvToolButton
           Left = 10
@@ -993,7 +993,6 @@ object fmShowRefBookClients: TfmShowRefBookClients
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1005,8 +1004,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42985.934823530090000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42989.984645266200000000
       BuiltInReportLink = True
     end
   end

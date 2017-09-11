@@ -154,6 +154,8 @@ type
     procedure tvRefBookDblClick(Sender: TObject);
     procedure tvRefBookFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord,
       AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+    procedure tlGridProdCatFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
+      AFocusedNode: TcxTreeListNode);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -263,13 +265,13 @@ procedure TfmShowRefBookGoods.actShowGroupedExecute(Sender: TObject);
 begin
   if tbShowGrouped.Down then
   begin
-    dmRefBooks.spShowRefBookGoods.AfterScroll := OldAfterScroll; //TdmRefBooks.spShowRefBookClientsAfterScroll
+    tlGridProdCat.OnFocusedNodeChanged := tlGridProdCatFocusedNodeChanged;
     tlGridProdCat.Enabled := True;
     tbShowGrouped.Caption := 'Группировка';
   end
   else
   begin
-    dmRefBooks.spShowRefBookGoods.AfterScroll := nil;
+    tlGridProdCat.OnFocusedNodeChanged := nil;
     tlGridProdCat.Enabled := False;
     tbShowGrouped.Caption := 'Без групп';
   end;
@@ -457,15 +459,11 @@ procedure TfmShowRefBookGoods.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  OldAfterScroll := dmRefBooks.spShowRefBookGoods.AfterScroll;
-  dmRefBooks.spShowRefBookGoods.AfterScroll := nil;
   dmRefBooks.spShowRefBookGoods.Open;
 
   dmRefBooks.spGetGoodsForProdCat.Close;
   dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
   dmRefBooks.spGetGoodsForProdCat.Open;
-
-  dmRefBooks.spShowRefBookGoods.AfterScroll := OldAfterScroll;
 
   qSprRef.ParamByName('ID').AsInteger := 7; // код справочника!
   qSprRef.Open;
@@ -529,6 +527,14 @@ begin
     tvRefBook.DataController.FocusedRecordIndex := tvRefBook.DataController.FindRecordIndexByKey(CurrentID);
 end;
 
+procedure TfmShowRefBookGoods.tlGridProdCatFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
+  AFocusedNode: TcxTreeListNode);
+begin
+  dmRefBooks.spGetGoodsForProdCat.Close;
+  dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+  dmRefBooks.spGetGoodsForProdCat.Open;
+end;
+
 procedure TfmShowRefBookGoods.tvRefBookDblClick(Sender: TObject);
 begin
   if actSelect.Visible then
@@ -549,7 +555,8 @@ begin
   if i <> nil then
   begin
     i.Selected := True;
-    i.Focused := true;
+    i.Focused := True;
+    tlGridProdCat.TopVisibleNode := i;
   end;
 end;
 
