@@ -158,7 +158,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
         Bands = <
           item
           end>
-        DataController.DataSource = dmRefBooks.dsShowRefBookGoods
+        DataController.DataSource = dsShowRefBookGoods
         DataController.ParentField = 'ParentID'
         DataController.KeyField = 'ProdCatID'
         Navigator.Buttons.CustomButtons = <>
@@ -214,7 +214,7 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
           OnDblClick = tvRefBookDblClick
           Navigator.Buttons.CustomButtons = <>
           OnFocusedRecordChanged = tvRefBookFocusedRecordChanged
-          DataController.DataSource = dmRefBooks.dsGetGoodsForProdCat
+          DataController.DataSource = dsGetGoodsForProdCat
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -1184,5 +1184,76 @@ object fmShowRefBookGoods: TfmShowRefBookGoods
     object MenuItem8: TMenuItem
       Action = actCopyCellProdCat
     end
+  end
+  object spShowRefBookGoods: TUniStoredProc
+    StoredProcName = 'br_aspProdCat;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL br_aspProdCat;1}')
+    Connection = dmMain.MainConnection
+    Left = 64
+    Top = 268
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'br_aspProdCat;1'
+  end
+  object spGetGoodsForProdCat: TUniStoredProc
+    StoredProcName = 'br_aspProd;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL br_aspProd;1 (:ProdCatID, :SearchString)}')
+    Connection = dmMain.MainConnection
+    Left = 64
+    Top = 328
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ProdCatID'
+        ParamType = ptInput
+        Value = nil
+      end
+      item
+        DataType = ftWideString
+        Name = 'SearchString'
+        ParamType = ptInput
+        Size = 100
+        Value = nil
+      end>
+    CommandStoredProcName = 'br_aspProd;1'
+  end
+  object dsGetGoodsForProdCat: TUniDataSource
+    DataSet = spGetGoodsForProdCat
+    Left = 188
+    Top = 328
+  end
+  object dsShowRefBookGoods: TUniDataSource
+    DataSet = spShowRefBookGoods
+    Left = 184
+    Top = 268
+  end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 428
+    Top = 364
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
   end
 end

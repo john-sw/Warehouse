@@ -27,7 +27,7 @@ uses
   cxTreeView, cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxNavigator, Data.DB, cxDBData, cxGridLevel, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxTL,
-  cxTLdxBarBuiltInMenu, cxInplaceContainer, cxTLData, cxDBTL, dm_RefBooks, Uni,
+  cxTLdxBarBuiltInMenu, cxInplaceContainer, cxTLData, cxDBTL, Uni,
   MemDS, DBAccess, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap,
   dxPrnDev, dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns,
   dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
@@ -127,6 +127,11 @@ type
     actSelect: TAction;
     RzSpacer10: TRzSpacer;
     RzToolButton12: TRzToolButton;
+    spShowRefBookGoods: TUniStoredProc;
+    spGetGoodsForProdCat: TUniStoredProc;
+    dsGetGoodsForProdCat: TUniDataSource;
+    dsShowRefBookGoods: TUniDataSource;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -189,14 +194,14 @@ begin
   Application.CreateForm(TfmAddEditRefBookGoods, fmAddEditRefBookGoods);
   try
     fmAddEditRefBookGoods.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBookGoods.spParentRefBook := dmRefBooks.spShowRefBookGoods;
+    fmAddEditRefBookGoods.ParentRefBookForm := Self;
     fmAddEditRefBookGoods.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBookGoods.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditRefBookGoods.ParentID := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+    fmAddEditRefBookGoods.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditRefBookGoods.ShowModal = mrOk then
     begin
-      dmRefBooks.spGetGoodsForProdCat.Refresh;
-      dmRefBooks.spGetGoodsForProdCat.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBookGoods.CurrentID,[]);
+      spGetGoodsForProdCat.Refresh;
+      spGetGoodsForProdCat.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBookGoods.CurrentID,[]);
     end;
   finally
     FreeAndNil(fmAddEditRefBookGoods);
@@ -211,18 +216,18 @@ begin
     qSprRef.ParamByName('ID').AsInteger := 6; // код справочника!
     qSprRef.Open;
     fmAddEditGroup.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditGroup.spParentRefBook := dmRefBooks.spShowRefBookGoods;
+    fmAddEditGroup.spParentRefBook := spShowRefBookGoods;
     fmAddEditGroup.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditGroup.edtGroupName.Name := 'ProdCatName';
     if (Sender = actAddProdCatSub) then //добавление подченной группы товаров
-      fmAddEditGroup.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger
+      fmAddEditGroup.ParentID := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger
     else
-      fmAddEditGroup.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ParentID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+      fmAddEditGroup.ParentID := spShowRefBookGoods.FieldByName('ParentID').AsInteger;
+    fmAddEditGroup.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditGroup.ShowModal = mrOk then
     begin
-      dmRefBooks.spShowRefBookGoods.Refresh;
-      dmRefBooks.spShowRefBookGoods.Locate(tlGridProdCat.DataController.KeyField, fmAddEditGroup.CurrentID,[]);
+      spShowRefBookGoods.Refresh;
+      spShowRefBookGoods.Locate(tlGridProdCat.DataController.KeyField, fmAddEditGroup.CurrentID,[]);
     end;
   finally
     FreeAndNil(fmAddEditGroup);
@@ -282,13 +287,13 @@ procedure TfmShowRefBookGoods.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
-    ParamByName('ID').Value := dmRefBooks.spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    ParamByName('ID').Value := spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
     Execute;
-    dmRefBooks.spGetGoodsForProdCat.Refresh;
+    spGetGoodsForProdCat.Refresh;
   finally
     EnableControls;
   end;
@@ -303,13 +308,13 @@ begin
     qSprRef.Close;
     qSprRef.ParamByName('ID').AsInteger := 6; // код справочника!
     qSprRef.Open;
-    with dmRefBooks.spInsertUpdateDeleteRefBook do
+    with spInsertUpdateDeleteRefBook do
     begin
       CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
-      ParamByName('ID').Value := dmRefBooks.spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
+      ParamByName('ID').Value := spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
       Execute;
     end;
-    dmRefBooks.spShowRefBookGoods.Refresh;
+    spShowRefBookGoods.Refresh;
   finally
     FreeAndNil(fmAddEditGroup);
     qSprRef.Close;
@@ -324,16 +329,16 @@ begin
   try
     fmAddEditRefBookGoods.FormMode := fmEdit;
     fmAddEditRefBookGoods.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBookGoods.spParentRefBook := dmRefBooks.spGetGoodsForProdCat;
+    fmAddEditRefBookGoods.ParentRefBookForm := Self;
     fmAddEditRefBookGoods.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditRefBookGoods.CurrentID := dmRefBooks.spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
-    fmAddEditRefBookGoods.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBookGoods.CurrentID;
+    fmAddEditRefBookGoods.CurrentID := spGetGoodsForProdCat.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    fmAddEditRefBookGoods.ParentID := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+    fmAddEditRefBookGoods.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditRefBookGoods.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBookGoods.CurrentID;
     if fmAddEditRefBookGoods.ShowModal = mrOk then
     begin
-      dmRefBooks.spGetGoodsForProdCat.Refresh;
-      dmRefBooks.spGetGoodsForProdCat.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBookGoods.CurrentID,[]);
+      spGetGoodsForProdCat.Refresh;
+      spGetGoodsForProdCat.Locate(tvRefBook.DataController.KeyFieldNames, fmAddEditRefBookGoods.CurrentID,[]);
     end;
   finally
     FreeAndNil(fmAddEditRefBookGoods);
@@ -349,17 +354,17 @@ begin
     qSprRef.ParamByName('ID').AsInteger := 6; // код справочника!
     qSprRef.Open;
     fmAddEditGroup.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditGroup.spParentRefBook := dmRefBooks.spShowRefBookGoods;
+    fmAddEditGroup.spParentRefBook := spShowRefBookGoods;
     fmAddEditGroup.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditGroup.CurrentID := dmRefBooks.spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
-    fmAddEditGroup.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ParentID').AsInteger;
+    fmAddEditGroup.CurrentID := spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
+    fmAddEditGroup.ParentID := spShowRefBookGoods.FieldByName('ParentID').AsInteger;
     fmAddEditGroup.edtGroupName.Name := 'ProdCatName';
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditGroup.CurrentID;
+    fmAddEditGroup.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditGroup.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditGroup.CurrentID;
     if fmAddEditGroup.ShowModal = mrOk then
     begin
-      dmRefBooks.spShowRefBookGoods.Refresh;
-      dmRefBooks.spShowRefBookGoods.Locate(tlGridProdCat.DataController.KeyField, fmAddEditGroup.CurrentID,[]);
+      spShowRefBookGoods.Refresh;
+      spShowRefBookGoods.Locate(tlGridProdCat.DataController.KeyField, fmAddEditGroup.CurrentID,[]);
     end;
   finally
     FreeAndNil(fmAddEditGroup);
@@ -386,22 +391,22 @@ end;
 procedure TfmShowRefBookGoods.actRefreshExecute(Sender: TObject);
 begin
   if tbShowGrouped.Down then
-    dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger
+    spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger
   else
-    dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').Clear;
+    spGetGoodsForProdCat.ParamByName('ProdCatID').Clear;
   if (Sender = nil) and (Length(edtSearchString.Text) < 4) then //nil - автовызов при вводе строки
-    dmRefBooks.spGetGoodsForProdCat.ParamByName('SearchString').Clear
+    spGetGoodsForProdCat.ParamByName('SearchString').Clear
   else
-    dmRefBooks.spGetGoodsForProdCat.ParamByName('SearchString').AsString := edtSearchString.Text;
+    spGetGoodsForProdCat.ParamByName('SearchString').AsString := edtSearchString.Text;
 
-  dmRefBooks.spGetGoodsForProdCat.Close;
-  dmRefBooks.spGetGoodsForProdCat.Open;
+  spGetGoodsForProdCat.Close;
+  spGetGoodsForProdCat.Open;
 end;
 
 procedure TfmShowRefBookGoods.actRefreshProdCatExecute(Sender: TObject);
 begin
-  dmRefBooks.spShowRefBookGoods.Close;
-  dmRefBooks.spShowRefBookGoods.Open;
+  spShowRefBookGoods.Close;
+  spShowRefBookGoods.Open;
 end;
 
 procedure TfmShowRefBookGoods.actViewExecute(Sender: TObject);
@@ -410,7 +415,7 @@ begin
   try
     fmAddEditRefBookGoods.FormMode := fmView;
     fmAddEditRefBookGoods.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditRefBookGoods.spParentRefBook := dmRefBooks.spGetGoodsForProdCat;
+    fmAddEditRefBookGoods.ParentRefBookForm := Self;
     fmAddEditRefBookGoods.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBookGoods.ShowModal;
   finally
@@ -428,10 +433,10 @@ begin
     qSprRef.Open;
     fmAddEditGroup.FormMode := fmView;
     fmAddEditGroup.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
-    fmAddEditGroup.spParentRefBook := dmRefBooks.spShowRefBookGoods;
+    fmAddEditGroup.spParentRefBook := spShowRefBookGoods;
     fmAddEditGroup.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    fmAddEditGroup.CurrentID := dmRefBooks.spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
-    fmAddEditGroup.ParentID := dmRefBooks.spShowRefBookGoods.FieldByName('ParentID').AsInteger;
+    fmAddEditGroup.CurrentID := spShowRefBookGoods.FieldByName(tlGridProdCat.DataController.KeyField).AsInteger;
+    fmAddEditGroup.ParentID := spShowRefBookGoods.FieldByName('ParentID').AsInteger;
     fmAddEditGroup.edtGroupName.Name := 'ProdCatName';
     fmAddEditGroup.ShowModal;
   finally
@@ -459,11 +464,11 @@ procedure TfmShowRefBookGoods.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  dmRefBooks.spShowRefBookGoods.Open;
+  spShowRefBookGoods.Open;
 
-  dmRefBooks.spGetGoodsForProdCat.Close;
-  dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
-  dmRefBooks.spGetGoodsForProdCat.Open;
+  spGetGoodsForProdCat.Close;
+  spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+  spGetGoodsForProdCat.Open;
 
   qSprRef.ParamByName('ID').AsInteger := 7; // код справочника!
   qSprRef.Open;
@@ -530,9 +535,9 @@ end;
 procedure TfmShowRefBookGoods.tlGridProdCatFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
   AFocusedNode: TcxTreeListNode);
 begin
-  dmRefBooks.spGetGoodsForProdCat.Close;
-  dmRefBooks.spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := dmRefBooks.spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
-  dmRefBooks.spGetGoodsForProdCat.Open;
+  spGetGoodsForProdCat.Close;
+  spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
+  spGetGoodsForProdCat.Open;
 end;
 
 procedure TfmShowRefBookGoods.tvRefBookDblClick(Sender: TObject);
@@ -550,7 +555,7 @@ var
 begin
   if tbShowGrouped.Down then
     Exit;
-  i := tlGridProdCat.FindNodeByKeyValue(dmRefBooks.spGetGoodsForProdCat.FieldByName('ProdCatID').AsInteger);
+  i := tlGridProdCat.FindNodeByKeyValue(spGetGoodsForProdCat.FieldByName('ProdCatID').AsInteger);
 
   if i <> nil then
   begin

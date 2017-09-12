@@ -1262,4 +1262,20 @@ object fmAddEditInvoice: TfmAddEditInvoice
     Left = 820
     Top = 4
   end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 460
+    Top = 324
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
+  end
 end

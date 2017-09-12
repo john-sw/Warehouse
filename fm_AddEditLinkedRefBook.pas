@@ -19,11 +19,11 @@ uses
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue, cxLabel,
   cxTextEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, AdvPanel,
-  Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, dm_RefBooks, cxMaskEdit,
+  Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   cxDBExtLookupComboBox, cxDBEdit, AdvCombo, AdvDBComboBox, Vcl.DBGrids, Uni,
   AdvDBLookupComboBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxCheckBox,
-  Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel, cxCalc;
+  Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel, cxCalc, dm_main;
 
 type
   TfmAddEditLinkedRefBook = class(TForm)
@@ -67,7 +67,6 @@ var
 
 implementation
 
-uses dm_main;
 
 {$R *.dfm}
 

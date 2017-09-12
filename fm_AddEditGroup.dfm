@@ -240,4 +240,20 @@ object fmAddEditGroup: TfmAddEditGroup
         Value = 1
       end>
   end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 236
+    Top = 76
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
+  end
 end

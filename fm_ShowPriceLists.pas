@@ -85,6 +85,7 @@ type
     actCopy: TAction;
     RzSpacer1: TRzSpacer;
     RzToolButton1: TRzToolButton;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -100,6 +101,7 @@ type
     procedure actCopyCellExecute(Sender: TObject);
     procedure spShowRefBookAfterOpen(DataSet: TDataSet);
     procedure actCopyExecute(Sender: TObject);
+    procedure tvRefBookDblClick(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -115,7 +117,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, cxCurrencyEdit, fm_AddEditPriceList;
+uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, cxCurrencyEdit, fm_AddEditPriceList;
 
 procedure TfmShowPriceLists.actAddExecute(Sender: TObject);
 begin
@@ -124,7 +126,7 @@ begin
     fmAddEditPriceList.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
     fmAddEditPriceList.spParentRefBook := spShowRefBook;
     fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditPriceList.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditPriceList.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -154,7 +156,7 @@ begin
     fmAddEditPriceList.spParentRefBook := spShowRefBook;
     fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditPriceList.CurrentID := -1;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditPriceList.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditPriceList.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -169,7 +171,7 @@ procedure TfmShowPriceLists.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
@@ -190,8 +192,8 @@ begin
     fmAddEditPriceList.spParentRefBook := spShowRefBook;
     fmAddEditPriceList.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditPriceList.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditPriceList.CurrentID;
+    fmAddEditPriceList.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditPriceList.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditPriceList.CurrentID;
     if fmAddEditPriceList.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -323,6 +325,11 @@ begin
   actDelete.Enabled := actEdit.Enabled;
   actExport.Enabled := actEdit.Enabled;
   actPrint.Enabled := actEdit.Enabled;
+end;
+
+procedure TfmShowPriceLists.tvRefBookDblClick(Sender: TObject);
+begin
+  actViewExecute(nil);
 end;
 
 end.

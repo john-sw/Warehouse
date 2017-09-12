@@ -4,7 +4,6 @@ uses
   Vcl.Forms,
   fm_MainForm in 'fm_MainForm.pas' {MainForm},
   dm_main in 'dm_main.pas' {dmMain: TDataModule},
-  dm_RefBooks in 'dm_RefBooks.pas' {dmRefBooks: TDataModule},
   fm_ShowInvoiceRegister in 'fm_ShowInvoiceRegister.pas' {fmShowInvoiceRegister},
   fm_AddEditRefBook in 'fm_AddEditRefBook.pas' {fmAddEditRefBook},
   fm_ShowRefBookGoods in 'fm_ShowRefBookGoods.pas' {fmShowRefBookGoods},
@@ -28,6 +27,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TdmMain, dmMain);
-  Application.CreateForm(TdmRefBooks, dmRefBooks);
   Application.Run;
 end.

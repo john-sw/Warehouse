@@ -28,6 +28,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     PopupMenu = pmDefaultPopupMenu
     TabOrder = 0
     object tvRefBook: TcxGridDBTableView
+      OnDblClick = tvRefBookDblClick
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsShowRefBook
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -579,7 +580,6 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -591,8 +591,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42988.634662592600000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42990.938852916670000000
       BuiltInReportLink = True
     end
   end
@@ -1008,5 +1007,21 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object miDisapprove: TMenuItem
       Action = actDisApprove
     end
+  end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 428
+    Top = 364
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
   end
 end

@@ -28,6 +28,7 @@ object fmShowPriceLists: TfmShowPriceLists
     PopupMenu = pmDefaultPopupMenu
     TabOrder = 0
     object tvRefBook: TcxGridDBTableView
+      OnDblClick = tvRefBookDblClick
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dsShowRefBook
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -296,7 +297,6 @@ object fmShowPriceLists: TfmShowPriceLists
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -308,8 +308,7 @@ object fmShowPriceLists: TfmShowPriceLists
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42988.673003252310000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42990.938772824080000000
       BuiltInReportLink = True
     end
   end
@@ -708,5 +707,21 @@ object fmShowPriceLists: TfmShowPriceLists
           00000000000000000000000000039A7B6FC0CEA495FFCFA494FFCDA494FFCCA3
           93FFCDA392FFCDA391FFCCA291FFCCA290FF97776BC200000006}
       end>
+  end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 428
+    Top = 364
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
   end
 end

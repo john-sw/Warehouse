@@ -972,4 +972,20 @@ object fmAddEditPriceList: TfmAddEditPriceList
       end>
     CommandStoredProcName = 'spGetReferenceBrowser;1'
   end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 228
+    Top = 188
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
+  end
 end

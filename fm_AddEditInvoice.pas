@@ -21,12 +21,12 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
   cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel,
-  cxCurrencyEdit;
+  cxCurrencyEdit, dm_main;
 
 type
   TfmAddEditInvoice = class(TForm)
@@ -101,6 +101,7 @@ type
     lblLabel6: THTMLabel;
     lblLabel9: THTMLabel;
     lblLabel7: THTMLabel;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -115,7 +116,7 @@ type
     procedure cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
   private
     IsModified: Boolean;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     function CheckReqControls: TWinControl;
     { Private declarations }
   public
@@ -134,7 +135,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookClients, fm_AddEditInvoiceLine;
+uses fm_AddEditLinkedRefBook, fm_ShowRefBookClients, fm_AddEditInvoiceLine;
 
 procedure TfmAddEditInvoice.actAddExecute(Sender: TObject);
 begin
@@ -189,35 +190,35 @@ begin
   Close;
 end;
 
-procedure TfmAddEditInvoice.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditInvoice.SetParamsAndExecStoredProc;
 var
   sp1: TUniStoredProc;
 begin
   try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('DocNumber').Value := DocNumber.Text;
-    sp.ParamByName('DocDate').Value := DocDate.Date;
+    spInsertUpdateDeleteRefBook.ParamByName('DocNumber').Value := DocNumber.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('DocDate').Value := DocDate.Date;
     if Consignor.Properties.Buttons.Items[0].Tag = 0 then
-      sp.ParamByName('Consignor').Clear
+      spInsertUpdateDeleteRefBook.ParamByName('Consignor').Clear
     else
-      sp.ParamByName('Consignor').Value := Consignor.Properties.Buttons.Items[0].Tag;
+      spInsertUpdateDeleteRefBook.ParamByName('Consignor').Value := Consignor.Properties.Buttons.Items[0].Tag;
     if Consignee.Properties.Buttons.Items[0].Tag = 0 then
-      sp.ParamByName('Consignee').Clear
+      spInsertUpdateDeleteRefBook.ParamByName('Consignee').Clear
     else
-      sp.ParamByName('Consignee').Value := Consignee.Properties.Buttons.Items[0].Tag;
+      spInsertUpdateDeleteRefBook.ParamByName('Consignee').Value := Consignee.Properties.Buttons.Items[0].Tag;
     if Supplier.Properties.Buttons.Items[0].Tag = 0 then
-      sp.ParamByName('Supplier').Clear
+      spInsertUpdateDeleteRefBook.ParamByName('Supplier').Clear
     else
-      sp.ParamByName('Supplier').Value := Supplier.Properties.Buttons.Items[0].Tag;
+      spInsertUpdateDeleteRefBook.ParamByName('Supplier').Value := Supplier.Properties.Buttons.Items[0].Tag;
     if Payer.Properties.Buttons.Items[0].Tag = 0 then
-      sp.ParamByName('Payer').Clear
+      spInsertUpdateDeleteRefBook.ParamByName('Payer').Clear
     else
-      sp.ParamByName('Payer').Value := Payer.Properties.Buttons.Items[0].Tag;
-    sp.ParamByName('WhouseID').Value := WhouseID.EditValue;
-    sp.ParamByName('PricePercent').Value := PricePercent.Value;
-    sp.ParamByName('IsAccept').Value := 0;
-    sp.ParamByName('InvoiceTypeID').Value := 1;
+      spInsertUpdateDeleteRefBook.ParamByName('Payer').Value := Payer.Properties.Buttons.Items[0].Tag;
+    spInsertUpdateDeleteRefBook.ParamByName('WhouseID').Value := WhouseID.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('PricePercent').Value := PricePercent.Value;
+    spInsertUpdateDeleteRefBook.ParamByName('IsAccept').Value := 0;
+    spInsertUpdateDeleteRefBook.ParamByName('InvoiceTypeID').Value := 1;
 
     ;
 { @SumTotal NUMERIC(18, 2) = NULL,
@@ -229,12 +230,12 @@ begin
  }
     if (FormMode = fmAdd) then
     begin
-      sp.Open;
-      if not sp.Eof then
-        CurrentID := sp.FieldByName('ID').AsInteger;
+      spInsertUpdateDeleteRefBook.Open;
+      if not spInsertUpdateDeleteRefBook.Eof then
+        CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
     end
     else
-      sp.Execute;
+      spInsertUpdateDeleteRefBook.Execute;
 
     try
       sp1 := TUniStoredProc.Create(Nil);
@@ -294,35 +295,35 @@ function TfmAddEditInvoice.CheckReqControls: TWinControl;
 begin
   Result := nil;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 15; //invoice
-  dmRefBooks.spGetReferenceFieldList.Open;
+  dmMain.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 15; //invoice
+  dmMain.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(PricePercent), dmRefBooks.spGetReferenceFieldList, 'PricePercent') then
+  if not dm_main.CheckControl(TcxCustomEdit(PricePercent), dmMain.spGetReferenceFieldList, 'PricePercent') then
     Result := PricePercent;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Payer), dmRefBooks.spGetReferenceFieldList, 'Payer') then
+  if not dm_main.CheckControl(TcxCustomEdit(Payer), dmMain.spGetReferenceFieldList, 'Payer') then
     Result := Payer;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Supplier), dmRefBooks.spGetReferenceFieldList, 'Supplier') then
+  if not dm_main.CheckControl(TcxCustomEdit(Supplier), dmMain.spGetReferenceFieldList, 'Supplier') then
     Result := Supplier;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Consignee), dmRefBooks.spGetReferenceFieldList, 'Consignee') then
+  if not dm_main.CheckControl(TcxCustomEdit(Consignee), dmMain.spGetReferenceFieldList, 'Consignee') then
     Result := Consignee;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Consignor), dmRefBooks.spGetReferenceFieldList, 'Consignor') then
+  if not dm_main.CheckControl(TcxCustomEdit(Consignor), dmMain.spGetReferenceFieldList, 'Consignor') then
     Result := Consignor;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(WhouseID), dmRefBooks.spGetReferenceFieldList, 'WhouseID') then
+  if not dm_main.CheckControl(TcxCustomEdit(WhouseID), dmMain.spGetReferenceFieldList, 'WhouseID') then
     Result := WhouseID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(DocDate), dmRefBooks.spGetReferenceFieldList, 'DocDate') then
+  if not dm_main.CheckControl(TcxCustomEdit(DocDate), dmMain.spGetReferenceFieldList, 'DocDate') then
     Result := DocDate;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(DocNumber), dmRefBooks.spGetReferenceFieldList, 'DocNumber') then
+  if not dm_main.CheckControl(TcxCustomEdit(DocNumber), dmMain.spGetReferenceFieldList, 'DocNumber') then
     Result := DocNumber;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.Close;
 end;
 
 procedure TfmAddEditInvoice.cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
@@ -371,7 +372,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else

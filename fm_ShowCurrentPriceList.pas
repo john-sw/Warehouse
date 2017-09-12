@@ -74,6 +74,7 @@ type
     AdvPanel1: TAdvPanel;
     cxLabel1: TcxLabel;
     PriceDate: TcxDateEdit;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -104,7 +105,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
+uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
 
 procedure TfmShowCurrentPriceList.actAddExecute(Sender: TObject);
 begin
@@ -113,7 +114,7 @@ begin
     fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
     fmAddEditRefBook.spParentRefBook := spShowCurrentPriceList;
     fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditRefBook.ShowModal = mrOk then
     begin
       spShowCurrentPriceList.Refresh;
@@ -138,7 +139,7 @@ procedure TfmShowCurrentPriceList.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
@@ -159,8 +160,8 @@ begin
     fmAddEditRefBook.spParentRefBook := spShowCurrentPriceList;
     fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBook.CurrentID := spShowCurrentPriceList.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
     if fmAddEditRefBook.ShowModal = mrOk then
     begin
       spShowCurrentPriceList.Refresh;

@@ -102,6 +102,7 @@ type
     cxLabel2: TcxLabel;
     btnFilter: TcxButton;
     btnClearFilter: TcxButton;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -120,6 +121,7 @@ type
     procedure btnFilterClick(Sender: TObject);
     procedure btnClearFilterClick(Sender: TObject);
     procedure actDisApproveExecute(Sender: TObject);
+    procedure tvRefBookDblClick(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -135,7 +137,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, fm_AddEditInvoice;
+uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, fm_AddEditInvoice;
 
 procedure TfmShowInvoiceRegister.actAddExecute(Sender: TObject);
 begin
@@ -145,7 +147,7 @@ begin
     fmAddEditInvoice.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
     fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;
     fmAddEditInvoice.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditInvoice.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditInvoice.ShowModal = mrOk then
     begin
       spShowInvoiceRegister.Refresh;
@@ -189,7 +191,7 @@ procedure TfmShowInvoiceRegister.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
@@ -229,8 +231,8 @@ begin
     fmAddEditInvoice.spParentRefBook := spShowInvoiceRegister;
     fmAddEditInvoice.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditInvoice.CurrentID := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditInvoice.CurrentID;
+    fmAddEditInvoice.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditInvoice.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditInvoice.CurrentID;
     if fmAddEditInvoice.ShowModal = mrOk then
     begin
       spShowInvoiceRegister.Refresh;
@@ -385,6 +387,11 @@ begin
   actCopyCell.Enabled := actEdit.Enabled;
   actApprove.Enabled := actEdit.Enabled;
   actDisApprove.Enabled := actEdit.Enabled;
+end;
+
+procedure TfmShowInvoiceRegister.tvRefBookDblClick(Sender: TObject);
+begin
+  actViewExecute(nil);
 end;
 
 end.

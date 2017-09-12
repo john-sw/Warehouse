@@ -82,6 +82,7 @@ type
     RzToolButton10: TRzToolButton;
     RzSpacer9: TRzSpacer;
     RzToolButton11: TRzToolButton;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -96,6 +97,7 @@ type
     procedure actCloseExecute(Sender: TObject);
     procedure actCopyCellExecute(Sender: TObject);
     procedure spShowRefBookAfterOpen(DataSet: TDataSet);
+    procedure tvRefBookDblClick(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -111,7 +113,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_RefBooks, fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
+uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd;
 
 procedure TfmShowRefBook.actAddExecute(Sender: TObject);
 begin
@@ -120,7 +122,7 @@ begin
     fmAddEditRefBook.RefBookName := qSprRef.FieldByName('ReferenceRUSName').AsString;
     fmAddEditRefBook.spParentRefBook := spShowRefBook;
     fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('InsertProcName').AsString);
     if fmAddEditRefBook.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -145,7 +147,7 @@ procedure TfmShowRefBook.actDeleteExecute(Sender: TObject);
 begin
   if MessageBox(0,'Удалить запись?', 'Подтверждение', MB_YESNO + MB_ICONQUESTION) <> id_yes then
     Exit;
-  with dmRefBooks.spInsertUpdateDeleteRefBook do
+  with spInsertUpdateDeleteRefBook do
   try
 //    DisableControls;
     CreateProcCall(qSprRef.FieldByName('DeleteProcName').AsString);
@@ -166,8 +168,8 @@ begin
     fmAddEditRefBook.spParentRefBook := spShowRefBook;
     fmAddEditRefBook.spRefBookFieldsAddEditView.ParamByName('ReferenceID').AsInteger := qSprRef.ParamByName('ID').AsInteger;
     fmAddEditRefBook.CurrentID := spShowRefBook.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
-    dmRefBooks.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
-    dmRefBooks.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.CreateProcCall(qSprRef.FieldByName('UpdateProcName').AsString);
+    fmAddEditRefBook.spInsertUpdateDeleteRefBook.ParamByName('ID').Value := fmAddEditRefBook.CurrentID;
     if fmAddEditRefBook.ShowModal = mrOk then
     begin
       spShowRefBook.Refresh;
@@ -228,7 +230,7 @@ procedure TfmShowRefBook.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  qSprRef.ParamByName('ID').AsInteger := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
+  qSprRef.ParamByName('ID').AsInteger := dmMain.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
   qSprRef.Open;
   Caption := 'Справочник - ' + qSprRef.FieldByName('ReferenceRUSName').AsString;
   spShowRefBook.StoredProcName := qSprRef.FieldByName('BrowserProcName').AsString;
@@ -299,6 +301,11 @@ begin
   actDelete.Enabled := actEdit.Enabled;
   actExport.Enabled := actEdit.Enabled;
   actPrint.Enabled := actEdit.Enabled;
+end;
+
+procedure TfmShowRefBook.tvRefBookDblClick(Sender: TObject);
+begin
+  actViewExecute(nil);
 end;
 
 end.

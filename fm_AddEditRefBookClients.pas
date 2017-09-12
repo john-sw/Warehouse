@@ -21,14 +21,15 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
   cxSpinEdit, cxDBNavigator, dxPSGlbl, dxPSUtl, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSEngn, dxPSCompsProvider,
   dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv,
   dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk, dxPScxEditorProducers,
-  dxPScxExtEditorProducers, dxSkinsdxBarPainter, dxPSCore, dxPScxCommon, dxPgsDlg, AdvSmoothTabPager, HTMLabel;
+  dxPScxExtEditorProducers, dxSkinsdxBarPainter, dxPSCore, dxPScxCommon, dxPgsDlg, AdvSmoothTabPager, HTMLabel,
+  fm_ShowRefBookClients, dm_main;
 
 type
   TfmAddEditRefBookClients = class(TForm)
@@ -114,6 +115,7 @@ type
     lblLabel10: THTMLabel;
     lblLabel11: THTMLabel;
     lblLabel12: THTMLabel;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure actAddContactExecute(Sender: TObject);
     procedure actEditContactExecute(Sender: TObject);
@@ -132,7 +134,7 @@ type
 
   private
     IsModified: Boolean;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     function CheckReqControls: TWinControl;
     { Private declarations }
   public
@@ -141,7 +143,7 @@ type
     CurrentID: Integer;
     ParentID: Integer;
     RefBookName: string;
-    spParentRefBook: TUniStoredProc;
+    ParentRefBookForm: TfmShowRefBookClients;
   end;
 
 var
@@ -151,7 +153,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, Vcl.Clipbrd;
+uses fm_AddEditLinkedRefBook, Vcl.Clipbrd;
 
 
 procedure TfmAddEditRefBookClients.actAddContactExecute(Sender: TObject);
@@ -258,7 +260,7 @@ begin
   Close;
 end;
 
-procedure TfmAddEditRefBookClients.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditRefBookClients.SetParamsAndExecStoredProc;
 var
   sp1: TUniStoredProc;
   i: Integer;
@@ -266,30 +268,30 @@ begin
   try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('ClientFolderID').Value := ParentID;
-    sp.ParamByName('ClientFullName').Value := ClientFullName.Text;
-    sp.ParamByName('ClientShortName').Value := ClientShortName.Text;
-    sp.ParamByName('ClientINN').Value := ClientINN.Text;
-    sp.ParamByName('ClientKPP').Value := ClientKPP.EditValue;
-    sp.ParamByName('ClientTypeID').Value := ClientTypeID.EditValue;
-    sp.ParamByName('ClientCity').Value := ClientKPP.EditValue;
-    sp.ParamByName('PostAddress').Value := ClientPostAddress.EditValue;
-    sp.ParamByName('LegalAddress').Value := ClientLegalAddress.EditValue;
-    sp.ParamByName('ClientMainPhone').Value := ClientMainPhone.EditValue;
-    sp.ParamByName('ClientSecondPhone').Value := ClientSecondPhone.EditValue;
-    sp.ParamByName('ClientMainEMail').Value := ClientEmail.EditValue;
-    sp.ParamByName('ClientSite').Value := ClientSite.EditValue;
-    sp.ParamByName('Comment').Value := Comment.Text;
-    sp.ParamByName('IsActive').Value := 1;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientFolderID').Value := ParentID;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientFullName').Value := ClientFullName.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientShortName').Value := ClientShortName.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientINN').Value := ClientINN.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientKPP').Value := ClientKPP.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientTypeID').Value := ClientTypeID.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientCity').Value := ClientKPP.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('PostAddress').Value := ClientPostAddress.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('LegalAddress').Value := ClientLegalAddress.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientMainPhone').Value := ClientMainPhone.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientSecondPhone').Value := ClientSecondPhone.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientMainEMail').Value := ClientEmail.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ClientSite').Value := ClientSite.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('Comment').Value := Comment.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('IsActive').Value := 1;
 
     if (FormMode = fmAdd) then
     begin
-      sp.Open;
-      if not sp.Eof then
-        CurrentID := sp.FieldByName('ID').AsInteger;
+      spInsertUpdateDeleteRefBook.Open;
+      if not spInsertUpdateDeleteRefBook.Eof then
+        CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
     end
     else
-      sp.Execute;
+      spInsertUpdateDeleteRefBook.Execute;
 
     try
       sp1 := TUniStoredProc.Create(Nil);
@@ -381,47 +383,47 @@ function TfmAddEditRefBookClients.CheckReqControls: TWinControl;
 begin
   Result := nil;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 11; // clients
-  dmRefBooks.spGetReferenceFieldList.Open;
+  dmMain.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 11; // clients
+  dmMain.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Comment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
+  if not dm_main.CheckControl(TcxCustomEdit(Comment), dmMain.spGetReferenceFieldList, 'Comment') then
     Result := Comment;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientSite), dmRefBooks.spGetReferenceFieldList, 'ClientSite') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientSite), dmMain.spGetReferenceFieldList, 'ClientSite') then
     Result := ClientSite;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientEmail), dmRefBooks.spGetReferenceFieldList, 'ClientEmail') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientEmail), dmMain.spGetReferenceFieldList, 'ClientEmail') then
     Result := ClientEmail;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientSecondPhone), dmRefBooks.spGetReferenceFieldList, 'ClientSecondPhone') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientSecondPhone), dmMain.spGetReferenceFieldList, 'ClientSecondPhone') then
     Result := ClientSecondPhone;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientMainPhone), dmRefBooks.spGetReferenceFieldList, 'ClientMainPhone') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientMainPhone), dmMain.spGetReferenceFieldList, 'ClientMainPhone') then
     Result := ClientMainPhone;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientLegalAddress), dmRefBooks.spGetReferenceFieldList, 'ClientLegalAddress') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientLegalAddress), dmMain.spGetReferenceFieldList, 'ClientLegalAddress') then
     Result := ClientLegalAddress;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientPostAddress), dmRefBooks.spGetReferenceFieldList, 'ClientPostAddress') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientPostAddress), dmMain.spGetReferenceFieldList, 'ClientPostAddress') then
     Result := ClientPostAddress;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientCity), dmRefBooks.spGetReferenceFieldList, 'ClientCity') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientCity), dmMain.spGetReferenceFieldList, 'ClientCity') then
     Result := ClientCity;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientTypeID), dmRefBooks.spGetReferenceFieldList, 'ClientTypeID') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientTypeID), dmMain.spGetReferenceFieldList, 'ClientTypeID') then
     Result := ClientTypeID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientKPP), dmRefBooks.spGetReferenceFieldList, 'ClientKPP') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientKPP), dmMain.spGetReferenceFieldList, 'ClientKPP') then
     Result := ClientKPP;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientINN), dmRefBooks.spGetReferenceFieldList, 'ClientINN') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientINN), dmMain.spGetReferenceFieldList, 'ClientINN') then
     Result := ClientINN;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientShortName), dmRefBooks.spGetReferenceFieldList, 'ClientShortName') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientShortName), dmMain.spGetReferenceFieldList, 'ClientShortName') then
     Result := ClientShortName;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ClientFullName), dmRefBooks.spGetReferenceFieldList, 'ClientFullName') then
+  if not dm_main.CheckControl(TcxCustomEdit(ClientFullName), dmMain.spGetReferenceFieldList, 'ClientFullName') then
     Result := ClientFullName;
 
 end;
@@ -435,7 +437,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else
@@ -481,7 +483,7 @@ var
 begin
   qClientType.Open;
   if FormMode in [fmEdit, fmView] then
-    with dmRefBooks.spGetClientsForGroup do
+    with ParentRefBookForm.spGetClientsForGroup do
     begin
       ClientFullName.Text := FieldByName('ClientFullName').AsString;
       ClientShortName.Text := FieldByName('ClientShortName').AsString;

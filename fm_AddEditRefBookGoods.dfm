@@ -593,10 +593,6 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
       object cxTabSheet2: TcxTabSheet
         Caption = #1064#1090#1088#1080#1093#1082#1086#1076#1099
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object GridBarcode: TcxGrid
           Left = 0
           Top = 29
@@ -1426,5 +1422,21 @@ object fmAddEditRefBookGoods: TfmAddEditRefBookGoods
     object mdBarcodeUnitQty: TIntegerField
       FieldName = 'UnitQty'
     end
+  end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 404
+    Top = 388
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
   end
 end

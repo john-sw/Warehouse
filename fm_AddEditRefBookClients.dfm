@@ -1259,4 +1259,20 @@ object fmAddEditRefBookClients: TfmAddEditRefBookClients
       end>
     CommandStoredProcName = 'spGetReferenceBrowser;1'
   end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 260
+    Top = 276
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
+  end
 end

@@ -21,12 +21,12 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
   cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel,
-  cxCurrencyEdit;
+  cxCurrencyEdit, dm_main;
 
 type
   TfmAddEditPriceList = class(TForm)
@@ -73,6 +73,7 @@ type
     actFill: TAction;
     RzSpacer1: TRzSpacer;
     btnFill: TRzToolButton;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -86,7 +87,7 @@ type
     procedure cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
   private
     IsModified: Boolean;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     function CheckReqControls: TWinControl;
     { Private declarations }
   public
@@ -105,7 +106,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookClients, fm_AddEditPriceListLine;
+uses fm_AddEditLinkedRefBook, fm_ShowRefBookClients, fm_AddEditPriceListLine;
 
 procedure TfmAddEditPriceList.actAddExecute(Sender: TObject);
 begin
@@ -159,28 +160,28 @@ begin
   Close;
 end;
 
-procedure TfmAddEditPriceList.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditPriceList.SetParamsAndExecStoredProc;
 var
   sp1: TUniStoredProc;
 begin
   try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('PriceDate').Value := PriceDate.Date;
+    spInsertUpdateDeleteRefBook.ParamByName('PriceDate').Value := PriceDate.Date;
 
     if Supplier.Properties.Buttons.Items[0].Tag = 0 then
-      sp.ParamByName('Supplier').Clear
+      spInsertUpdateDeleteRefBook.ParamByName('Supplier').Clear
     else
-      sp.ParamByName('Supplier').Value := Supplier.Properties.Buttons.Items[0].Tag;
+      spInsertUpdateDeleteRefBook.ParamByName('Supplier').Value := Supplier.Properties.Buttons.Items[0].Tag;
 
     if (FormMode in [fmAdd, fmCopy]) then
     begin
-      sp.Open;
-      if not sp.Eof then
-        CurrentID := sp.FieldByName('ID').AsInteger;
+      spInsertUpdateDeleteRefBook.Open;
+      if not spInsertUpdateDeleteRefBook.Eof then
+        CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
     end
     else
-      sp.Execute;
+      spInsertUpdateDeleteRefBook.Execute;
 
     try
       sp1 := TUniStoredProc.Create(Nil);
@@ -239,17 +240,17 @@ function TfmAddEditPriceList.CheckReqControls: TWinControl;
 begin
   Result := nil;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 17; //Price List
-  dmRefBooks.spGetReferenceFieldList.Open;
+  dmMain.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 17; //Price List
+  dmMain.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Supplier), dmRefBooks.spGetReferenceFieldList, 'Supplier') then
+  if not dm_main.CheckControl(TcxCustomEdit(Supplier), dmMain.spGetReferenceFieldList, 'Supplier') then
     Result := Supplier;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(PriceDate), dmRefBooks.spGetReferenceFieldList, 'PriceDate') then
+  if not dm_main.CheckControl(TcxCustomEdit(PriceDate), dmMain.spGetReferenceFieldList, 'PriceDate') then
     Result := PriceDate;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.Close;
 end;
 
 procedure TfmAddEditPriceList.cxButtonEdit1PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
@@ -287,7 +288,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else

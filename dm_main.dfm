@@ -1,8 +1,8 @@
 object dmMain: TdmMain
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 300
-  Width = 456
+  Height = 406
+  Width = 653
   object MainConnection: TUniConnection
     ProviderName = 'SQL Server'
     Database = 'RasprCenter2017'
@@ -272,5 +272,36 @@ object dmMain: TdmMain
       AssignedValues = [svColor]
       Color = 13828095
     end
+  end
+  object qSprRefForMainMenu: TUniQuery
+    Connection = MainConnection
+    SQL.Strings = (
+      'select * from sprReference'
+      'where IsSimpleRefBook = 1'
+      'order by ReferenceRUSName')
+    Left = 472
+    Top = 40
+  end
+  object spGetReferenceFieldList: TUniStoredProc
+    StoredProcName = 'spGetReferenceFieldList;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetReferenceFieldList;1 (:ReferenceID)}')
+    Connection = MainConnection
+    Left = 468
+    Top = 160
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'ReferenceID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetReferenceFieldList;1'
   end
 end

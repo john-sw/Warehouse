@@ -20,7 +20,7 @@ uses
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
   Vcl.Menus, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, Vcl.StdCtrls, cxButtons, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, Data.DB, MemDS, DBAccess, Uni;
+  Vcl.ExtCtrls, AdvPanel, Data.DB, MemDS, DBAccess, Uni, dm_main;
 
 type
   TfmAddEditGroup = class(TForm)
@@ -31,13 +31,14 @@ type
     btnSave: TcxButton;
     btnCancel: TcxButton;
     spRefBookFieldsAddEditView: TUniStoredProc;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure btnCancelClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnSaveClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     { Private declarations }
   public
     { Public declarations }
@@ -60,21 +61,21 @@ begin
   Close;
 end;
 
-procedure TfmAddEditGroup.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditGroup.SetParamsAndExecStoredProc;
 var
    i: Integer;
    c: TControl;
 begin
-  sp.ParamByName('GroupName').Value := TcxTextEdit(pnlClient.Controls[1]).Text;
-  sp.ParamByName('ParentID').Value := ParentID;
+  spInsertUpdateDeleteRefBook.ParamByName('GroupName').Value := TcxTextEdit(pnlClient.Controls[1]).Text;
+  spInsertUpdateDeleteRefBook.ParamByName('ParentID').Value := ParentID;
   if (FormMode = fmAdd) then
   begin
-    sp.Open;
-    if not sp.Eof then
-      CurrentID := sp.FieldByName('ID').AsInteger;
+    spInsertUpdateDeleteRefBook.Open;
+    if not spInsertUpdateDeleteRefBook.Eof then
+      CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
   end
   else
-    sp.Execute;
+    spInsertUpdateDeleteRefBook.Execute;
 end;
 
 procedure TfmAddEditGroup.btnSaveClick(Sender: TObject);
@@ -86,7 +87,7 @@ begin
     InvalidControl := CheckReqControls(pnlClient, spRefBookFieldsAddEditView);
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else

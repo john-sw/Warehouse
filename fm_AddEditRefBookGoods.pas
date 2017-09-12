@@ -21,11 +21,11 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator, HTMLabel;
+  cxSpinEdit, cxDBNavigator, HTMLabel, fm_ShowRefBookGoods, dm_main;
 
 type
   TfmAddEditRefBookGoods = class(TForm)
@@ -119,6 +119,7 @@ type
     lblLabel3: THTMLabel;
     lblLabel5: THTMLabel;
     lbl1: THTMLabel;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormShow(Sender: TObject);
     procedure actAddBarcodeExecute(Sender: TObject);
     procedure actEditBarcodeExecute(Sender: TObject);
@@ -133,7 +134,7 @@ type
     procedure mdDescrAfterPost(DataSet: TDataSet);
   private
     IsModified: Boolean;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     function CheckReqControls: TWinControl;
     { Private declarations }
   public
@@ -142,7 +143,7 @@ type
     CurrentID: Integer;
     ParentID: Integer;
     RefBookName: string;
-    spParentRefBook: TUniStoredProc;
+    ParentRefBookForm: TfmShowRefBookGoods;
   end;
 
 var
@@ -152,7 +153,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook;
+uses fm_AddEditLinkedRefBook;
 
 procedure TfmAddEditRefBookGoods.actAddBarcodeExecute(Sender: TObject);
 begin
@@ -252,35 +253,35 @@ begin
   Close;
 end;
 
-procedure TfmAddEditRefBookGoods.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditRefBookGoods.SetParamsAndExecStoredProc;
 var
   sp1: TUniStoredProc;
 begin
   try
     dmMain.MainConnection.StartTransaction;
 
-    sp.ParamByName('ProdCatID').Value := ParentID;
-    sp.ParamByName('ProdName').Value := ProdName.Text;
-    sp.ParamByName('ProdDescription').Value := ProdDescription.Text;
-    sp.ParamByName('ArticleNumber').Value := ArticleNumber.Text;
-    sp.ParamByName('CountryID').Value := CountryID.EditValue;
-    sp.ParamByName('UnitID').Value := UnitID.EditValue;
-    sp.ParamByName('ThermoTypeID').Value := ThermoTypeID.EditValue;
-    sp.ParamByName('OnlyIntSales').Value := Integer(OnlyIntSales.Checked);
-    sp.ParamByName('NettoWeight').Value := NettoWeight.Value;
-    sp.ParamByName('BruttoWeight').Value := BruttoWeight.Value;
-    sp.ParamByName('ProdVolume').Value := ProdVolume.Value;
-    sp.ParamByName('Comment').Value := Comment.Text;
-    sp.ParamByName('IsVisible').Value := 1;
+    spInsertUpdateDeleteRefBook.ParamByName('ProdCatID').Value := ParentID;
+    spInsertUpdateDeleteRefBook.ParamByName('ProdName').Value := ProdName.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('ProdDescription').Value := ProdDescription.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('ArticleNumber').Value := ArticleNumber.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('CountryID').Value := CountryID.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('UnitID').Value := UnitID.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('ThermoTypeID').Value := ThermoTypeID.EditValue;
+    spInsertUpdateDeleteRefBook.ParamByName('OnlyIntSales').Value := Integer(OnlyIntSales.Checked);
+    spInsertUpdateDeleteRefBook.ParamByName('NettoWeight').Value := NettoWeight.Value;
+    spInsertUpdateDeleteRefBook.ParamByName('BruttoWeight').Value := BruttoWeight.Value;
+    spInsertUpdateDeleteRefBook.ParamByName('ProdVolume').Value := ProdVolume.Value;
+    spInsertUpdateDeleteRefBook.ParamByName('Comment').Value := Comment.Text;
+    spInsertUpdateDeleteRefBook.ParamByName('IsVisible').Value := 1;
 
     if (FormMode = fmAdd) then
     begin
-      sp.Open;
-      if not sp.Eof then
-        CurrentID := sp.FieldByName('ID').AsInteger;
+      spInsertUpdateDeleteRefBook.Open;
+      if not spInsertUpdateDeleteRefBook.Eof then
+        CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
     end
     else
-      sp.Execute;
+      spInsertUpdateDeleteRefBook.Execute;
 
     try
       sp1 := TUniStoredProc.Create(Nil);
@@ -358,41 +359,41 @@ function TfmAddEditRefBookGoods.CheckReqControls: TWinControl;
 begin
   Result := nil;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 7; //prod
-  dmRefBooks.spGetReferenceFieldList.Open;
+  dmMain.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 7; //prod
+  dmMain.spGetReferenceFieldList.Open;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(Comment), dmRefBooks.spGetReferenceFieldList, 'Comment') then
+  if not dm_main.CheckControl(TcxCustomEdit(Comment), dmMain.spGetReferenceFieldList, 'Comment') then
     Result := Comment;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(UnitID), dmRefBooks.spGetReferenceFieldList, 'UnitID') then
+  if not dm_main.CheckControl(TcxCustomEdit(UnitID), dmMain.spGetReferenceFieldList, 'UnitID') then
     Result := UnitID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdVolume), dmRefBooks.spGetReferenceFieldList, 'ProdVolume') then
+  if not dm_main.CheckControl(TcxCustomEdit(ProdVolume), dmMain.spGetReferenceFieldList, 'ProdVolume') then
     Result := ProdVolume;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(BruttoWeight), dmRefBooks.spGetReferenceFieldList, 'BruttoWeight') then
+  if not dm_main.CheckControl(TcxCustomEdit(BruttoWeight), dmMain.spGetReferenceFieldList, 'BruttoWeight') then
     Result := BruttoWeight;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(NettoWeight), dmRefBooks.spGetReferenceFieldList, 'NettoWeight') then
+  if not dm_main.CheckControl(TcxCustomEdit(NettoWeight), dmMain.spGetReferenceFieldList, 'NettoWeight') then
     Result := NettoWeight;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(OnlyIntSales), dmRefBooks.spGetReferenceFieldList, 'OnlyIntSales') then
+  if not dm_main.CheckControl(TcxCustomEdit(OnlyIntSales), dmMain.spGetReferenceFieldList, 'OnlyIntSales') then
     Result := OnlyIntSales;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ThermoTypeID), dmRefBooks.spGetReferenceFieldList, 'ThermoTypeID') then
+  if not dm_main.CheckControl(TcxCustomEdit(ThermoTypeID), dmMain.spGetReferenceFieldList, 'ThermoTypeID') then
     Result := ThermoTypeID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(CountryID), dmRefBooks.spGetReferenceFieldList, 'CountryID') then
+  if not dm_main.CheckControl(TcxCustomEdit(CountryID), dmMain.spGetReferenceFieldList, 'CountryID') then
     Result := CountryID;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ArticleNumber), dmRefBooks.spGetReferenceFieldList, 'ArticleNumber') then
+  if not dm_main.CheckControl(TcxCustomEdit(ArticleNumber), dmMain.spGetReferenceFieldList, 'ArticleNumber') then
     Result := ArticleNumber;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdDescription), dmRefBooks.spGetReferenceFieldList, 'ProdDescription') then
+  if not dm_main.CheckControl(TcxCustomEdit(ProdDescription), dmMain.spGetReferenceFieldList, 'ProdDescription') then
     Result := ProdDescription;
 
-  if not dm_RefBooks.CheckControl(TcxCustomEdit(ProdName), dmRefBooks.spGetReferenceFieldList, 'ProdName') then
+  if not dm_main.CheckControl(TcxCustomEdit(ProdName), dmMain.spGetReferenceFieldList, 'ProdName') then
     Result := ProdName;
 end;
 
@@ -405,7 +406,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else
@@ -451,7 +452,7 @@ begin
   qUnit.Open;
   qThermoType.Open;
   if FormMode in [fmEdit, fmView] then
-    with dmRefBooks.spGetGoodsForProdCat do
+    with ParentRefBookForm.spGetGoodsForProdCat do
     begin
       ProdName.Text := FieldByName('ProdName').AsString;
       ProdDescription.Text := FieldByName('ProdDescription').AsString;

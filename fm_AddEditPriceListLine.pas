@@ -21,11 +21,12 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel;
+  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel,
+  dm_main;
 
 const
   WM_ShowRefBook = WM_USER + 1;
@@ -94,7 +95,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookGoods;
+uses fm_AddEditLinkedRefBook, fm_ShowRefBookGoods;
 
 procedure TfmAddEditPriceListLine.btnCancelClick(Sender: TObject);
 begin
@@ -112,9 +113,9 @@ begin
   if aControl = nil then
   begin
     aControl := pnlClient;
-    dmRefBooks.spGetReferenceFieldList.Close;
-    dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 18; //price list
-    dmRefBooks.spGetReferenceFieldList.Open;
+    dmMain.spGetReferenceFieldList.Close;
+    dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 18; //price list
+    dmMain.spGetReferenceFieldList.Open;
     b := True;
   end;
   for i := aControl.ControlCount - 1 downto 0 do
@@ -125,11 +126,11 @@ begin
     end
     else
       if (aControl.Controls[i] is TcxCustomEdit) then
-        if not dm_RefBooks.CheckControl(TcxCustomEdit(aControl.Controls[i]), dmRefBooks.spGetReferenceFieldList) then
+        if not dm_main.CheckControl(TcxCustomEdit(aControl.Controls[i]), dmMain.spGetReferenceFieldList) then
           Result := TWinControl(aControl.Controls[i]);
 
   if b then
-    dmRefBooks.spGetReferenceFieldList.Close;
+    dmMain.spGetReferenceFieldList.Close;
 end;
 
 procedure TfmAddEditPriceListLine.AppendUpdateRecordSet(aControl: TWinControl = nil);

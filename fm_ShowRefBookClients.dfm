@@ -158,7 +158,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
         Bands = <
           item
           end>
-        DataController.DataSource = dmRefBooks.dsShowRefBookClients
+        DataController.DataSource = dsShowRefBookClients
         DataController.ParentField = 'ParentFolderID'
         DataController.KeyField = 'ClientFolderID'
         DefaultLayout = True
@@ -214,7 +214,7 @@ object fmShowRefBookClients: TfmShowRefBookClients
           OnDblClick = tvRefBookDblClick
           Navigator.Buttons.CustomButtons = <>
           OnFocusedRecordChanged = tvRefBookFocusedRecordChanged
-          DataController.DataSource = dmRefBooks.dsGetClientsForGroup
+          DataController.DataSource = dsGetClientsForGroup
           DataController.KeyFieldNames = 'ClientID'
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -1222,5 +1222,78 @@ object fmShowRefBookClients: TfmShowRefBookClients
     object MenuItem8: TMenuItem
       Action = actCopyCellClientsGroups
     end
+  end
+  object spInsertUpdateDeleteRefBook: TUniStoredProc
+    StoredProcName = 'spThermoType;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spThermoType;1}')
+    Connection = dmMain.MainConnection
+    Left = 428
+    Top = 364
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'spThermoType;1'
+  end
+  object spShowRefBookClients: TUniStoredProc
+    StoredProcName = 'br_aspClientFolder;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL br_aspClientFolder;1}')
+    Connection = dmMain.MainConnection
+    Left = 44
+    Top = 336
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end>
+    CommandStoredProcName = 'br_aspClientFolder;1'
+  end
+  object dsShowRefBookClients: TUniDataSource
+    DataSet = spShowRefBookClients
+    Left = 164
+    Top = 336
+  end
+  object spGetClientsForGroup: TUniStoredProc
+    StoredProcName = 'br_aspClient;1'
+    SQL.Strings = (
+      
+        '{:RETURN_VALUE = CALL br_aspClient;1 (:ClientFolderID, :SearchSt' +
+        'ring)}')
+    Connection = dmMain.MainConnection
+    Left = 44
+    Top = 388
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        DataType = ftInteger
+        Name = 'ClientFolderID'
+        ParamType = ptInput
+        Value = nil
+      end
+      item
+        DataType = ftWideString
+        Name = 'SearchString'
+        ParamType = ptInput
+        Size = 100
+        Value = nil
+      end>
+    CommandStoredProcName = 'br_aspClient;1'
+  end
+  object dsGetClientsForGroup: TUniDataSource
+    DataSet = spGetClientsForGroup
+    Left = 168
+    Top = 392
   end
 end

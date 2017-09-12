@@ -19,11 +19,11 @@ uses
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue, cxLabel,
   cxTextEdit, Vcl.Menus, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, AdvPanel,
-  Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, dm_RefBooks, cxMaskEdit,
+  Vcl.Grids, AdvObj, BaseGrid, AdvGrid, AdvOfficePager, cxMaskEdit,
   cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   cxDBExtLookupComboBox, cxDBEdit, AdvCombo, AdvDBComboBox, Vcl.DBGrids, Uni,
   AdvDBLookupComboBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxCheckBox,
-  Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel, cxCalc;
+  Data.DB, DBAccess, MemDS, fm_ShowRefBooks, HTMLabel, cxCalc, dm_main;
 
 type
   TfmAddEditRefBook = class(TForm)
@@ -34,6 +34,7 @@ type
     spRefBookFieldsAddEditView: TUniStoredProc;
     dsForeignRefBook: TUniDataSource;
     spForeignRefBook: TUniStoredProc;
+    spInsertUpdateDeleteRefBook: TUniStoredProc;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
@@ -49,7 +50,7 @@ type
     procedure InsertFieldCheck(APanel: TAdvPanel);
     procedure InsertFieldDate(APanel: TAdvPanel);
     procedure FillForm;
-    procedure SetParamsAndExecStoredProc(sp: TUniStoredProc);
+    procedure SetParamsAndExecStoredProc;
     function CheckControl(AControl: TcxCustomEdit): Boolean;
     function CheckReqControls: TWinControl;
     { Private declarations }
@@ -66,7 +67,6 @@ var
 
 implementation
 
-uses dm_main;
 
 {$R *.dfm}
 
@@ -262,7 +262,7 @@ begin
   Close;
 end;
 
-procedure TfmAddEditRefBook.SetParamsAndExecStoredProc(sp: TUniStoredProc);
+procedure TfmAddEditRefBook.SetParamsAndExecStoredProc;
 var
    i: Integer;
    c: TControl;
@@ -270,16 +270,16 @@ begin
   for i := 0 to pnlClient.ControlCount - 1 do
   begin
     c := TAdvPanel(pnlClient.Controls[i]).Controls[1];
-    sp.ParamByName(c.Name).Value := GetControlValue(c);
+    spInsertUpdateDeleteRefBook.ParamByName(c.Name).Value := GetControlValue(c);
   end;
   if (FormMode = fmAdd) then
   begin
-    sp.Open;
-    if not sp.Eof then
-      CurrentID := sp.FieldByName('ID').AsInteger;
+    spInsertUpdateDeleteRefBook.Open;
+    if not spInsertUpdateDeleteRefBook.Eof then
+      CurrentID := spInsertUpdateDeleteRefBook.FieldByName('ID').AsInteger;
   end
   else
-    sp.Execute;
+    spInsertUpdateDeleteRefBook.Execute;
 end;
 
 procedure TfmAddEditRefBook.btnSaveClick(Sender: TObject);
@@ -291,7 +291,7 @@ begin
     InvalidControl := CheckReqControls;
     if InvalidControl = nil then
     begin
-      SetParamsAndExecStoredProc(dmRefBooks.spInsertUpdateDeleteRefBook);
+      SetParamsAndExecStoredProc;
       ModalResult := mrOk;
     end
     else

@@ -21,11 +21,12 @@ uses
   dxSkinscxPCPainter, dxBarBuiltInMenu, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxPC, cxDropDownEdit, cxCalc, cxGroupBox, cxCheckBox, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
-  Vcl.ExtCtrls, AdvPanel, dm_RefBooks, cxStyles, cxCustomData, cxFilter, cxData,
+  Vcl.ExtCtrls, AdvPanel, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Uni, MemDS, DBAccess, System.Actions, Vcl.ActnList, RzPanel, RzButton, Vcl.ImgList, AdvMenus, dxmdaset,
-  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel;
+  cxSpinEdit, cxDBNavigator, AdvGroupBox, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar, cxButtonEdit, HTMLabel,
+  dm_main;
 
 const
   WM_ShowRefBook = WM_USER + 1;
@@ -96,7 +97,7 @@ implementation
 
 {$R *.dfm}
 
-uses dm_main, fm_AddEditLinkedRefBook, fm_ShowRefBookGoods;
+uses fm_AddEditLinkedRefBook, fm_ShowRefBookGoods;
 
 procedure TfmAddEditInvoiceLine.btnCancelClick(Sender: TObject);
 begin
@@ -109,16 +110,16 @@ var
 begin
   Result := nil;
 
-  dmRefBooks.spGetReferenceFieldList.Close;
-  dmRefBooks.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 16; //invoice list
-  dmRefBooks.spGetReferenceFieldList.Open;
+  dmMain.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.ParamByName('ReferenceID').AsInteger := 16; //invoice list
+  dmMain.spGetReferenceFieldList.Open;
 
   for i := pnlClient.ControlCount - 1 downto 0 do
     if (pnlClient.Controls[i] is TcxCustomEdit) then
-      if not dm_RefBooks.CheckControl(TcxCustomEdit(pnlClient.Controls[i]), dmRefBooks.spGetReferenceFieldList) then
+      if not CheckControl(TcxCustomEdit(pnlClient.Controls[i]), dmMain.spGetReferenceFieldList) then
         Result := TWinControl(pnlClient.Controls[i]);
 
-  dmRefBooks.spGetReferenceFieldList.Close;
+  dmMain.spGetReferenceFieldList.Close;
 end;
 
 procedure TfmAddEditInvoiceLine.ContractPricePropertiesChange(Sender: TObject);

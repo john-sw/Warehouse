@@ -76,7 +76,7 @@ var
 implementation
 
 uses
-  dm_RefBooks, dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients, fm_ShowInvoiceRegister, fm_ShowPriceLists, fm_ShowCurrentPriceList;
+  dm_main, fm_ShowRefBooks, fm_ShowRefBookGoods, fm_ShowRefBookClients, fm_ShowInvoiceRegister, fm_ShowPriceLists, fm_ShowCurrentPriceList;
 
 {$R *.dfm}
 
@@ -115,17 +115,17 @@ procedure TMainForm.CreateMainMenu;
 var
   mi: TMenuItem;
 begin
-  dmRefBooks.qSprRefForMainMenu.Close;
-  dmRefBooks.qSprRefForMainMenu.Open;
+  dmMain.qSprRefForMainMenu.Close;
+  dmMain.qSprRefForMainMenu.Open;
 
-  while not dmRefBooks.qSprRefForMainMenu.Eof do
+  while not dmMain.qSprRefForMainMenu.Eof do
   begin
     mi := TMenuItem.Create(Nil);
-    mi.Caption := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString;
-    mi.Tag := dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
+    mi.Caption := dmMain.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString;
+    mi.Tag := dmMain.qSprRefForMainMenu.FieldByName('ReferenceID').AsInteger;
     mi.OnClick := miRefBookClick;
     miRefBooks.Add(mi);
-    dmRefBooks.qSprRefForMainMenu.Next;
+    dmMain.qSprRefForMainMenu.Next;
   end;
 end;
 
@@ -209,9 +209,9 @@ procedure TMainForm.miRefBookClick(Sender: TObject);
 var
   mi: TMenuItem;
 begin
-  if not dmRefBooks.qSprRefForMainMenu.Locate('ReferenceID', (Sender as TMenuItem).Tag, []) then
+  if not dmMain.qSprRefForMainMenu.Locate('ReferenceID', (Sender as TMenuItem).Tag, []) then
     raise Exception.Create('Ошибка открытия справочника ' + (Sender as TMenuItem).Caption);
-  mi := FindFormInMainMenu('Справочник - ' + dmRefBooks.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString);
+  mi := FindFormInMainMenu('Справочник - ' + dmMain.qSprRefForMainMenu.FieldByName('ReferenceRUSName').AsString);
   if (mi <> nil) then
     TCustomForm(mi.Tag).BringToFront
   else
