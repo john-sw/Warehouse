@@ -162,6 +162,8 @@ type
     procedure tvRefBookDblClick(Sender: TObject);
     procedure tlGridClientsGroupsFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
       AFocusedNode: TcxTreeListNode);
+    procedure tlGridClientsGroupsGetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+      AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -545,6 +547,16 @@ begin
   spGetClientsForGroup.Close;
   spGetClientsForGroup.ParamByName('ClientFolderID').AsInteger := spShowRefBookClients.FieldByName('ClientFolderID').AsInteger;
   spGetClientsForGroup.Open;
+end;
+
+procedure TfmShowRefBookClients.tlGridClientsGroupsGetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+  AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+begin
+  if AIndexType = tlitStateIndex then
+    if ANode.Expanded then
+      AIndex := 14
+    else
+      AIndex := 13;
 end;
 
 procedure TfmShowRefBookClients.tvRefBookDblClick(Sender: TObject);

@@ -161,6 +161,8 @@ type
       AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
     procedure tlGridProdCatFocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode,
       AFocusedNode: TcxTreeListNode);
+    procedure tlGridProdCatGetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+      AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
@@ -538,6 +540,16 @@ begin
   spGetGoodsForProdCat.Close;
   spGetGoodsForProdCat.ParamByName('ProdCatID').AsInteger := spShowRefBookGoods.FieldByName('ProdCatID').AsInteger;
   spGetGoodsForProdCat.Open;
+end;
+
+procedure TfmShowRefBookGoods.tlGridProdCatGetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+  AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+begin
+  if AIndexType = tlitStateIndex then
+    if ANode.Expanded then
+      AIndex := 13
+    else
+      AIndex := 12;
 end;
 
 procedure TfmShowRefBookGoods.tvRefBookDblClick(Sender: TObject);
