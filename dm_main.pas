@@ -19,7 +19,9 @@ uses
   dxSkinValentine, dxSkinVS2010, dxSkinWhiteprint, dxSkinXmas2008Blue,
   cxClasses, cxLookAndFeels, AdvPanel, MemDS, AdvMenuStylers, AdvMenus,
   Vcl.Forms, cxLocalization, cxStyles, System.IniFiles, Vcl.Controls, Vcl.Graphics,
-  cxEdit, cxTextEdit, cxDateUtils, cxCalendar, cxCheckBox, cxDBLookupComboBox, HTMLabel, cxCalc, cxButtonEdit;
+  cxEdit, cxTextEdit, cxDateUtils, cxCalendar, cxCheckBox, cxDBLookupComboBox, HTMLabel, cxCalc, cxButtonEdit, frxRich,
+  frxChart, frxClass, frxBarcode, frxCross, frxOLE, frxChBox, frxCrypt, frxGradient, frxDMPExport, frxDCtrl,
+  fs_iinterpreter, frxExportPDF, frxDesgn, frxDACComponents, frxUniDACComponents;
 
 type
   TRefBookFormMode = (fmAdd, fmEdit, fmView, fmCopy);
@@ -38,6 +40,21 @@ type
     GridStyleEvenRow: TcxStyle;
     qSprRefForMainMenu: TUniQuery;
     spGetReferenceFieldList: TUniStoredProc;
+    frxPDFExport: TfrxPDFExport;
+    fsScript: TfsScript;
+    frxDialogControls: TfrxDialogControls;
+    frxDotMatrixExport: TfrxDotMatrixExport;
+    frxGradientObject: TfrxGradientObject;
+    frxCrypt: TfrxCrypt;
+    frxCheckBoxObject: TfrxCheckBoxObject;
+    frxOLEObject: TfrxOLEObject;
+    frxCrossObject: TfrxCrossObject;
+    frxBarCodeObject: TfrxBarCodeObject;
+    frxReport: TfrxReport;
+    frxChartObject: TfrxChartObject;
+    frxRichObject: TfrxRichObject;
+    frxDesigner1: TfrxDesigner;
+    frxUniDACComponents1: TfrxUniDACComponents;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

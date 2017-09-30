@@ -1,13 +1,14 @@
 object dmMain: TdmMain
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 406
+  Height = 460
   Width = 653
   object MainConnection: TUniConnection
     ProviderName = 'SQL Server'
     Database = 'RasprCenter2017'
     Username = 'eugene'
-    Server = '92.53.104.153'
+    Server = 'localhost'
+    Connected = True
     ConnectDialog = MainConnectDialog
     LoginPrompt = False
     Left = 128
@@ -303,5 +304,151 @@ object dmMain: TdmMain
         Value = nil
       end>
     CommandStoredProcName = 'spGetReferenceFieldList;1'
+  end
+  object frxPDFExport: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Transparency = False
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    Left = 541
+    Top = 328
+  end
+  object fsScript: TfsScript
+    SyntaxType = 'PascalScript'
+    Left = 540
+    Top = 248
+  end
+  object frxDialogControls: TfrxDialogControls
+    Left = 508
+    Top = 144
+  end
+  object frxDotMatrixExport: TfrxDotMatrixExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    EscModel = 0
+    GraphicFrames = False
+    SaveToFile = False
+    UseIniSettings = True
+    Left = 444
+    Top = 128
+  end
+  object frxGradientObject: TfrxGradientObject
+    Left = 408
+    Top = 188
+  end
+  object frxCrypt: TfrxCrypt
+    Left = 364
+    Top = 284
+  end
+  object frxCheckBoxObject: TfrxCheckBoxObject
+    Left = 308
+    Top = 236
+  end
+  object frxOLEObject: TfrxOLEObject
+    Left = 272
+    Top = 156
+  end
+  object frxCrossObject: TfrxCrossObject
+    Left = 320
+    Top = 96
+  end
+  object frxBarCodeObject: TfrxBarCodeObject
+    Left = 196
+    Top = 80
+  end
+  object frxReport: TfrxReport
+    Version = '5.3.1'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42211.439516712960000000
+    ReportOptions.LastChange = 42211.439516712960000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 112
+    Top = 136
+    Datasets = <>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      Orientation = poLandscape
+      PaperWidth = 297.000000000000000000
+      PaperHeight = 210.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 18.897650000000000000
+        Width = 1046.929810000000000000
+        RowCount = 0
+      end
+    end
+  end
+  object frxChartObject: TfrxChartObject
+    Left = 136
+    Top = 216
+  end
+  object frxRichObject: TfrxRichObject
+    Left = 224
+    Top = 228
+  end
+  object frxDesigner1: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    Left = 152
+    Top = 320
+  end
+  object frxUniDACComponents1: TfrxUniDACComponents
+    DefaultDatabase = MainConnection
+    Left = 280
+    Top = 344
   end
 end

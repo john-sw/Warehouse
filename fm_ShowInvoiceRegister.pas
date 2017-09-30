@@ -32,7 +32,7 @@ uses
   dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinsdxBarPainter,
   dxPSCore, dxPScxCommon, System.Actions, Vcl.ActnList, Vcl.ImgList, RzPanel, RzButton, Vcl.ComCtrls, dxCore,
   cxDateUtils, cxDropDownEdit, cxLabel, cxTextEdit, cxButtonEdit,
-  dxSkinsdxRibbonPainter;
+  dxSkinsdxRibbonPainter, frxClass;
 
 type
   TfmShowInvoiceRegister = class(TForm)
@@ -103,6 +103,17 @@ type
     btnFilter: TcxButton;
     btnClearFilter: TcxButton;
     spInsertUpdateDeleteRefBook: TUniStoredProc;
+    actPrintRegister: TAction;
+    miPrintDoc: TMenuItem;
+    pmPrintDoc: TAdvPopupMenu;
+    spGetPrintFormList: TUniStoredProc;
+    qrReports: TUniQuery;
+    qrReportsReportID: TIntegerField;
+    qrReportsReportGroupID: TIntegerField;
+    qrReportsReportName: TWideStringField;
+    qrReportsReportBinary: TBlobField;
+    qrReportsIsActive: TByteField;
+    qrReportsDocType: TByteField;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -113,7 +124,6 @@ type
     procedure actDeleteExecute(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
     procedure actExportExecute(Sender: TObject);
-    procedure actPrintExecute(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
     procedure actCopyCellExecute(Sender: TObject);
     procedure spShowInvoiceRegisterAfterOpen(DataSet: TDataSet);
@@ -122,9 +132,13 @@ type
     procedure btnClearFilterClick(Sender: TObject);
     procedure actDisApproveExecute(Sender: TObject);
     procedure tvRefBookDblClick(Sender: TObject);
+    procedure actPrintRegisterExecute(Sender: TObject);
+    procedure RzToolButton1DropDown(Sender: TObject);
+    procedure pmDefaultPopupMenuPopup(Sender: TObject);
   private
     { Private declarations }
     OriginalSettings: TMemoryStream;
+    procedure miPrintDocClick(Sender: TObject);
   public
     { Public declarations }
     RefBookID: Integer;
@@ -137,7 +151,7 @@ implementation
 
 {$R *.dfm}
 
-uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, fm_AddEditInvoice;
+uses fm_MainForm, fm_AddEditRefBook, cxGridExportLink, Vcl.Clipbrd, fm_AddEditInvoice, frxUniDACComponents;
 
 procedure TfmShowInvoiceRegister.actAddExecute(Sender: TObject);
 begin
@@ -252,7 +266,7 @@ begin
       ExportGridToXLSX(ExportToExcelSaveDialog.FileName, GridRefBook, True, True, True, '');
 end;
 
-procedure TfmShowInvoiceRegister.actPrintExecute(Sender: TObject);
+procedure TfmShowInvoiceRegister.actPrintRegisterExecute(Sender: TObject);
 begin
   prnRefBook.Preview();
 end;
@@ -371,10 +385,83 @@ begin
   tvRefBook.OptionsView.Footer := (tvRefBook.DataController.Summary.FooterSummaryItems.Count > 0);
 end;
 
+procedure TfmShowInvoiceRegister.miPrintDocClick(Sender: TObject);
+var
+  Stream: TMemoryStream;
+begin
+  if qrReports.Active then qrReports.Close;
+  qrReports.ParamByName('ReportID').AsInteger := (Sender as TMenuItem).Tag;
+  qrReports.Open;
+
+  if qrReports.IsEmpty then
+    Exit;
+  Stream := TMemoryStream.Create;
+  qrReportsReportBinary.SaveToStream(Stream);
+  Stream.Position := 0;
+  dmMain.frxReport.LoadFromStream(Stream);
+  with (dmMain.frxReport.FindComponent('UniDACQuery1') as TfrxUniDACQuery) do
+  begin
+    Close;
+    ParamByName('ID').Expression := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsString;
+  end;
+  dmMain.frxReport.ShowReport;
+  Stream.Free;
+end;
+
 procedure TfmShowInvoiceRegister.N9Click(Sender: TObject);
 begin
   OriginalSettings.Position := 0;
   tvRefBook.RestoreFromStream(OriginalSettings, True, True, [], '');
+end;
+
+procedure TfmShowInvoiceRegister.pmDefaultPopupMenuPopup(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  pmDefaultPopupMenu.BeginUpdate;
+  try
+    miPrintDoc.Clear;
+    spGetPrintFormList.Close;
+    spGetPrintFormList.ParamByName('FormName').Value := Self.Name;
+    spGetPrintFormList.ParamByName('DocID').Value := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    spGetPrintFormList.Open;
+    while not spGetPrintFormList.Eof do
+    begin
+      mi := TMenuItem.Create(pmPrintDoc);
+      mi.Caption := spGetPrintFormList.FieldByName('ReportName').AsString;
+      mi.Tag := spGetPrintFormList.FieldByName('ReportID').AsInteger;
+      mi.OnClick := miPrintDocClick;
+      miPrintDoc.Add(mi);
+      spGetPrintFormList.Next;
+    end;
+  finally
+    pmDefaultPopupMenu.EndUpdate;
+  end;
+end;
+
+procedure TfmShowInvoiceRegister.RzToolButton1DropDown(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  pmPrintDoc.BeginUpdate;
+  try
+    pmPrintDoc.Items.Clear;
+    spGetPrintFormList.Close;
+    spGetPrintFormList.ParamByName('FormName').Value := Self.Name;
+    spGetPrintFormList.ParamByName('DocID').Value := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsInteger;
+    spGetPrintFormList.Open;
+    while not spGetPrintFormList.Eof do
+    begin
+      mi := TMenuItem.Create(pmPrintDoc);
+      mi.Caption := spGetPrintFormList.FieldByName('ReportName').AsString;
+      mi.Tag := spGetPrintFormList.FieldByName('ReportID').AsInteger;
+      mi.OnClick := miPrintDocClick;
+      pmPrintDoc.Items.Add(mi);
+      spGetPrintFormList.Next;
+    end;
+  finally
+    pmPrintDoc.EndUpdate;
+  end;
 end;
 
 procedure TfmShowInvoiceRegister.spShowInvoiceRegisterAfterOpen(DataSet: TDataSet);
@@ -387,6 +474,7 @@ begin
   actCopyCell.Enabled := actEdit.Enabled;
   actApprove.Enabled := actEdit.Enabled;
   actDisApprove.Enabled := actEdit.Enabled;
+  actPrintRegister.Enabled := actEdit.Enabled;
 end;
 
 procedure TfmShowInvoiceRegister.tvRefBookDblClick(Sender: TObject);

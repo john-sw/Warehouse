@@ -153,18 +153,22 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object RzToolButton1: TRzToolButton
       Left = 494
       Top = 2
-      Width = 90
+      Width = 104
+      DropDownMenu = pmPrintDoc
+      ImageIndex = 6
       ShowCaption = True
       UseToolbarButtonSize = False
       UseToolbarShowCaption = False
-      Action = actPrint
+      ToolStyle = tsDropDown
+      OnDropDown = RzToolButton1DropDown
+      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
     end
     object RzSpacer2: TRzSpacer
-      Left = 584
+      Left = 598
       Top = 2
     end
     object RzToolButton2: TRzToolButton
-      Left = 592
+      Left = 606
       Top = 2
       Width = 106
       DropDownMenu = pmApproveDisapprove
@@ -174,11 +178,11 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       Caption = #1044#1086#1087#1086#1083#1085#1080#1090#1077#1083#1100#1085#1086
     end
     object RzSpacer9: TRzSpacer
-      Left = 698
+      Left = 712
       Top = 2
     end
     object RzToolButton11: TRzToolButton
-      Left = 706
+      Left = 720
       Top = 2
       Width = 90
       ShowCaption = True
@@ -480,6 +484,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     Top = 88
   end
   object pmDefaultPopupMenu: TAdvPopupMenu
+    OnPopup = pmDefaultPopupMenuPopup
     MenuStyler = dmMain.AdvMenuFantasyStyler1
     Version = '2.5.7.0'
     Left = 540
@@ -502,6 +507,12 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object N4: TMenuItem
       Action = actDelete
     end
+    object miPrintDoc: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1072#1090#1100
+      ImageIndex = 6
+      object TMenuItem
+      end
+    end
     object N5: TMenuItem
       Caption = '-'
     end
@@ -515,7 +526,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       Action = actExport
     end
     object miPrint: TMenuItem
-      Action = actPrint
+      Action = actPrintRegister
     end
     object N8: TMenuItem
       Caption = '-'
@@ -580,6 +591,7 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object prnRefBookLink1: TdxGridReportLink
       Active = True
       Component = GridRefBook
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -591,7 +603,8 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42990.938852916670000000
+      ReportDocument.CreationDate = 43008.663293287030000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -634,7 +647,6 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
     object actPrint: TAction
       Caption = #1055#1077#1095#1072#1090#1072#1090#1100
       ImageIndex = 6
-      OnExecute = actPrintExecute
     end
     object actClose: TAction
       Caption = #1047#1072#1082#1088#1099#1090#1100
@@ -657,6 +669,11 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
       Caption = #1056#1072#1079#1091#1090#1074#1077#1088#1076#1080#1090#1100
       ImageIndex = 10
       OnExecute = actDisApproveExecute
+    end
+    object actPrintRegister: TAction
+      Caption = #1055#1077#1095#1072#1090#1072#1090#1100' '#1078#1091#1088#1085#1072#1083
+      ImageIndex = 6
+      OnExecute = actPrintRegisterExecute
     end
   end
   object ilRefBookActionImages: TcxImageList
@@ -1023,5 +1040,115 @@ object fmShowInvoiceRegister: TfmShowInvoiceRegister
         Value = 0
       end>
     CommandStoredProcName = 'spThermoType;1'
+  end
+  object pmPrintDoc: TAdvPopupMenu
+    Version = '2.5.7.0'
+    Left = 528
+    Top = 500
+  end
+  object spGetPrintFormList: TUniStoredProc
+    StoredProcName = 'spGetPrintFormList;1'
+    SQL.Strings = (
+      '{:RETURN_VALUE = CALL spGetPrintFormList;1 (:FormName, :DocID)}')
+    Connection = dmMain.MainConnection
+    Left = 76
+    Top = 372
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'RETURN_VALUE'
+        ParamType = ptResult
+        Value = nil
+      end
+      item
+        DataType = ftWideString
+        Name = 'FormName'
+        ParamType = ptInput
+        Size = 128
+        Value = nil
+      end
+      item
+        DataType = ftInteger
+        Name = 'DocID'
+        ParamType = ptInput
+        Value = nil
+      end>
+    CommandStoredProcName = 'spGetPrintFormList;1'
+  end
+  object qrReports: TUniQuery
+    KeyFields = 'ReportID'
+    SQLInsert.Strings = (
+      'INSERT INTO Reports'
+      '  (ReportGroupID, ReportName, ReportBinary, IsActive, DocType)'
+      'VALUES'
+      
+        '  (:ReportGroupID, :ReportName, :ReportBinary, :IsActive, :DocTy' +
+        'pe)'
+      'SET :ReportID = SCOPE_IDENTITY()')
+    SQLDelete.Strings = (
+      'DELETE FROM Reports'
+      'WHERE'
+      '  ReportID = :Old_ReportID')
+    SQLUpdate.Strings = (
+      'UPDATE Reports'
+      'SET'
+      
+        '  ReportGroupID = :ReportGroupID, ReportName = :ReportName, Repo' +
+        'rtBinary = :ReportBinary, IsActive = :IsActive, DocType = :DocTy' +
+        'pe'
+      'WHERE'
+      '  ReportID = :Old_ReportID')
+    SQLLock.Strings = (
+      'SELECT * FROM Reports'
+      'WITH (UPDLOCK, ROWLOCK, HOLDLOCK)'
+      'WHERE'
+      '  ReportID = :Old_ReportID')
+    SQLRefresh.Strings = (
+      
+        'SELECT ReportGroupID, ReportName, ReportBinary, IsActive, DocTyp' +
+        'e FROM Reports'
+      'WHERE'
+      '  ReportID = :ReportID')
+    SQLRecCount.Strings = (
+      'SET :PCOUNT = (SELECT COUNT(*) FROM Reports'
+      ')')
+    Connection = dmMain.MainConnection
+    SQL.Strings = (
+      'select * from Reports where ReportID = :ReportID')
+    Options.QueryRecCount = True
+    Options.ReturnParams = True
+    Left = 192
+    Top = 392
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ReportID'
+        Value = nil
+      end>
+    object qrReportsReportID: TIntegerField
+      FieldName = 'ReportID'
+      ReadOnly = True
+      Required = True
+    end
+    object qrReportsReportGroupID: TIntegerField
+      FieldName = 'ReportGroupID'
+      Required = True
+    end
+    object qrReportsReportName: TWideStringField
+      FieldName = 'ReportName'
+      Required = True
+      Size = 128
+    end
+    object qrReportsReportBinary: TBlobField
+      FieldName = 'ReportBinary'
+    end
+    object qrReportsIsActive: TByteField
+      FieldName = 'IsActive'
+      Required = True
+    end
+    object qrReportsDocType: TByteField
+      FieldName = 'DocType'
+      Required = True
+    end
   end
 end
