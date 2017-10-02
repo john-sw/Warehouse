@@ -399,11 +399,7 @@ begin
   qrReportsReportBinary.SaveToStream(Stream);
   Stream.Position := 0;
   dmMain.frxReport.LoadFromStream(Stream);
-  with (dmMain.frxReport.FindComponent('UniDACQuery1') as TfrxUniDACQuery) do
-  begin
-    Close;
-    ParamByName('ID').Expression := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsString;
-  end;
+  dmMain.frxReport.Variables['ID'] := spShowInvoiceRegister.FieldByName(tvRefBook.DataController.KeyFieldNames).AsString;
   dmMain.frxReport.ShowReport;
   Stream.Free;
 end;
